@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FY111.Models
+namespace FY111.Models.FY111
 {
     public partial class Device
     {
@@ -12,7 +12,7 @@ namespace FY111.Models
             MemberHasDevices = new HashSet<MemberHasDevice>();
         }
 
-        public int Type { get; set; }
+        public int Id { get; set; }
         public string Icon { get; set; }
         public string Name { get; set; }
 

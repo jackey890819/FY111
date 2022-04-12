@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace FY111.Models
+namespace FY111.Models.FY111
 {
     public partial class FY111Context : DbContext
     {
@@ -20,6 +20,7 @@ namespace FY111.Models
         public virtual DbSet<Device> Devices { get; set; }
         public virtual DbSet<Friend> Friends { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<Member> Members { get; set; }
         public virtual DbSet<MemberHasDevice> MemberHasDevices { get; set; }
         public virtual DbSet<MemberHasGroup> MemberHasGroups { get; set; }
@@ -29,6 +30,7 @@ namespace FY111.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseMySQL("Server=localhost; Port=3306;User Id=root;Password=admin;Database=FY111;");
             }
         }
@@ -37,12 +39,9 @@ namespace FY111.Models
         {
             modelBuilder.Entity<Device>(entity =>
             {
-                entity.HasKey(e => e.Type)
-                    .HasName("PRIMARY");
-
                 entity.ToTable("device");
 
-                entity.Property(e => e.Type).HasColumnName("type");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Icon)
                     .HasMaxLength(45)
@@ -84,18 +83,43 @@ namespace FY111.Models
 
             modelBuilder.Entity<Group>(entity =>
             {
-                entity.HasKey(e => e.Name)
-                    .HasName("PRIMARY");
-
                 entity.ToTable("group");
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(45)
-                    .HasColumnName("name");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Icon)
                     .HasMaxLength(45)
                     .HasColumnName("icon");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(45)
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<Log>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.MemberHasDeviceId })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("log");
+
+                entity.HasIndex(e => e.MemberHasDeviceId, "fk_Log_Member_has_Device1_idx");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.MemberHasDeviceId).HasColumnName("Member_has_Device_id");
+
+                entity.Property(e => e.EndTime).HasColumnName("end_time");
+
+                entity.Property(e => e.StartTime).HasColumnName("start_time");
+
+                entity.HasOne(d => d.MemberHasDevice)
+                    .WithMany(p => p.Logs)
+                    .HasForeignKey(d => d.MemberHasDeviceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Log_Member_has_Device1");
             });
 
             modelBuilder.Entity<Member>(entity =>
@@ -131,52 +155,53 @@ namespace FY111.Models
 
             modelBuilder.Entity<MemberHasDevice>(entity =>
             {
-                entity.HasKey(e => new { e.DeviceType, e.MemberId })
-                    .HasName("PRIMARY");
-
                 entity.ToTable("member_has_device");
 
-                entity.HasIndex(e => e.DeviceType, "fk_Device_has_Member_Device1_idx");
+                entity.HasIndex(e => e.DeviceId, "fk_Member_has_Device_Device1_idx");
 
-                entity.HasIndex(e => e.MemberId, "fk_Device_has_Member_Member1_idx");
+                entity.HasIndex(e => e.MemberId, "fk_Member_has_Device_Member1_idx");
 
-                entity.Property(e => e.DeviceType).HasColumnName("Device_type");
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.DeviceId).HasColumnName("Device_id");
+
+                entity.Property(e => e.MacAddress)
+                    .HasMaxLength(17)
+                    .HasColumnName("mac_address");
 
                 entity.Property(e => e.MemberId).HasColumnName("Member_id");
 
-                entity.HasOne(d => d.DeviceTypeNavigation)
+                entity.HasOne(d => d.Device)
                     .WithMany(p => p.MemberHasDevices)
-                    .HasForeignKey(d => d.DeviceType)
+                    .HasForeignKey(d => d.DeviceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Device_has_Member_Device1");
+                    .HasConstraintName("fk_Member_has_Device_Device1");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.MemberHasDevices)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Device_has_Member_Member1");
+                    .HasConstraintName("fk_Member_has_Device_Member1");
             });
 
             modelBuilder.Entity<MemberHasGroup>(entity =>
             {
-                entity.HasKey(e => new { e.MemberId, e.GroupName })
+                entity.HasKey(e => new { e.MemberId, e.GroupId })
                     .HasName("PRIMARY");
 
                 entity.ToTable("member_has_group");
 
-                entity.HasIndex(e => e.GroupName, "fk_Member_has_Group_Group1_idx");
+                entity.HasIndex(e => e.GroupId, "fk_Member_has_Group_Group1_idx");
 
                 entity.HasIndex(e => e.MemberId, "fk_Member_has_Group_Member1_idx");
 
                 entity.Property(e => e.MemberId).HasColumnName("Member_id");
 
-                entity.Property(e => e.GroupName)
-                    .HasMaxLength(45)
-                    .HasColumnName("Group_name");
+                entity.Property(e => e.GroupId).HasColumnName("Group_id");
 
-                entity.HasOne(d => d.GroupNameNavigation)
+                entity.HasOne(d => d.Group)
                     .WithMany(p => p.MemberHasGroups)
-                    .HasForeignKey(d => d.GroupName)
+                    .HasForeignKey(d => d.GroupId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Member_has_Group_Group1");
 
@@ -189,14 +214,9 @@ namespace FY111.Models
 
             modelBuilder.Entity<Metaverse>(entity =>
             {
-                entity.HasKey(e => e.Name)
-                    .HasName("PRIMARY");
-
                 entity.ToTable("metaverse");
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(45)
-                    .HasColumnName("name");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Icon)
                     .HasMaxLength(45)
@@ -207,6 +227,11 @@ namespace FY111.Models
                     .HasMaxLength(15)
                     .HasColumnName("ip")
                     .IsFixedLength(true);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(45)
+                    .HasColumnName("name");
             });
 
             OnModelCreatingPartial(modelBuilder);

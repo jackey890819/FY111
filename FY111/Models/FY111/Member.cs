@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace FY111.Models
+namespace FY111.Models.FY111
 {
     public partial class Member
     {
