@@ -1,7 +1,4 @@
-﻿/*
- * 
- */
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +21,6 @@ namespace FY111.Controllers
         }
 
         // GET: api/Metaverses
-        // 取得所有在資料庫中的元宇宙資料
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Metaverse>>> GetMetaverses()
         {
