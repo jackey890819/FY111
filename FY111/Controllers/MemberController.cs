@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FY111.Models;
+using FY111.Models.FY111;
 
 namespace FY111.Controllers
 {
@@ -76,9 +76,12 @@ namespace FY111.Controllers
         // POST: api/Members
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Member>> PostMember(Member member)
+        [HttpPost("register")]
+        public async Task<ActionResult<Member>> PostMember([Bind("account, password, name, avater")] Member member)
         {
+            if (member == null) return BadRequest("Enter required fields");
+            else if (_context.Members.Any(e => e.Name == member.Name)) return Content("name is exists!!");
+            member.Permission = 2;
             _context.Members.Add(member);
             await _context.SaveChangesAsync();
 

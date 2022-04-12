@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FY111.Models;
+using FY111.Models.FY111;
 
 namespace FY111.Controllers
 {
@@ -47,7 +47,7 @@ namespace FY111.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDevice(int id, Device device)
         {
-            if (id != device.Type)
+            if (id != device.Id)
             {
                 return BadRequest();
             }
@@ -125,7 +125,7 @@ namespace FY111.Controllers
 
         private bool DeviceExists(int id)
         {
-            return _context.Devices.Any(e => e.Type == id);
+            return _context.Devices.Any(e => e.Id == id);
         }
     }
 }
