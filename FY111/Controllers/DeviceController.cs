@@ -11,11 +11,11 @@ namespace FY111.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DevicesController : ControllerBase
+    public class DeviceController : ControllerBase
     {
         private readonly FY111Context _context;
 
-        public DevicesController(FY111Context context)
+        public DeviceController(FY111Context context)
         {
             _context = context;
         }

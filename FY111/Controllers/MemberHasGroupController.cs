@@ -1,62 +1,58 @@
-﻿/*
- * 
- */
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FY111.Models.FY111;
+using FY111.Models;
 
 namespace FY111.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MetaverseController : ControllerBase
+    public class MemberHasGroupController : ControllerBase
     {
         private readonly FY111Context _context;
 
-        public MetaverseController(FY111Context context)
+        public MemberHasGroupController(FY111Context context)
         {
             _context = context;
         }
 
-        // GET: api/Metaverses
-        // 取得所有在資料庫中的元宇宙資料
+        // GET: api/MemberHasGroup
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Metaverse>>> GetMetaverses()
+        public async Task<ActionResult<IEnumerable<MemberHasGroup>>> GetMemberHasGroups()
         {
-            return await _context.Metaverses.ToListAsync();
+            return await _context.MemberHasGroups.ToListAsync();
         }
 
-        // GET: api/Metaverses/5
+        // GET: api/MemberHasGroup/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Metaverse>> GetMetaverse(string id)
+        public async Task<ActionResult<MemberHasGroup>> GetMemberHasGroup(int id)
         {
-            var metaverse = await _context.Metaverses.FindAsync(id);
+            var memberHasGroup = await _context.MemberHasGroups.FindAsync(id);
 
-            if (metaverse == null)
+            if (memberHasGroup == null)
             {
                 return NotFound();
             }
 
-            return metaverse;
+            return memberHasGroup;
         }
 
-        // PUT: api/Metaverses/5
+        // PUT: api/MemberHasGroup/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMetaverse(string id, Metaverse metaverse)
+        public async Task<IActionResult> PutMemberHasGroup(int id, MemberHasGroup memberHasGroup)
         {
-            if (id != metaverse.Name)
+            if (id != memberHasGroup.MemberId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(metaverse).State = EntityState.Modified;
+            _context.Entry(memberHasGroup).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +60,7 @@ namespace FY111.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MetaverseExists(id))
+                if (!MemberHasGroupExists(id))
                 {
                     return NotFound();
                 }
@@ -77,20 +73,20 @@ namespace FY111.Controllers
             return NoContent();
         }
 
-        // POST: api/Metaverses
+        // POST: api/MemberHasGroup
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Metaverse>> PostMetaverse(Metaverse metaverse)
+        public async Task<ActionResult<MemberHasGroup>> PostMemberHasGroup(MemberHasGroup memberHasGroup)
         {
-            _context.Metaverses.Add(metaverse);
+            _context.MemberHasGroups.Add(memberHasGroup);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (MetaverseExists(metaverse.Name))
+                if (MemberHasGroupExists(memberHasGroup.MemberId))
                 {
                     return Conflict();
                 }
@@ -100,28 +96,28 @@ namespace FY111.Controllers
                 }
             }
 
-            return CreatedAtAction("GetMetaverse", new { id = metaverse.Name }, metaverse);
+            return CreatedAtAction("GetMemberHasGroup", new { id = memberHasGroup.MemberId }, memberHasGroup);
         }
 
-        // DELETE: api/Metaverses/5
+        // DELETE: api/MemberHasGroup/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Metaverse>> DeleteMetaverse(string id)
+        public async Task<ActionResult<MemberHasGroup>> DeleteMemberHasGroup(int id)
         {
-            var metaverse = await _context.Metaverses.FindAsync(id);
-            if (metaverse == null)
+            var memberHasGroup = await _context.MemberHasGroups.FindAsync(id);
+            if (memberHasGroup == null)
             {
                 return NotFound();
             }
 
-            _context.Metaverses.Remove(metaverse);
+            _context.MemberHasGroups.Remove(memberHasGroup);
             await _context.SaveChangesAsync();
 
-            return metaverse;
+            return memberHasGroup;
         }
 
-        private bool MetaverseExists(string id)
+        private bool MemberHasGroupExists(int id)
         {
-            return _context.Metaverses.Any(e => e.Name == id);
+            return _context.MemberHasGroups.Any(e => e.MemberId == id);
         }
     }
 }

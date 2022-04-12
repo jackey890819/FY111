@@ -1,62 +1,58 @@
-﻿/*
- * 
- */
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FY111.Models.FY111;
+using FY111.Models;
 
 namespace FY111.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MetaverseController : ControllerBase
+    public class FriendController : ControllerBase
     {
         private readonly FY111Context _context;
 
-        public MetaverseController(FY111Context context)
+        public FriendController(FY111Context context)
         {
             _context = context;
         }
 
-        // GET: api/Metaverses
-        // 取得所有在資料庫中的元宇宙資料
+        // GET: api/Friend
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Metaverse>>> GetMetaverses()
+        public async Task<ActionResult<IEnumerable<Friend>>> GetFriends()
         {
-            return await _context.Metaverses.ToListAsync();
+            return await _context.Friends.ToListAsync();
         }
 
-        // GET: api/Metaverses/5
+        // GET: api/Friend/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Metaverse>> GetMetaverse(string id)
+        public async Task<ActionResult<Friend>> GetFriend(int id)
         {
-            var metaverse = await _context.Metaverses.FindAsync(id);
+            var friend = await _context.Friends.FindAsync(id);
 
-            if (metaverse == null)
+            if (friend == null)
             {
                 return NotFound();
             }
 
-            return metaverse;
+            return friend;
         }
 
-        // PUT: api/Metaverses/5
+        // PUT: api/Friend/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMetaverse(string id, Metaverse metaverse)
+        public async Task<IActionResult> PutFriend(int id, Friend friend)
         {
-            if (id != metaverse.Name)
+            if (id != friend.MemberId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(metaverse).State = EntityState.Modified;
+            _context.Entry(friend).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +60,7 @@ namespace FY111.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MetaverseExists(id))
+                if (!FriendExists(id))
                 {
                     return NotFound();
                 }
@@ -77,20 +73,20 @@ namespace FY111.Controllers
             return NoContent();
         }
 
-        // POST: api/Metaverses
+        // POST: api/Friend
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Metaverse>> PostMetaverse(Metaverse metaverse)
+        public async Task<ActionResult<Friend>> PostFriend(Friend friend)
         {
-            _context.Metaverses.Add(metaverse);
+            _context.Friends.Add(friend);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (MetaverseExists(metaverse.Name))
+                if (FriendExists(friend.MemberId))
                 {
                     return Conflict();
                 }
@@ -100,28 +96,28 @@ namespace FY111.Controllers
                 }
             }
 
-            return CreatedAtAction("GetMetaverse", new { id = metaverse.Name }, metaverse);
+            return CreatedAtAction("GetFriend", new { id = friend.MemberId }, friend);
         }
 
-        // DELETE: api/Metaverses/5
+        // DELETE: api/Friend/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Metaverse>> DeleteMetaverse(string id)
+        public async Task<ActionResult<Friend>> DeleteFriend(int id)
         {
-            var metaverse = await _context.Metaverses.FindAsync(id);
-            if (metaverse == null)
+            var friend = await _context.Friends.FindAsync(id);
+            if (friend == null)
             {
                 return NotFound();
             }
 
-            _context.Metaverses.Remove(metaverse);
+            _context.Friends.Remove(friend);
             await _context.SaveChangesAsync();
 
-            return metaverse;
+            return friend;
         }
 
-        private bool MetaverseExists(string id)
+        private bool FriendExists(int id)
         {
-            return _context.Metaverses.Any(e => e.Name == id);
+            return _context.Friends.Any(e => e.MemberId == id);
         }
     }
 }

@@ -1,62 +1,58 @@
-﻿/*
- * 
- */
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FY111.Models.FY111;
+using FY111.Models;
 
 namespace FY111.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MetaverseController : ControllerBase
+    public class GroupController : ControllerBase
     {
         private readonly FY111Context _context;
 
-        public MetaverseController(FY111Context context)
+        public GroupController(FY111Context context)
         {
             _context = context;
         }
 
-        // GET: api/Metaverses
-        // 取得所有在資料庫中的元宇宙資料
+        // GET: api/Group
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Metaverse>>> GetMetaverses()
+        public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
         {
-            return await _context.Metaverses.ToListAsync();
+            return await _context.Groups.ToListAsync();
         }
 
-        // GET: api/Metaverses/5
+        // GET: api/Group/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Metaverse>> GetMetaverse(string id)
+        public async Task<ActionResult<Group>> GetGroup(string id)
         {
-            var metaverse = await _context.Metaverses.FindAsync(id);
+            var @group = await _context.Groups.FindAsync(id);
 
-            if (metaverse == null)
+            if (@group == null)
             {
                 return NotFound();
             }
 
-            return metaverse;
+            return @group;
         }
 
-        // PUT: api/Metaverses/5
+        // PUT: api/Group/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMetaverse(string id, Metaverse metaverse)
+        public async Task<IActionResult> PutGroup(string id, Group @group)
         {
-            if (id != metaverse.Name)
+            if (id != @group.Name)
             {
                 return BadRequest();
             }
 
-            _context.Entry(metaverse).State = EntityState.Modified;
+            _context.Entry(@group).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +60,7 @@ namespace FY111.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MetaverseExists(id))
+                if (!GroupExists(id))
                 {
                     return NotFound();
                 }
@@ -77,20 +73,20 @@ namespace FY111.Controllers
             return NoContent();
         }
 
-        // POST: api/Metaverses
+        // POST: api/Group
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Metaverse>> PostMetaverse(Metaverse metaverse)
+        public async Task<ActionResult<Group>> PostGroup(Group @group)
         {
-            _context.Metaverses.Add(metaverse);
+            _context.Groups.Add(@group);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (MetaverseExists(metaverse.Name))
+                if (GroupExists(@group.Name))
                 {
                     return Conflict();
                 }
@@ -100,28 +96,28 @@ namespace FY111.Controllers
                 }
             }
 
-            return CreatedAtAction("GetMetaverse", new { id = metaverse.Name }, metaverse);
+            return CreatedAtAction("GetGroup", new { id = @group.Name }, @group);
         }
 
-        // DELETE: api/Metaverses/5
+        // DELETE: api/Group/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Metaverse>> DeleteMetaverse(string id)
+        public async Task<ActionResult<Group>> DeleteGroup(string id)
         {
-            var metaverse = await _context.Metaverses.FindAsync(id);
-            if (metaverse == null)
+            var @group = await _context.Groups.FindAsync(id);
+            if (@group == null)
             {
                 return NotFound();
             }
 
-            _context.Metaverses.Remove(metaverse);
+            _context.Groups.Remove(@group);
             await _context.SaveChangesAsync();
 
-            return metaverse;
+            return @group;
         }
 
-        private bool MetaverseExists(string id)
+        private bool GroupExists(string id)
         {
-            return _context.Metaverses.Any(e => e.Name == id);
+            return _context.Groups.Any(e => e.Name == id);
         }
     }
 }
