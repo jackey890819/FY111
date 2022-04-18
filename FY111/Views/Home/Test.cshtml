@@ -1,0 +1,37 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = "Test Page";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+<h2>The XMLHttpRequest Object</h2>
+<button type="button" onclick="loadDoc()">Request data</button>
+<p id="demo"></p>
+
+
+<script>
+function loadDoc() {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        document.getElementById("demo").innerHTML = this.responseText;
+    }
+    //xhttp.open("GET", "https://localhost:44380/api/DriveCourse/users");
+
+    xhttp.open("POST", "https://localhost:44380/api/DriveCourse/users");
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send(
+        JSON.stringify(
+            { 
+                "account": "user06",
+                "password": "user06",
+                "name": "user06name",
+                "personalImg": null
+            }
+        )
+    );
+}
+</script>
