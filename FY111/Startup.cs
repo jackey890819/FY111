@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using FY111.Models;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
+using FY111.Models.DriveCourse;
 
 namespace FY111
 {
@@ -30,9 +31,15 @@ namespace FY111
             services.AddControllers();
             services.AddMvc();
             services.AddSession();
+            // FY111資料庫設定
             services.AddDbContext<FY111Context>(opt =>
             {
                 opt.UseMySQL(Configuration.GetConnectionString("default"));
+            });
+            // drive_course資料庫設定
+            services.AddDbContext<drive_courseContext>(opt =>
+            {
+                opt.UseMySQL(Configuration.GetConnectionString("drive_course"));
             });
 
         }
