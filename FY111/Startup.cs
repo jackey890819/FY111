@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FY111.Models;
+using FY111.Models.FY111;
 using Microsoft.EntityFrameworkCore;
 
 namespace FY111
@@ -20,7 +20,6 @@ namespace FY111
         {
             Configuration = configuration;
         }
-        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

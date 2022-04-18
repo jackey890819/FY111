@@ -82,7 +82,7 @@ namespace FY111.Controllers
             _context.Devices.Add(device);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDevice", new { id = device.Type }, device);
+            return CreatedAtAction("GetDevice", new { id = device.Id }, device);
         }
 
         [Route("test/{n:int}")]
