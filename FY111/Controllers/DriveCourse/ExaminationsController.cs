@@ -20,6 +20,44 @@ namespace FY111.Controllers.DriveCourse
             _context = context;
         }
 
+
+        [HttpGet("{course_id}/{type}")]
+        public async Task<ActionResult<Object>> GetExamination(int course_id, string type)
+        {
+            if (type.Length > 20)   return BadRequest();
+
+            var examination = await _context.Examinations
+                .Where(e => e.CourseId == course_id && e.Type == type)
+                .Join(
+                    _context.Users,
+                    p => p.UserId,
+                    e => e.Id,
+                    (p, e) => new
+                    {
+                        Id = p.Id,
+                        CourseId = p.CourseId,
+                        Type = p.Type,
+                        UserId = p.UserId,
+                        UserName = e.Name,
+                        Score = p.Score,
+                        Remark = p.Remark
+                    }
+                )
+                .ToListAsync();
+
+            if (examination == null)
+            {
+                return NotFound();
+            }
+
+            return examination;
+        }
+
+
+
+
+
+
         // GET: api/Examinations
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Examination>>> GetExaminations()
@@ -100,6 +138,8 @@ namespace FY111.Controllers.DriveCourse
 
             return examination;
         }
+
+
 
         private bool ExaminationExists(int id)
         {
