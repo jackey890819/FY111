@@ -8,11 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FY111.Models;
-using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
+using Microsoft.EntityFrameworkCore;
 using FY111.Models.DriveCourse;
 using Microsoft.AspNetCore.Authentication.Cookies;      //cookies
+using Newtonsoft.Json;
 
 namespace FY111
 {
@@ -23,31 +23,32 @@ namespace FY111
         {
             Configuration = configuration;
         }
-        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             //services.AddControllersWithViews();
-            services.AddControllersWithViews()  // ¸Ñ¨Mjson bug
+            /*services.AddControllersWithViews()  // ï¿½Ñ¨Mjson bug
                     .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                     );
+            services.AddControllers().AddNewtonsoftJson(options => {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
+            });*/
+            services.AddControllersWithViews();
             services.AddDirectoryBrowser();
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie(options => {
-                        options.AccessDeniedPath = "/Home/AccessDeny";
-                        options.LoginPath = "/Home/Login";  // µn¤J­¶­±
-                    });
+
             services.AddControllers();
+
             services.AddMvc();
             services.AddSession();
-            // FY111¸ê®Æ®w³]©w
+            // FY111ï¿½ï¿½Æ®wï¿½]ï¿½w
             services.AddDbContext<FY111Context>(opt =>
             {
                 opt.UseMySQL(Configuration.GetConnectionString("default"));
             });
-            // drive_course¸ê®Æ®w³]©w
+            // drive_courseï¿½ï¿½Æ®wï¿½]ï¿½w
             services.AddDbContext<drive_courseContext>(opt =>
             {
                 opt.UseMySQL(Configuration.GetConnectionString("drive_course"));
@@ -68,12 +69,12 @@ namespace FY111
                 app.UseHsts();
             }
             
-            app.UseHttpsRedirection();  // ±N Http Âà¦¨ https ªº Middleware
-            app.UseStaticFiles();       // ³B²zÀRºAÀÉ®×
+            app.UseHttpsRedirection();  // ï¿½N Http ï¿½à¦¨ https ï¿½ï¿½ Middleware
+            app.UseStaticFiles();       // ï¿½Bï¿½zï¿½Rï¿½Aï¿½É®ï¿½
             // app.UseCookiePolicy();
             app.UseRouting();
-            app.UseAuthentication();    // ÅçÃÒ
-            app.UseAuthorization();     // ±ÂÅv
+            app.UseAuthentication();    // ï¿½ï¿½ï¿½ï¿½
+            app.UseAuthorization();     // ï¿½ï¿½ï¿½v
             app.UseSession();
 
             app.UseEndpoints(endpoints =>

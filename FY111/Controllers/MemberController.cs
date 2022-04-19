@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
+using System.Net.Http;
 
 namespace FY111.Controllers
 {
@@ -21,11 +22,11 @@ namespace FY111.Controllers
         }
 
         // GET: api/Members
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
-        {
-            return await _context.Members.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Member>>> GetMembers()
+        //{
+        //    return await _context.Members.ToListAsync();
+        //}
 
         // GET: api/Members/5
         [HttpGet("{id}")]
@@ -73,19 +74,86 @@ namespace FY111.Controllers
             return NoContent();
         }
 
+        [HttpPost("app_logout/{id}")]
+        public async Task<ActionResult<Member>> App_Logout(int id, Member member)
+        {
+            int MHDid = _context.MemberHasDevices.FirstOrDefault(x => x.MemberId == member.Id && x.DeviceId == id).Id;
+            Log temp = _context.Logs.FirstOrDefault(x => x.MemberHasDeviceId == MHDid && x.EndTime == null);
+            if (temp == null) return BadRequest();
+            else
+            {
+                temp.EndTime = DateTime.Now;
+                await _context.SaveChangesAsync();
+                return Content("Successful!!");
+            }
+        }
+
+        [HttpPost("app_login/{id}")]
+        public async Task<ActionResult<Member>> App_Login(int id, App_Login_Model model)
+        {
+            Member m = _context.Members.FirstOrDefault(m => m.Account == model.member.Account && m.Password == model.member.Password);
+            if (m != null)
+            {
+                MemberHasDevice MHD = _context.MemberHasDevices.FirstOrDefault(x => x.MemberId == m.Id && x.DeviceId == id);
+                int MHDid;
+                if (MHD == null)
+                {
+                    MHD = new MemberHasDevice();
+                    MHD.MemberId = m.Id;
+                    MHD.DeviceId = id;
+                    MHD.MacAddress = model.mac_address;
+                    _context.MemberHasDevices.Add(MHD);
+                    await _context.SaveChangesAsync();
+                    MHDid = _context.MemberHasDevices.FirstOrDefault(x => x.MemberId == m.Id && x.DeviceId == id).Id;
+                }
+                else MHDid = MHD.Id;
+                Log log = new Log();
+                log.MemberHasDeviceId = MHDid;
+                log.StartTime = DateTime.Now;
+                _context.Logs.Add(log);
+                await _context.SaveChangesAsync();
+                return m;
+            }
+            else
+            {
+                return Content("帳號密碼錯誤");
+            }
+        }
+
+        [HttpPost("web_login")]
+        public async Task<ActionResult<Member>> Web_Login(Member member)
+        {
+            Member m = _context.Members.FirstOrDefault(m => m.Account == member.Account && m.Password == member.Password);
+            if (m != null)
+            {
+                return m;
+            }
+            else
+            {
+                return Content("帳號密碼錯誤");
+            }
+        }
+
+        [HttpPost("web_logout")]
+        public async Task<ActionResult<Member>> Web_Logout()
+        {
+            return Content("Nothing happened.");
+        }
+
         // POST: api/Members
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost("register")]
-        public async Task<ActionResult<Member>> PostMember([Bind("account, password, name, avater")] Member member)
+        public async Task<ActionResult<Member>> PostMember(Member member)
         {
             if (member == null) return BadRequest("Enter required fields");
-            else if (_context.Members.Any(e => e.Name == member.Name)) return Content("name is exists!!");
+            else if (_context.Members.Any(m => m.Account == member.Account)) return Content("Account is exists!!");
+            else if (_context.Members.Any(m => m.Name == member.Name)) return Content("Name is exists!!");
             member.Permission = 2;
             _context.Members.Add(member);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMember", new { id = member.Id }, member);
+            return Content("Successful!!");
         }
 
         // DELETE: api/Members/5

@@ -33,6 +33,11 @@ namespace FY111.Controllers
         {
             return View();
         }
+        //public IActionResult Register()
+        //{
+        //    return View("Privacy");
+        //}
+
 
         public IActionResult Test()
         {
