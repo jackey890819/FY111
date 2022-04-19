@@ -11,11 +11,11 @@ namespace FY111.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DevicesController : ControllerBase
+    public class DeviceController : ControllerBase
     {
         private readonly FY111Context _context;
 
-        public DevicesController(FY111Context context)
+        public DeviceController(FY111Context context)
         {
             _context = context;
         }
@@ -84,27 +84,22 @@ namespace FY111.Controllers
 
             return CreatedAtAction("GetDevice", new { id = device.Id }, device);
         }
-
+        /*
+        // Route多型測試
         [Route("test/{n:int}")]
         [HttpPost]
         public String test(int n)
         {
-            return n.ToString();
+            return "int" + n.ToString();
         }
 
         [Route("test/{s}")]
         [HttpPost]
         public String tests(string s)
         {
-            return s;
+            return "string" +  s;
         }
-
-        [Route("test/{f:float}")]
-        [HttpPost]
-        public String testf(float f)
-        {
-            return f.ToString();
-        }
+        */
 
 
         // DELETE: api/Devices/5

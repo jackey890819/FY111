@@ -33,6 +33,11 @@ namespace FY111.Controllers
         //}
 
 
+        public IActionResult Test()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

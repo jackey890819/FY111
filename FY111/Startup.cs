@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using FY111.Models.FY111;
 using Microsoft.EntityFrameworkCore;
+using FY111.Models.DriveCourse;
+using Newtonsoft.Json;
 
 namespace FY111
 {
@@ -24,12 +26,23 @@ namespace FY111
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers().AddNewtonsoftJson(options => {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
+            });
             services.AddControllersWithViews();
-            services.AddControllers();
+            services.AddMvc();
+            services.AddSession();
+            // FY111資料庫設定
             services.AddDbContext<FY111Context>(opt =>
             {
                 opt.UseMySQL(Configuration.GetConnectionString("default"));
             });
+            // drive_course資料庫設定
+            services.AddDbContext<drive_courseContext>(opt =>
+            {
+                opt.UseMySQL(Configuration.GetConnectionString("drive_course"));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +58,7 @@ namespace FY111
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
