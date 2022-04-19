@@ -115,6 +115,21 @@ namespace FY111.Controllers
             return metaverse;
         }
 
+        [HttpGet("list_available")]
+        public async Task<ActionResult<IEnumerable<Metaverse>>> ListAvailable()
+        {
+            var metaverse = await _context.Metaverses
+                            .Where(b => b.Ip != null && b.Ip != "")
+                            .ToListAsync();
+
+            if (metaverse == null)
+            {
+                return NotFound();
+            }
+
+            return metaverse;
+        }
+
         private bool MetaverseExists(string id)
         {
             return _context.Metaverses.Any(e => e.Name == id);

@@ -9,29 +9,76 @@
 
 
 <h2>The XMLHttpRequest Object</h2>
-<button type="button" onclick="loadDoc()">Request data</button>
-<p id="demo"></p>
+<button type="button" onclick="getuser()">GET</button> <br/>
+<input type="text" id="post_text" />
+<button type="button" onclick="postuser()">POST</button>
+<button type="button" onclick="putuser()">PUT</button>
+<button type="button" onclick="deleteuser()">DELETE</button>
+<p id="result"></p>
 
 
 <script>
-function loadDoc() {
+function getuser() {
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function() {
-        document.getElementById("demo").innerHTML = this.responseText;
+        document.getElementById("result").innerHTML = this.responseText;
+
     }
-    //xhttp.open("GET", "https://localhost:44380/api/DriveCourse/users");
+    xhttp.open("GET", "https://localhost:44380/api/DriveCourse/users");
+    xhttp.send();
+}
+
+function postuser() {
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        document.getElementById("result").innerHTML = this.responseText;
+    }
 
     xhttp.open("POST", "https://localhost:44380/api/DriveCourse/users");
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(
         JSON.stringify(
             { 
-                "account": "user06",
-                "password": "user06",
-                "name": "user06name",
+                "account": "user12",
+                "password": "user07",
+                "name": "user07name",
                 "personalImg": null
             }
         )
     );
+}
+
+function putuser() {
+    const xhttp = new XMLHttpRequest();
+    
+    xhttp.onload = function() {
+        document.getElementById("result").innerHTML = this.responseText;
+    }
+
+    xhttp.open("PUT", "https://localhost:44380/api/DriveCourse/users/12");
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send(
+        JSON.stringify(
+            { 
+                "id": 12,
+                "account": "puttest",
+                "password": "user07",
+                "name": "user07name",
+                "personalImg": null
+            }
+        )
+    );
+}
+
+function deleteuser() {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        document.getElementById("result").innerHTML = this.responseText;
+    }
+
+    xhttp.open("DELETE", "https://localhost:44380/api/DriveCourse/users/12");
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send();
 }
 </script>
