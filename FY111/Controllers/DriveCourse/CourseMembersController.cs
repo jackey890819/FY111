@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.DriveCourse;
+using System.Diagnostics;
 
 namespace FY111.Controllers.DriveCourse
 {
@@ -100,6 +101,35 @@ namespace FY111.Controllers.DriveCourse
 
             return courseMember;
         }
+
+        [HttpGet("course_id/{course_id}")]
+        public async Task<ActionResult<IEnumerable<Object>>> GetCourseMemberByCourseId(int course_id)
+        {
+            Debug.WriteLine("GetCourseMemberByCourseId(" + course_id + ")");
+            var courseMember = await _context.CourseMembers
+                                    .Where(e => e.CourseId == course_id)
+                                    .Join(
+                                        _context.Users,
+                                        p => p.UserId,
+                                        e => e.Id,
+                                        (p, e) => new
+                                        {
+                                            CourseId = p.CourseId,
+                                            Type = p.Type,
+                                            UserId = p.UserId,
+                                            UserName = e.Name,
+                                            Remark = p.Remark
+                                        }
+                                    )
+                                    .ToListAsync();
+            
+            if (courseMember == null)
+            {
+                return NotFound();
+            }
+            return courseMember;
+        }
+
 
         private bool CourseMemberExists(int id)
         {
