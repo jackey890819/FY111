@@ -3,6 +3,6 @@
     public partial class App_Login_Model
     {
         public Member member { get; set; }
-        public string mac_address { get; set; }
+        public int device_type { get; set; }
     }
 }

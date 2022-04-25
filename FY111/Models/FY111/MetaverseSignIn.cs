@@ -5,13 +5,12 @@ using System.Collections.Generic;
 
 namespace FY111.Models.FY111
 {
-    public partial class Friend
+    public partial class MetaverseSignIn
     {
+        public int MetaverseId { get; set; }
         public int MemberId { get; set; }
-        public int MemberId1 { get; set; }
-        public int State { get; set; }
 
         public virtual Member Member { get; set; }
-        public virtual Member MemberId1Navigation { get; set; }
+        public virtual Metaverse Metaverse { get; set; }
     }
 }
