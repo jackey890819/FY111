@@ -9,13 +9,13 @@ namespace FY111.Models.FY111
     {
         public Device()
         {
-            MemberHasDevices = new HashSet<MemberHasDevice>();
+            LoginLogs = new HashSet<LoginLog>();
         }
 
         public int Id { get; set; }
         public string Icon { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<MemberHasDevice> MemberHasDevices { get; set; }
+        public virtual ICollection<LoginLog> LoginLogs { get; set; }
     }
 }

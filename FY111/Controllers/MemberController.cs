@@ -77,8 +77,7 @@ namespace FY111.Controllers
         [HttpPost("app_logout/{id}")]
         public async Task<ActionResult<Member>> App_Logout(int id, Member member)
         {
-            int MHDid = _context.MemberHasDevices.FirstOrDefault(x => x.MemberId == member.Id && x.DeviceId == id).Id;
-            Log temp = _context.Logs.FirstOrDefault(x => x.MemberHasDeviceId == MHDid && x.EndTime == null);
+            LoginLog temp = _context.LoginLogs.FirstOrDefault(x => x.MemberId == member.Id && x.EndTime == null);
             if (temp == null) return BadRequest();
             else
             {
@@ -88,29 +87,17 @@ namespace FY111.Controllers
             }
         }
 
-        [HttpPost("app_login/{id}")]
+        [HttpPost("app_login")]
         public async Task<ActionResult<Member>> App_Login(int id, App_Login_Model model)
         {
             Member m = _context.Members.FirstOrDefault(m => m.Account == model.member.Account && m.Password == model.member.Password);
             if (m != null)
             {
-                MemberHasDevice MHD = _context.MemberHasDevices.FirstOrDefault(x => x.MemberId == m.Id && x.DeviceId == id);
-                int MHDid;
-                if (MHD == null)
-                {
-                    MHD = new MemberHasDevice();
-                    MHD.MemberId = m.Id;
-                    MHD.DeviceId = id;
-                    MHD.MacAddress = model.mac_address;
-                    _context.MemberHasDevices.Add(MHD);
-                    await _context.SaveChangesAsync();
-                    MHDid = _context.MemberHasDevices.FirstOrDefault(x => x.MemberId == m.Id && x.DeviceId == id).Id;
-                }
-                else MHDid = MHD.Id;
-                Log log = new Log();
-                log.MemberHasDeviceId = MHDid;
+                LoginLog log = new LoginLog();
+                log.MemberId = model.member.Id;
+                log.DeviceType = model.device_type;
                 log.StartTime = DateTime.Now;
-                _context.Logs.Add(log);
+                _context.LoginLogs.Add(log);
                 await _context.SaveChangesAsync();
                 return m;
             }

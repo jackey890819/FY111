@@ -12,27 +12,27 @@ namespace FY111.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LogController : ControllerBase
+    public class LoginLogController : ControllerBase
     {
         private readonly FY111Context _context;
 
-        public LogController(FY111Context context)
+        public LoginLogController(FY111Context context)
         {
             _context = context;
         }
 
         // GET: api/Log
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Log>>> GetLogs()
+        public async Task<ActionResult<IEnumerable<LoginLog>>> GetLogs()
         {
-            return await _context.Logs.ToListAsync();
+            return await _context.LoginLogs.ToListAsync();
         }
 
         // GET: api/Log/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Log>> GetLog(int id)
+        public async Task<ActionResult<LoginLog>> GetLog(int id)
         {
-            var log = await _context.Logs.FindAsync(id);
+            var log = await _context.LoginLogs.FindAsync(id);
 
             if (log == null)
             {
@@ -46,9 +46,9 @@ namespace FY111.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLog(int id, Log log)
+        public async Task<IActionResult> PutLog(int id, LoginLog log)
         {
-            if (id != log.Id)
+            if (id != log.MemberId)
             {
                 return BadRequest();
             }
@@ -78,25 +78,25 @@ namespace FY111.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Log>> PostLog(Log log)
+        public async Task<ActionResult<LoginLog>> PostLog(LoginLog log)
         {
-            _context.Logs.Add(log);
+            _context.LoginLogs.Add(log);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLog", new { id = log.Id }, log);
+            return CreatedAtAction("GetLog", new { id = log.MemberId }, log);
         }
 
         // DELETE: api/Log/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Log>> DeleteLog(int id)
+        public async Task<ActionResult<LoginLog>> DeleteLog(int id)
         {
-            var log = await _context.Logs.FindAsync(id);
+            var log = await _context.LoginLogs.FindAsync(id);
             if (log == null)
             {
                 return NotFound();
             }
 
-            _context.Logs.Remove(log);
+            _context.LoginLogs.Remove(log);
             await _context.SaveChangesAsync();
 
             return log;
@@ -104,15 +104,15 @@ namespace FY111.Controllers
 
         private bool LogExists(int id)
         {
-            return _context.Logs.Any(e => e.Id == id);
+            return _context.LoginLogs.Any(e => e.MemberId == id);
         }
 
 
         [HttpGet("list_member/{member_id}")]
-        public async Task<ActionResult<IEnumerable<Log>>> ListMemberLog(int member_id)
+        public async Task<ActionResult<IEnumerable<LoginLog>>> ListMemberLog(int member_id)
         {
-            var log = await _context.Logs
-                        .Where(e => e.MemberHasDevice.MemberId==member_id)
+            var log = await _context.LoginLogs
+                        .Where(e => e.MemberId == member_id)
                         .ToListAsync();
 
             if (log == null)
