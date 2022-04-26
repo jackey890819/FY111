@@ -24,7 +24,6 @@ namespace FY111.Controllers
             _logger = logger;
         }
 
-        [AllowAnonymous]
         public IActionResult Index()
         {
             if (User.IsInRole("NormalUser"))
