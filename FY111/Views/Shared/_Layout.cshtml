@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using FY111.Areas.Identity.Data
+
+@inject SignInManager<FY111User> SignInManager
+@inject UserManager<FY111User> UserManager
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />

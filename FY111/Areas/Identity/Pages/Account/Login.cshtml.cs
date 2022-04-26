@@ -88,6 +88,7 @@ namespace FY111.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    //ViewData["Role"] = await _userManager.GetRolesAsync();
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

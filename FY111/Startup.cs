@@ -69,7 +69,7 @@ namespace FY111
             });
 
             services.AddCors();
-
+            /*
             // JWT
             var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
             services.AddAuthentication(opt =>
@@ -90,7 +90,7 @@ namespace FY111
                     ClockSkew = TimeSpan.Zero
                 };
             });
-
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

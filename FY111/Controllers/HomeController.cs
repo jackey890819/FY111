@@ -24,8 +24,19 @@ namespace FY111.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
+            if (User.IsInRole("NormalUser"))
+                ViewData["UserRole"] = "NormalUser";
+            else if (User.IsInRole("GroupUser"))
+                ViewData["UserRole"] = "GroupUser";
+            else if (User.IsInRole("MetaverseAdmin"))
+                ViewData["UserRole"] = "MetaverseAdmin";
+            else if (User.IsInRole("SuperAdmin"))
+                ViewData["UserRole"] = "SuperAdmin";
+            else
+                ViewData["UserRole"] = null;
             return View();
         }
 
