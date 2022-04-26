@@ -60,7 +60,7 @@ namespace FY111.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MetaverseExists(id.ToString()))
+                if (!MetaverseExists(id))
                 {
                     return NotFound();
                 }
