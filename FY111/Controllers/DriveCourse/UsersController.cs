@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,48 +11,48 @@ namespace FY111.Controllers.DriveCourse
 {
     [Route("api/DriveCourse/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class DriveCourseUsersController : ControllerBase
     {
         private readonly drive_courseContext _context;
 
-        public UsersController(drive_courseContext context)
+        public DriveCourseUsersController(drive_courseContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/DriveCourseUsers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<DriveCourseUser>>> GetDriveCourseUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.DriveCourseUsers.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/DriveCourseUsers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<DriveCourseUser>> GetDriveCourseUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var DriveCourseUser = await _context.DriveCourseUsers.FindAsync(id);
 
-            if (user == null)
+            if (DriveCourseUser == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return DriveCourseUser;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/DriveCourseUsers/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutDriveCourseUser(int id, DriveCourseUser DriveCourseUser)
         {
-            if (id != user.Id)
+            if (id != DriveCourseUser.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(DriveCourseUser).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace FY111.Controllers.DriveCourse
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!DriveCourseUserExists(id))
                 {
                     return NotFound();
                 }
@@ -73,37 +73,38 @@ namespace FY111.Controllers.DriveCourse
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/DriveCourseUsers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<DriveCourseUser>> PostDriveCourseUser(DriveCourseUser DriveCourseUser)
         {
-            _context.Users.Add(user);
+            _context.DriveCourseUsers.Add(DriveCourseUser);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction("GetDriveCourseUser", new { id = DriveCourseUser.Id }, DriveCourseUser);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/DriveCourseUsers/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(int id)
+        public async Task<ActionResult<DriveCourseUser>> DeleteDriveCourseUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var DriveCourseUser = await _context.DriveCourseUsers.FindAsync(id);
+            if (DriveCourseUser == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.DriveCourseUsers.Remove(DriveCourseUser);
             await _context.SaveChangesAsync();
 
-            return user;
+            return DriveCourseUser;
         }
 
-        private bool UserExists(int id)
+        private bool DriveCourseUserExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.DriveCourseUsers.Any(e => e.Id == id);
         }
     }
 }
+*/
