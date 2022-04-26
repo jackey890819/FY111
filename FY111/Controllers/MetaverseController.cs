@@ -86,7 +86,7 @@ namespace FY111.Controllers
             }
             catch (DbUpdateException)
             {
-                if (MetaverseExists(metaverse.Name))
+                if (MetaverseExists(metaverse.Id))
                 {
                     return Conflict();
                 }
@@ -152,9 +152,9 @@ namespace FY111.Controllers
             return BadRequest();
         }
 
-        private bool MetaverseExists(string id)
+        private bool MetaverseExists(int id)
         {
-            return _context.Metaverses.Any(e => e.Name == id);
+            return _context.Metaverses.Any(e => e.Id == id);
         }
     }
 }
