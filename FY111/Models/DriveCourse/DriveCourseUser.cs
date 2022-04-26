@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace FY111.Models.DriveCourse
 {
-    public partial class User
+    public partial class DriveCourseUser
     {
-        public User()
+        public DriveCourseUser()
         {
             CourseMembers = new HashSet<CourseMember>();
             Examinations = new HashSet<Examination>();

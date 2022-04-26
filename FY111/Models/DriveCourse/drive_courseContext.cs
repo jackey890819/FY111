@@ -20,7 +20,7 @@ namespace FY111.Models.DriveCourse
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<CourseMember> CourseMembers { get; set; }
         public virtual DbSet<Examination> Examinations { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<DriveCourseUser> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -125,7 +125,7 @@ namespace FY111.Models.DriveCourse
                     .HasConstraintName("examination_user_id");
             });
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<DriveCourseUser>(entity =>
             {
                 entity.ToTable("user");
 

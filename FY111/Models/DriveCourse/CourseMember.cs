@@ -14,6 +14,6 @@ namespace FY111.Models.DriveCourse
         public string Remark { get; set; }
 
         public virtual Course Course { get; set; }
-        public virtual User User { get; set; }
+        public virtual DriveCourseUser User { get; set; }
     }
 }
