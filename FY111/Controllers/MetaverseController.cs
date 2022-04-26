@@ -60,7 +60,7 @@ namespace FY111.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MetaverseExists(id))
+                if (!MetaverseExists(id.ToString()))
                 {
                     return NotFound();
                 }
@@ -121,7 +121,7 @@ namespace FY111.Controllers
             if (model.permission == 3 || model.permission == 2)
             {
                 var selected_list = await _context.MetaverseSignIns
-                                    .Where(x => x.MemberId == model.member_id)
+                                    .Where(x => x.MemberId == model.member_id.ToString())
                                     .Select(x => x.MetaverseId).ToListAsync();
 
                 var selected_metaverse = await _context.Metaverses
