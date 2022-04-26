@@ -29,143 +29,143 @@ namespace FY111.Controllers
         //}
 
         // GET: api/Members/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Member>> GetMember(int id)
-        {
-            var member = await _context.Members.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Member>> GetMember(int id)
+        //{
+        //    var member = await _context.Members.FindAsync(id);
 
-            if (member == null)
-            {
-                return NotFound();
-            }
+        //    if (member == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return member;
-        }
+        //    return member;
+        //}
 
-        // PUT: api/Members/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMember(int id, Member member)
-        {
-            if (id != member.Id)
-            {
-                return BadRequest();
-            }
+        //// PUT: api/Members/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
+        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutMember(int id, Member member)
+        //{
+        //    if (id != member.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(member).State = EntityState.Modified;
+        //    _context.Entry(member).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MemberExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!MemberExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        [HttpPost("app_logout")]
-        public async Task<ActionResult<LoginLog>> App_Logout(Member member)
-        {
-            LoginLog temp = _context.LoginLogs.FirstOrDefault(x => x.MemberId == member.Id && x.EndTime == null);
-            if (temp == null) return BadRequest();
-            else
-            {
-                _context.Entry(temp).State = EntityState.Modified;
-                temp.EndTime = DateTime.Now;
-                await _context.SaveChangesAsync();
-                return Content("Successful!!");
-            }
-        }
+        //[HttpPost("app_logout")]
+        //public async Task<ActionResult<LoginLog>> App_Logout(Member member)
+        //{
+        //    LoginLog temp = _context.LoginLogs.FirstOrDefault(x => x.MemberId == member.Id && x.EndTime == null);
+        //    if (temp == null) return BadRequest();
+        //    else
+        //    {
+        //        _context.Entry(temp).State = EntityState.Modified;
+        //        temp.EndTime = DateTime.Now;
+        //        await _context.SaveChangesAsync();
+        //        return Content("Successful!!");
+        //    }
+        //}
 
-        [HttpPost("app_login")]
-        public async Task<ActionResult<Object>> App_Login(int id, App_Login_Model model)
-        {
-            Member m = _context.Members.FirstOrDefault(m => m.Account == model.member.Account && m.Password == model.member.Password);
-            if (m != null)
-            {
-                LoginLog log = new LoginLog();
-                log.MemberId = m.Id;
-                log.DeviceId = model.device_type;
-                log.StartTime = DateTime.Now;
-                _context.LoginLogs.Add(log);
-                await _context.SaveChangesAsync();
-                return new
-                {
-                    name = m.Name,
-                    permission = m.Permission
-                };
-            }
-            else
-            {
-                return Content("帳號密碼錯誤");
-            }
-        }
+        //[HttpPost("app_login")]
+        //public async Task<ActionResult<Object>> App_Login(int id, App_Login_Model model)
+        //{
+        //    Member m = _context.Members.FirstOrDefault(m => m.Account == model.member.Account && m.Password == model.member.Password);
+        //    if (m != null)
+        //    {
+        //        LoginLog log = new LoginLog();
+        //        log.MemberId = m.Id;
+        //        log.DeviceId = model.device_type;
+        //        log.StartTime = DateTime.Now;
+        //        _context.LoginLogs.Add(log);
+        //        await _context.SaveChangesAsync();
+        //        return new
+        //        {
+        //            name = m.Name,
+        //            permission = m.Permission
+        //        };
+        //    }
+        //    else
+        //    {
+        //        return Content("帳號密碼錯誤");
+        //    }
+        //}
 
-        [HttpPost("web_login")]
-        public async Task<ActionResult<Member>> Web_Login(Member member)
-        {
-            Member m = _context.Members.FirstOrDefault(m => m.Account == member.Account && m.Password == member.Password);
-            if (m != null)
-            {
-                return m;
-            }
-            else
-            {
-                return Content("帳號密碼錯誤");
-            }
-        }
+        //[HttpPost("web_login")]
+        //public async Task<ActionResult<Member>> Web_Login(Member member)
+        //{
+        //    Member m = _context.Members.FirstOrDefault(m => m.Account == member.Account && m.Password == member.Password);
+        //    if (m != null)
+        //    {
+        //        return m;
+        //    }
+        //    else
+        //    {
+        //        return Content("帳號密碼錯誤");
+        //    }
+        //}
 
-        [HttpPost("web_logout")]
-        public async Task<ActionResult<Member>> Web_Logout()
-        {
-            return Content("Nothing happened.");
-        }
+        //[HttpPost("web_logout")]
+        //public async Task<ActionResult<Member>> Web_Logout()
+        //{
+        //    return Content("Nothing happened.");
+        //}
 
-        // POST: api/Members
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost("register")]
-        public async Task<ActionResult<Member>> PostMember(Member member)
-        {
-            if (member == null) return BadRequest("Enter required fields");
-            else if (_context.Members.Any(m => m.Account == member.Account)) return Content("Account is exists!!");
-            else if (_context.Members.Any(m => m.Name == member.Name)) return Content("Name is exists!!");
-            _context.Members.Add(member);
-            await _context.SaveChangesAsync();
+        //// POST: api/Members
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
+        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        //[HttpPost("register")]
+        //public async Task<ActionResult<Member>> PostMember(Member member)
+        //{
+        //    if (member == null) return BadRequest("Enter required fields");
+        //    else if (_context.Members.Any(m => m.Account == member.Account)) return Content("Account is exists!!");
+        //    else if (_context.Members.Any(m => m.Name == member.Name)) return Content("Name is exists!!");
+        //    _context.Members.Add(member);
+        //    await _context.SaveChangesAsync();
 
-            return Content("Successful!!");
-        }
+        //    return Content("Successful!!");
+        //}
 
-        // DELETE: api/Members/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Member>> DeleteMember(int id)
-        {
-            var member = await _context.Members.FindAsync(id);
-            if (member == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/Members/5
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult<Member>> DeleteMember(int id)
+        //{
+        //    var member = await _context.Members.FindAsync(id);
+        //    if (member == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Members.Remove(member);
-            await _context.SaveChangesAsync();
+        //    _context.Members.Remove(member);
+        //    await _context.SaveChangesAsync();
 
-            return member;
-        }
+        //    return member;
+        //}
 
-        private bool MemberExists(int id)
-        {
-            return _context.Members.Any(e => e.Id == id);
-        }
+        //private bool MemberExists(int id)
+        //{
+        //    return _context.Members.Any(e => e.Id == id);
+        //}
     }
 }

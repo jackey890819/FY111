@@ -45,9 +45,9 @@ namespace FY111.Controllers
         //// To protect from overposting attacks, enable the specific properties you want to bind to, for
         //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPatch("edit/{id}")]
-        public async Task<IActionResult> PutMetaverse(string id, Metaverse metaverse)
+        public async Task<IActionResult> EditMetaverse(int id, Metaverse metaverse)
         {
-            if (id != metaverse.Name)
+            if (id != metaverse.Id)
             {
                 return BadRequest();
             }

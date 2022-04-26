@@ -30,9 +30,9 @@ namespace FY111.Controllers
 
         //    // GET: api/Log/5
         [HttpGet("list/{id}")]
-        public async Task<ActionResult<LoginLog>> GetLog(int id)
+        public async Task<ActionResult<List<LoginLog>>> GetLog(string id)
         {
-            var log = await _context.LoginLogs.FindAsync(id);
+            var log = await _context.LoginLogs.Where(x => x.MemberId == id).ToListAsync();
 
             if (log == null)
             {
