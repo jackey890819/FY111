@@ -82,14 +82,19 @@ namespace FY111.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+
                 var user = new FY111User { UserName = Input.UserName };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "NormalUser");
+                    return Content("Success.");
                 }
-                return Content("Success.");
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
 
             // If we got this far, something failed, redisplay form

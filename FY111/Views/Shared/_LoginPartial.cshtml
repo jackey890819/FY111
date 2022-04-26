@@ -5,6 +5,7 @@
 @inject UserManager<FY111User> UserManager
 
 <ul class="navbar-nav">
+@User.ToString()
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
