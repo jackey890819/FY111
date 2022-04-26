@@ -21,33 +21,33 @@ namespace FY111.Controllers
         }
 
         // GET: api/Metaverses
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Metaverse>>> GetMetaverses()
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Metaverse>>> GetMetaverses()
+        //{
+        //    return await _context.Metaverses.ToListAsync();
+        //}
+
+        //// GET: api/Metaverses/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Metaverse>> GetMetaverse(string id)
+        //{
+        //    var metaverse = await _context.Metaverses.FindAsync(id);
+
+        //    if (metaverse == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return metaverse;
+        //}
+
+        //// PUT: api/Metaverses/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
+        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPatch("edit/{id}")]
+        public async Task<IActionResult> EditMetaverse(int id, Metaverse metaverse)
         {
-            return await _context.Metaverses.ToListAsync();
-        }
-
-        // GET: api/Metaverses/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Metaverse>> GetMetaverse(string id)
-        {
-            var metaverse = await _context.Metaverses.FindAsync(id);
-
-            if (metaverse == null)
-            {
-                return NotFound();
-            }
-
-            return metaverse;
-        }
-
-        // PUT: api/Metaverses/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMetaverse(string id, Metaverse metaverse)
-        {
-            if (id != metaverse.Name)
+            if (id != metaverse.Id)
             {
                 return BadRequest();
             }
@@ -76,7 +76,7 @@ namespace FY111.Controllers
         // POST: api/Metaverses
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ActionResult<Metaverse>> PostMetaverse(Metaverse metaverse)
         {
             _context.Metaverses.Add(metaverse);
@@ -116,18 +116,40 @@ namespace FY111.Controllers
         }
 
         [HttpGet("list_available")]
-        public async Task<ActionResult<IEnumerable<Metaverse>>> ListAvailable()
+        public async Task<ActionResult<IEnumerable<Object>>> ListAvailable(ListAvailable_Model model)
         {
-            var metaverse = await _context.Metaverses
-                            .Where(b => b.Ip != null && b.Ip != "")
-                            .ToListAsync();
-
-            if (metaverse == null)
+            if (model.permission == 3 || model.permission == 2)
             {
-                return NotFound();
+                var selected_list = await _context.MetaverseSignIns
+                                    .Where(x => x.MemberId == model.member_id)
+                                    .Select(x => x.MetaverseId).ToListAsync();
+
+                var selected_metaverse = await _context.Metaverses
+                                        .Where(x => selected_list.Contains(x.Id)).ToListAsync(); 
+
+                var metaverse = await _context.Metaverses
+                                .Where(b => b.SigninEnabled == 1 && !selected_metaverse.Contains(b)) // 列出尚未選擇並且可選擇的元宇宙
+                                .ToListAsync();
+
+                if (metaverse == null)
+                {
+                    return NotFound();
+                }
+
+                return new[]
+                {
+                    metaverse,
+                    selected_metaverse
+                };
+            }
+            else if(model.permission == 1 || model.permission == 0)
+            {
+                var metaverse = await _context.Metaverses.ToListAsync();
+
+                return metaverse;
             }
 
-            return metaverse;
+            return BadRequest();
         }
 
         private bool MetaverseExists(string id)
