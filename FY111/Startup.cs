@@ -13,6 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using FY111.Models.DriveCourse;
 using Microsoft.AspNetCore.Authentication.Cookies;      //cookies
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using FY111.Models;
 
 namespace FY111
 {
@@ -36,6 +40,10 @@ namespace FY111
             services.AddControllers().AddNewtonsoftJson(options => {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
             });*/
+
+
+            services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
+
             services.AddControllersWithViews();
             services.AddDirectoryBrowser();
 
@@ -54,6 +62,29 @@ namespace FY111
                 opt.UseMySQL(Configuration.GetConnectionString("drive_course"));
             });
 
+            services.AddCors();
+
+            // JWT
+            var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt =>
+            {
+                opt.RequireHttpsMetadata = false;
+                opt.SaveToken = false;
+                opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,7 +99,7 @@ namespace FY111
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            
+            Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
             app.UseHttpsRedirection();  // �N Http �ন https �� Middleware
             app.UseStaticFiles();       // �B�z�R�A�ɮ�
             // app.UseCookiePolicy();
