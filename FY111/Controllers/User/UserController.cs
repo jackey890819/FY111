@@ -74,6 +74,7 @@ namespace FY111.Controllers.User
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
+                /*
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
@@ -86,12 +87,33 @@ namespace FY111.Controllers.User
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var secutityToken = tokenHandler.CreateToken(tokenDescriptor);
                 var token = tokenHandler.WriteToken(secutityToken);
-                return Ok(new { token });
+                */
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);
+                //return Ok(new { token });
+                return Ok(result);
             }
             else
             {
                 return BadRequest(new { message = "Username or password is incorrect." });
             }
+        }
+
+        [HttpPost]
+        [Route("Logout")]
+        //POST：/api/User/Logout
+        public async Task<IActionResult> Logout()
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                await _signInManager.SignOutAsync();
+                return Ok(new { message = "Logout successed." });
+            }
+            else
+            {
+                return BadRequest(new { message = "You haven't login system." });
+            }
+            
+
         }
     }
 }
