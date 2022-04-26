@@ -74,13 +74,14 @@ namespace FY111.Controllers
             return NoContent();
         }
 
-        [HttpPost("app_logout/{id}")]
-        public async Task<ActionResult<Member>> App_Logout(int id, Member member)
+        [HttpPost("app_logout")]
+        public async Task<ActionResult<LoginLog>> App_Logout(Member member)
         {
             LoginLog temp = _context.LoginLogs.FirstOrDefault(x => x.MemberId == member.Id && x.EndTime == null);
             if (temp == null) return BadRequest();
             else
             {
+                _context.Entry(temp).State = EntityState.Modified;
                 temp.EndTime = DateTime.Now;
                 await _context.SaveChangesAsync();
                 return Content("Successful!!");
@@ -88,18 +89,22 @@ namespace FY111.Controllers
         }
 
         [HttpPost("app_login")]
-        public async Task<ActionResult<Member>> App_Login(int id, App_Login_Model model)
+        public async Task<ActionResult<Object>> App_Login(int id, App_Login_Model model)
         {
             Member m = _context.Members.FirstOrDefault(m => m.Account == model.member.Account && m.Password == model.member.Password);
             if (m != null)
             {
                 LoginLog log = new LoginLog();
-                log.MemberId = model.member.Id;
-                log.DeviceType = model.device_type;
+                log.MemberId = m.Id;
+                log.DeviceId = model.device_type;
                 log.StartTime = DateTime.Now;
                 _context.LoginLogs.Add(log);
                 await _context.SaveChangesAsync();
-                return m;
+                return new
+                {
+                    name = m.Name,
+                    permission = m.Permission
+                };
             }
             else
             {
@@ -136,7 +141,6 @@ namespace FY111.Controllers
             if (member == null) return BadRequest("Enter required fields");
             else if (_context.Members.Any(m => m.Account == member.Account)) return Content("Account is exists!!");
             else if (_context.Members.Any(m => m.Name == member.Name)) return Content("Name is exists!!");
-            member.Permission = 2;
             _context.Members.Add(member);
             await _context.SaveChangesAsync();
 

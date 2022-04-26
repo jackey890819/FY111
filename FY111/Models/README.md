@@ -5,5 +5,5 @@
 - 指令
 
     ```
-    Scaffold-DbContext "Server=localhost; Port=3306;User Id=root;Password=admin;Database=FY111;" MySql.EntityFrameworkCore -OutputDir Models/FY111 -f
+    Scaffold-DbContext "Server=localhost; Port=3306;User Id=root;Password=root;Database=FY111;" MySql.EntityFrameworkCore -OutputDir Models/FY111 -f
     ```
