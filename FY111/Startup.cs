@@ -31,20 +31,26 @@ namespace FY111
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+            /*
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                //options.Cookie.Expiration 
 
-            //services.AddControllersWithViews();
-            /*services.AddControllersWithViews()  // �ѨMjson bug
-                    .AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                    );
-            services.AddControllers().AddNewtonsoftJson(options => {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
-            });*/
-
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+                //options.ReturnUrlParameter=""
+            });
+            */
 
             services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
-            services.AddControllersWithViews();
             services.AddDirectoryBrowser();
 
             services.AddControllers();
@@ -63,7 +69,7 @@ namespace FY111
             });
 
             services.AddCors();
-
+            /*
             // JWT
             var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
             services.AddAuthentication(opt =>
@@ -84,7 +90,7 @@ namespace FY111
                     ClockSkew = TimeSpan.Zero
                 };
             });
-
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

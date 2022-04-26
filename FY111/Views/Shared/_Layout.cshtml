@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using FY111.Areas.Identity.Data
+
+@inject SignInManager<FY111User> SignInManager
+@inject UserManager<FY111User> UserManager
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -16,6 +23,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <!--
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                    @* <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -28,6 +36,8 @@
                     
                     <partial name="_LoginPartial" />
                 </div>
+                -->
+                <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>
