@@ -4,25 +4,25 @@
 @inject SignInManager<FY111User> SignInManager
 @inject UserManager<FY111User> UserManager
 
-<ul class="navbar-nav">
+<ul class="navbar-nav ml-auto">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+    <li class="nav-item dropdown no-arrow">
+        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button type="submit" class="nav-link dropdown-toggle btn btn-link">
+            <i class="fa fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            <span class="mr-2 d-none d-lg-inline text-gray ">登出</span>
+        </button>
         </form>
     </li>
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    <li class="nav-item dropdown no-arrow">
+        <a class="nav-link dropdown-toggle" id="login" asp-area="Identity" asp-page="/Account/Login">
+            <i class="fa fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            <span class="mr-2 d-none d-lg-inline text-gray ">登入</span>
+        </a>
     </li>
 }
 </ul>

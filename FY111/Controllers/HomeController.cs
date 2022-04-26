@@ -43,58 +43,15 @@ namespace FY111.Controllers
         {
             return View();
         }
-        //public IActionResult Register()
-        //{
-        //    return View("Privacy");
-        //}
 
-
-        public IActionResult Test()
+        public IActionResult Download()
         {
             return View();
         }
-
-
-
-        // 登入驗驗證測試
-        public IActionResult Login()
+        public IActionResult Analysis()
         {
-            //帳密輸入
             return View();
         }
-        /*
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(Member member)
-        {
-            if (!ModelState.IsValid)
-            {
-                if (member.Account !="123" && member.Password != "123")
-                {
-                    ViewData["ErrorMessage"] = "帳號與密碼有錯";
-                    return View();
-                }
-            }
-        }
-        */
-        [Authorize]
-        public IActionResult Index2()
-        {
-            // 登入成功可見
-            /*
-            if (User.Identity.IsAuthenticated) { return RedirectToPage("/Home/Index2") }
-             */
-            return View();
-        }
-
-
-
-
-
-
-
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
