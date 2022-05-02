@@ -53,7 +53,7 @@ namespace FY111.Controllers
         //// To protect from overposting attacks, enable the specific properties you want to bind to, for
         //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin,MetaverseAdmin")]
         [HttpPatch("Edit/{id}")]
         public async Task<IActionResult> EditMetaverse(int id, Metaverse metaverse)
         {
@@ -127,6 +127,7 @@ namespace FY111.Controllers
             return metaverse;
         }
 
+        [Authorize]
         [HttpGet("list_available")]
         public async Task<ActionResult<Object>> ListAvailable(ListAvailable_Model model)
         {
