@@ -9,6 +9,7 @@ using FY111.Models.FY111;
 using Microsoft.AspNetCore.Identity;
 using FY111.Areas.Identity.Data;
 using FY111.Models;
+using System.Security.Claims;
 
 namespace FY111.Controllers
 {
@@ -79,31 +80,32 @@ namespace FY111.Controllers
         //    return NoContent();
         //}
 
-        //// POST: api/MetaverseLog
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPost]
-        //public async Task<ActionResult<MetaverseLog>> PostMetaverseLog(MetaverseLog metaverseLog)
-        //{
-        //    _context.MetaverseLogs.Add(metaverseLog);
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateException)
-        //    {
-        //        if (MetaverseLogExists(metaverseLog.MetaverseId))
-        //        {
-        //            return Conflict();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+        // POST: api/MetaverseLog
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost("Enter")]
+        public async Task<ActionResult<MetaverseLog>> EnterMetaverse(MetaverseLog metaverseLog)
+        {
+            var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            metaverseLog.MemberId = user_id;
+            metaverseLog.StartTime = DateTime.Now;
+            _context.MetaverseLogs.Add(metaverseLog);
+            await _context.SaveChangesAsync();
 
-        //    return CreatedAtAction("GetMetaverseLog", new { id = metaverseLog.MetaverseId }, metaverseLog);
-        //}
+            return Ok(new {message = "Create Log Successfully"});
+        }
+
+        [HttpPatch("Leave")]
+        public async Task<ActionResult<MetaverseLog>> LeaveMetaverse()
+        {
+            var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            MetaverseLog metaverseLog = _context.MetaverseLogs.FirstOrDefault(x => x.MemberId == user_id && x.EndTime == null);
+            _context.Entry(metaverseLog).State = EntityState.Modified;
+            metaverseLog.EndTime = DateTime.Now;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Modify Log Successfully" });
+        }
 
         //// DELETE: api/MetaverseLog/5
         //[HttpDelete("{id}")]
@@ -121,9 +123,9 @@ namespace FY111.Controllers
         //    return metaverseLog;
         //}
 
-        //private bool MetaverseLogExists(int id)
-        //{
-        //    return _context.MetaverseLogs.Any(e => e.MetaverseId == id);
-        //}
+        private bool MetaverseLogExists(int id)
+        {
+            return _context.MetaverseLogs.Any(e => e.MetaverseId == id);
+        }
     }
 }

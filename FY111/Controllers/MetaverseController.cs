@@ -9,6 +9,7 @@ using FY111.Models.FY111;
 using Microsoft.AspNetCore.Identity;
 using FY111.Areas.Identity.Data;
 using FY111.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
@@ -33,9 +34,10 @@ namespace FY111.Controllers
         //    return await _context.Metaverses.ToListAsync();
         //}
 
-        //// GET: api/Metaverses/5
+        // GET: api/Metaverses/5
+        //[Authorize(Roles = "NormalUser")]
         //[HttpGet("{id}")]
-        //public async Task<ActionResult<Metaverse>> GetMetaverse(string id)
+        //public async Task<ActionResult<Metaverse>> GetMetaverse(int id)
         //{
         //    var metaverse = await _context.Metaverses.FindAsync(id);
 
@@ -50,7 +52,9 @@ namespace FY111.Controllers
         //// PUT: api/Metaverses/5
         //// To protect from overposting attacks, enable the specific properties you want to bind to, for
         //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPatch("edit/{id}")]
+
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPatch("Edit/{id}")]
         public async Task<IActionResult> EditMetaverse(int id, Metaverse metaverse)
         {
             if (id != metaverse.Id)
@@ -82,7 +86,8 @@ namespace FY111.Controllers
         // POST: api/Metaverses
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost("create")]
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPost("Create")]
         public async Task<ActionResult<Metaverse>> PostMetaverse(Metaverse metaverse)
         {
             _context.Metaverses.Add(metaverse);
@@ -102,10 +107,11 @@ namespace FY111.Controllers
                 }
             }
 
-            return CreatedAtAction("GetMetaverse", new { id = metaverse.Name }, metaverse);
+            return Ok(new {message = "Create Successfully"});
         }
 
         // DELETE: api/Metaverses/5
+        [Authorize(Roles = "SuperAdmin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Metaverse>> DeleteMetaverse(string id)
         {
@@ -122,7 +128,7 @@ namespace FY111.Controllers
         }
 
         [HttpGet("list_available")]
-        public async Task<ActionResult<IEnumerable<Object>>> ListAvailable(ListAvailable_Model model)
+        public async Task<ActionResult<Object>> ListAvailable(ListAvailable_Model model)
         {
             if (model.permission == 3 || model.permission == 2)
             {
@@ -142,17 +148,20 @@ namespace FY111.Controllers
                     return NotFound();
                 }
 
-                return new[]
+                return Ok(new
                 {
-                    metaverse,
-                    selected_metaverse
-                };
+                    selected_list = selected_metaverse,
+                    none_selected_list = metaverse
+                });
             }
             else if(model.permission == 1 || model.permission == 0)
             {
                 var metaverse = await _context.Metaverses.ToListAsync();
 
-                return metaverse;
+                return Ok(new
+                {
+                    metaverse = metaverse
+                });
             }
 
             return BadRequest();
