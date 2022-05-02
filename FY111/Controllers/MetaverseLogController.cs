@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
+using Microsoft.AspNetCore.Identity;
+using FY111.Areas.Identity.Data;
+using FY111.Models;
 
 namespace FY111.Controllers
 {
@@ -14,6 +17,9 @@ namespace FY111.Controllers
     public class MetaverseLogController : ControllerBase
     {
         private readonly FY111Context _context;
+        private UserManager<FY111User> _userManager;
+        private SignInManager<FY111User> _signInManager;
+        private readonly ApplicationSettings _appSettings;
 
         public MetaverseLogController(FY111Context context)
         {

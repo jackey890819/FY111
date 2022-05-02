@@ -11,6 +11,10 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
 using FY111.Models;
+using System.Collections.Generic;
+using FY111.Models.FY111;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace FY111.Controllers.User
 {
@@ -18,6 +22,7 @@ namespace FY111.Controllers.User
     [ApiController]
     public class UserController : Controller
     {
+        private readonly FY111Context _context;
         private UserManager<FY111User> _userManager;
         private SignInManager<FY111User> _signInManager;
         private readonly ApplicationSettings _appSettings;
@@ -25,12 +30,14 @@ namespace FY111.Controllers.User
         public UserController(
             UserManager<FY111User> userManager,
             SignInManager<FY111User> signInManager,
-            IOptions<ApplicationSettings> appSettings
+            IOptions<ApplicationSettings> appSettings,
+            FY111Context context
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
+            _context = context;
         }
 
         [HttpPost]
@@ -69,10 +76,10 @@ namespace FY111.Controllers.User
         [HttpPost]
         [Route("Login")]
         //POST：/api/User/Login
-        public async Task<Object> Login(LoginModel model)
+        public async Task<IActionResult> Login(LoginModel model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password) && !_signInManager.IsSignedIn(User))
             {
                 /*
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -89,13 +96,62 @@ namespace FY111.Controllers.User
                 var token = tokenHandler.WriteToken(secutityToken);
                 */
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);
+
+                await GenerateLoginLogAsync(user);
+                return await GetMetaverse(user);
                 //return Ok(new { token });
-                return Ok(result);
+                //return Ok(result);
             }
             else
             {
                 return BadRequest(new { message = "Username or password is incorrect." });
             }
+        }
+
+        private async Task GenerateLoginLogAsync(FY111User user)
+        {
+            LoginLog log = new LoginLog();
+            log.MemberId = user.Id;
+            log.DeviceType = 1;
+            log.StartTime = DateTime.Now;
+            _context.LoginLogs.Add(log);
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task<IActionResult> GetMetaverse(FY111User user)
+        {
+            var user_roles = await _userManager.GetRolesAsync(user);
+
+            for (int i = 0; i < user_roles.Count; ++i)
+            {
+                switch (user_roles[i])
+                {
+                    case "NormalUser":
+                    case "GroupUser":
+                        var selected_list = await _context.MetaverseSignIns
+                                    .Where(x => x.MemberId == user.Id)
+                                    .Select(x => x.MetaverseId).ToListAsync();
+                        var selected_metaverse = await _context.Metaverses
+                                                .Where(x => selected_list.Contains(x.Id)).ToListAsync();
+                        var metaverse = await _context.Metaverses
+                                        .Where(b => b.SigninEnabled == 1 && !selected_metaverse.Contains(b)) // 列出尚未選擇並且可選擇的元宇宙
+                                        .ToListAsync();
+                        return Ok(new
+                        {
+                            selected_list = selected_metaverse,
+                            none_selected_list = metaverse
+                        });
+                    case "MetaverseAdmin":
+                    case "SuperAdmin":
+                        var all_metaverse = await _context.Metaverses
+                                        .ToListAsync();
+                        return Ok(new
+                        {
+                            metaverse = all_metaverse
+                        });
+                }
+            }
+            return BadRequest();
         }
 
         [HttpPost]
@@ -105,6 +161,7 @@ namespace FY111.Controllers.User
         {
             if (_signInManager.IsSignedIn(User))
             {
+                await AddLogoutLog();
                 await _signInManager.SignOutAsync();
                 return Ok(new { message = "Logout successed." });
             }
@@ -112,8 +169,14 @@ namespace FY111.Controllers.User
             {
                 return BadRequest(new { message = "You haven't login system." });
             }
-            
-
+        }
+        private async Task AddLogoutLog()
+        {
+            var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            LoginLog temp = _context.LoginLogs.FirstOrDefault(x => x.MemberId == user_id && x.EndTime == null); 
+            _context.Entry(temp).State = EntityState.Modified;
+            temp.EndTime = DateTime.Now;
+            await _context.SaveChangesAsync();
         }
     }
 }
