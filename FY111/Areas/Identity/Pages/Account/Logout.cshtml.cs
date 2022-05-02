@@ -25,20 +25,36 @@ namespace FY111.Areas.Identity.Pages.Account
 
         public void OnGet()
         {
-        }
-
-        public async Task<IActionResult> OnPost(string returnUrl = null)
-        {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            if (returnUrl != null)
+            if (!_signInManager.IsSignedIn(User))
             {
-                return LocalRedirect(returnUrl);
+                ViewData["Success"] = false;
             }
             else
             {
-                return RedirectToPage();
+                ViewData["Success"] = true;
             }
+        }
+
+        [Authorize]
+        public async Task<IActionResult> OnPost(string returnUrl = null)
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                await _signInManager.SignOutAsync();
+                if (returnUrl != null)
+                {
+                    return LocalRedirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToPage();
+                }
+            }
+            else
+            {
+                return BadRequest(new { message = "You haven't login system." });
+            }
+            
         }
     }
 }
