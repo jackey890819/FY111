@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using FY111.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace FY111
 {
@@ -57,18 +58,18 @@ namespace FY111
 
             services.AddMvc();
             services.AddSession();
-            // FY111��Ʈw�]�w
+            // FY111 Database
             services.AddDbContext<FY111Context>(opt =>
             {
-                opt.UseMySQL(Configuration.GetConnectionString("default"));
+                opt.UseMySQL(Configuration.GetConnectionString("fy111"));
             });
-            // drive_course��Ʈw�]�w
+            // drive_course Database
             services.AddDbContext<drive_courseContext>(opt =>
             {
                 opt.UseMySQL(Configuration.GetConnectionString("drive_course"));
             });
 
-            services.AddCors();
+            //services.AddCors();
             /*
             // JWT
             var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
@@ -89,6 +90,29 @@ namespace FY111
                     ValidateAudience = false,
                     ClockSkew = TimeSpan.Zero
                 };
+            });
+            */
+            /*
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                options.Lockout.MaxFailedAccessAttempts = 999;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+                
             });
             */
         }

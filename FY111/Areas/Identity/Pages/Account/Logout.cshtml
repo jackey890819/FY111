@@ -6,5 +6,16 @@
 
 <header>
     <h1>@ViewData["Title"]</h1>
-    <p>You have successfully logged out of the application.</p>
+    @{
+        if (ViewData["Success"].ToString() == "true")
+        {
+            <p>You have successfully logged out of the application.</p>
+        }
+        else
+        {
+            <p>Error. You haven't login.</p>
+        }
+    }
+
+    
 </header>
