@@ -18,6 +18,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using FY111.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace FY111
 {
@@ -50,13 +51,13 @@ namespace FY111
             });
             */
 
-            services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
+            //services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
             services.AddDirectoryBrowser();
 
             services.AddControllers();
 
-            services.AddMvc();
+            //services.AddMvc();    //add in localization
             services.AddSession();
             // FY111 Database
             services.AddDbContext<FY111Context>(opt =>
@@ -68,6 +69,25 @@ namespace FY111
             {
                 opt.UseMySQL(Configuration.GetConnectionString("drive_course"));
             });
+
+            #region Localization
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] {
+                "zh-TW",        // Chinese - Taiwan
+                "en-US",        // English - United States
+                "zh-CN"         // Chinese - China
+            };
+                options.SetDefaultCulture(supportedCultures[0])
+                    .AddSupportedCultures(supportedCultures)
+                    .AddSupportedUICultures(supportedCultures);
+            });
+            #endregion Localization
 
             //services.AddCors();
             /*
@@ -130,12 +150,28 @@ namespace FY111
                 app.UseHsts();
             }
             Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
-            app.UseHttpsRedirection();  // �N Http �ন https �� Middleware
-            app.UseStaticFiles();       // �B�z�R�A�ɮ�
+            app.UseHttpsRedirection();  
+            app.UseStaticFiles();       
             // app.UseCookiePolicy();
             app.UseRouting();
-            app.UseAuthentication();    // ����
-            app.UseAuthorization();     // ���v
+
+
+            #region Localization
+            var supportedCultures = new[] {
+                "zh-TW",        // Chinese - Taiwan
+                "en-US",        // English - United States
+                "zh-CN"         // Chinese - China
+            };
+            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+
+            app.UseRequestLocalization(localizationOptions);    // Localization Middleware
+            #endregion Localization
+
+
+            app.UseAuthentication();    // Authentication Middleware
+            app.UseAuthorization();     // Authorization Middleware
             app.UseSession();
 
             app.UseEndpoints(endpoints =>
