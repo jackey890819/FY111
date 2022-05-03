@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
+using Microsoft.AspNetCore.Identity;
+using FY111.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
@@ -14,10 +17,18 @@ namespace FY111.Controllers
     public class DeviceController : ControllerBase
     {
         private readonly FY111Context _context;
+        private UserManager<FY111User> _userManager;
+        private SignInManager<FY111User> _signInManager;
 
-        public DeviceController(FY111Context context)
+        public DeviceController(
+            FY111Context context,
+            UserManager<FY111User> userManager,
+            SignInManager<FY111User> signInManager
+            )
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: api/Devices
@@ -32,12 +43,10 @@ namespace FY111.Controllers
         public async Task<ActionResult<Device>> GetDevice(int id)
         {
             var device = await _context.Devices.FindAsync(id);
-
             if (device == null)
             {
                 return NotFound();
             }
-
             return device;
         }
 
@@ -45,15 +54,14 @@ namespace FY111.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> PutDevice(int id, Device device)
         {
             if (id != device.Id)
             {
                 return BadRequest();
             }
-
             _context.Entry(device).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -69,7 +77,6 @@ namespace FY111.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -77,6 +84,7 @@ namespace FY111.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<ActionResult<Device>> PostDevice(Device device)
         {
             _context.Devices.Add(device);
@@ -84,26 +92,10 @@ namespace FY111.Controllers
 
             return CreatedAtAction("GetDevice", new { id = device.Id }, device);
         }
-        /*
-        // Route多型測試
-        [Route("test/{n:int}")]
-        [HttpPost]
-        public String test(int n)
-        {
-            return "int" + n.ToString();
-        }
-
-        [Route("test/{s}")]
-        [HttpPost]
-        public String tests(string s)
-        {
-            return "string" +  s;
-        }
-        */
-
 
         // DELETE: api/Devices/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<ActionResult<Device>> DeleteDevice(int id)
         {
             var device = await _context.Devices.FindAsync(id);
