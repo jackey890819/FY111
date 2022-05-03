@@ -114,7 +114,7 @@ namespace FY111.Controllers
             {
                 // 若為一般使用者或團體使用者：分列出已報名及未報名的且可報名的元宇宙List
                 var userId = _userManager.GetUserId(User);
-                var selected_list = await _context.MetaverseSignIns
+                var selected_list = await _context.MetaverseSignups
                                     .Where(x => x.MemberId == userId)
                                     .Select(x => x.MetaverseId).ToListAsync();
 
@@ -122,7 +122,7 @@ namespace FY111.Controllers
                                         .Where(x => selected_list.Contains(x.Id)).ToListAsync();
 
                 var metaverse = await _context.Metaverses
-                                .Where(b => b.SigninEnabled == 1 && !selected_metaverse.Contains(b)) // 列出尚未選擇並且可選擇的元宇宙
+                                .Where(b => b.SignupEnabled == 1 && !selected_metaverse.Contains(b)) // 列出尚未選擇並且可選擇的元宇宙
                                 .ToListAsync();
 
                 if (metaverse == null)
