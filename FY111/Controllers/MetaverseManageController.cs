@@ -53,7 +53,7 @@ namespace FY111.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Ip,Icon,Introduction,SigninEnabled,SignupEnabled,Duration")] Metaverse metaverse)
+        public async Task<IActionResult> Create([Bind("Id,Name,Ip,Icon,Introduction,SignupEnabled,CheckinEnabled,Duration")] Metaverse metaverse)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace FY111.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Ip,Icon,Introduction,SigninEnabled,SignupEnabled,Duration")] Metaverse metaverse)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Ip,Icon,Introduction,SignupEnabled,CheckinEnabled,Duration")] Metaverse metaverse)
         {
             if (id != metaverse.Id)
             {
