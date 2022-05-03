@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-
 using FY111.Areas.Identity.Data;
 using FY111.Models.FY111User;
 using System;
@@ -15,6 +14,7 @@ using System.Collections.Generic;
 using FY111.Models.FY111;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers.API
 {
@@ -45,10 +45,7 @@ namespace FY111.Controllers.API
         //POST：/api/User/Register
         public async Task<Object> PostUser(RegisterModel model)
         {
-            FY111User user = new FY111User()
-            {
-                UserName = model.UserName
-            };
+            FY111User user = new FY111User(){ UserName = model.UserName };
             try
             {
                 var exist = await _userManager.FindByNameAsync(user.UserName);
@@ -65,7 +62,6 @@ namespace FY111.Controllers.API
                 {
                     return BadRequest("UserName exist.");
                 }
-
             } catch (Exception ex)
             {
                 return BadRequest(model);
@@ -78,33 +74,41 @@ namespace FY111.Controllers.API
         //POST：/api/User/Login
         public async Task<IActionResult> Login(LoginModel model)
         {
+            if (_signInManager.IsSignedIn(User))
+                return BadRequest(new { 
+                    success = false,
+                    message = "You are already logged in."
+                });
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password) && !_signInManager.IsSignedIn(User))
             {
-                /*
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim("UserID", user.Id.ToString())
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(1),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var secutityToken = tokenHandler.CreateToken(tokenDescriptor);
-                var token = tokenHandler.WriteToken(secutityToken);
-                */
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);
+                #region JWT
+                //var tokenDescriptor = new SecurityTokenDescriptor
+                //{
+                //    Subject = new ClaimsIdentity(new Claim[]
+                //    {
+                //        new Claim("UserID", user.Id.ToString())
+                //    }),
+                //    Expires = DateTime.UtcNow.AddDays(1),
+                //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                //};
+                //var tokenHandler = new JwtSecurityTokenHandler();
+                //var secutityToken = tokenHandler.CreateToken(tokenDescriptor);
+                //var token = tokenHandler.WriteToken(secutityToken);
+                #endregion JWT
 
-                await GenerateLoginLogAsync(user);
-                return await GetMetaverse(user);
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);  // 登入
+                await GenerateLoginLogAsync(user);      // 存入Log data到資料庫
+                return await GetMetaverse(user);        // 根據身分取得元宇宙列表
                 //return Ok(new { token });
                 //return Ok(result);
             }
             else
             {
-                return BadRequest(new { message = "Username or password is incorrect." });
+                return BadRequest( new { 
+                    success = false,
+                    message = "Username or password is incorrect." 
+                });
             }
         }
 
@@ -120,37 +124,33 @@ namespace FY111.Controllers.API
 
         private async Task<IActionResult> GetMetaverse(FY111User user)
         {
-            var user_roles = await _userManager.GetRolesAsync(user);
-
-            for (int i = 0; i < user_roles.Count; ++i)
+            string user_roles = (await _userManager.GetRolesAsync(user))[0];
+            switch (user_roles)
             {
-                switch (user_roles[i])
-                {
-                    case "NormalUser":
-                    case "GroupUser":
-                        var selected_list = await _context.MetaverseSignups
-                                    .Where(x => x.MemberId == user.Id)
-                                    .Select(x => x.MetaverseId).ToListAsync();
-                        var selected_metaverse = await _context.Metaverses
-                                                .Where(x => selected_list.Contains(x.Id)).ToListAsync();
-                        var metaverse = await _context.Metaverses
-                                        .Where(b => b.SignupEnabled == 1 && !selected_metaverse.Contains(b)) // 列出尚未選擇並且可選擇的元宇宙
-                                        .ToListAsync();
-                        return Ok(new
-                        {
-                            selected_list = selected_metaverse,
-                            none_selected_list = metaverse
-                        });
-                    case "MetaverseAdmin":
-                    case "SuperAdmin":
-                        var all_metaverse = await _context.Metaverses
-                                        .ToListAsync();
-                        return Ok(new
-                        {
-                            metaverse = all_metaverse
-                        });
-                }
+                case "NormalUser":
+                case "GroupUser":
+                    var selected_list = await _context.MetaverseSignups
+                                .Where(x => x.MemberId == user.Id)
+                                .Select(x => x.MetaverseId).ToListAsync();
+                    var selected_metaverse = await _context.Metaverses
+                                            .Where(x => selected_list.Contains(x.Id)).ToListAsync();
+                    var metaverse = await _context.Metaverses
+                                    .Where(b => b.SignupEnabled == 1 && !selected_metaverse.Contains(b)) // 列出尚未選擇並且可選擇的元宇宙
+                                    .ToListAsync();
+                    return Ok(new
+                    {
+                        selected_list = selected_metaverse,
+                        none_selected_list = metaverse
+                    });
+                case "MetaverseAdmin":
+                case "SuperAdmin":
+                    var all_metaverse = await _context.Metaverses.ToListAsync();
+                    return Ok(new
+                    {
+                        metaverse = all_metaverse
+                    });
             }
+ 
             return BadRequest();
         }
 
@@ -172,7 +172,7 @@ namespace FY111.Controllers.API
         }
         private async Task AddLogoutLog()
         {
-            var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user_id = _userManager.GetUserId(User);
             LoginLog temp = _context.LoginLogs.FirstOrDefault(x => x.MemberId == user_id && x.EndTime == null); 
             _context.Entry(temp).State = EntityState.Modified;
             temp.EndTime = DateTime.Now;
