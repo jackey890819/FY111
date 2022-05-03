@@ -20,7 +20,6 @@ namespace FY111.Controllers
         private readonly FY111Context _context;
         private UserManager<FY111User> _userManager;
         private SignInManager<FY111User> _signInManager;
-        //private readonly ApplicationSettings _appSettings;
 
         public MetaverseController(
             FY111Context context,
@@ -33,31 +32,8 @@ namespace FY111.Controllers
             _signInManager = signInManager;
         }
 
-        // GET: api/Metaverses
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Metaverse>>> GetMetaverses()
-        //{
-        //    return await _context.Metaverses.ToListAsync();
-        //}
 
-        //// GET: api/Metaverses/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Metaverse>> GetMetaverse(string id)
-        //{
-        //    var metaverse = await _context.Metaverses.FindAsync(id);
-
-        //    if (metaverse == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return metaverse;
-        //}
-
-        //// PUT: api/Metaverses/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        
+        // PUT: api/Metaverses/5      
         [HttpPatch("edit/{id}")]
         [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> EditMetaverse(int id, Metaverse metaverse)
@@ -89,8 +65,6 @@ namespace FY111.Controllers
         }
 
         // POST: api/Metaverses
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost("create")]
         [Authorize(Roles = "SuperAdmin")]
         public async Task<ActionResult<Metaverse>> PostMetaverse(Metaverse metaverse)

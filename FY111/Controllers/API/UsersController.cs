@@ -16,18 +16,18 @@ using FY111.Models.FY111;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace FY111.Controllers.User
+namespace FY111.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : Controller
+    public class UsersController : Controller
     {
         private readonly FY111Context _context;
         private UserManager<FY111User> _userManager;
         private SignInManager<FY111User> _signInManager;
         private readonly ApplicationSettings _appSettings;
         
-        public UserController(
+        public UsersController(
             UserManager<FY111User> userManager,
             SignInManager<FY111User> signInManager,
             IOptions<ApplicationSettings> appSettings,
