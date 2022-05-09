@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using FY111.Areas.Identity.Data;
 using FY111.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
@@ -20,7 +21,6 @@ namespace FY111.Controllers
         private readonly FY111Context _context;
         private UserManager<FY111User> _userManager;
         private SignInManager<FY111User> _signInManager;
-        private readonly ApplicationSettings _appSettings;
 
         public MetaverseLogController(
             FY111Context context,
@@ -33,105 +33,141 @@ namespace FY111.Controllers
             _signInManager = signInManager;
         }
 
-        //// GET: api/MetaverseLog
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<MetaverseLog>>> GetMetaverseLogs()
-        //{
-        //    return await _context.MetaverseLogs.ToListAsync();
-        //}
-
-        // GET: api/MetaverseLog/5
-        [HttpGet("list/{id}")]
-        public async Task<ActionResult<MetaverseLog>> GetMetaverseLog(int id)
+        [HttpGet("list_user/{id}")]
+        public async Task<ActionResult<MetaverseLog>> GetMetaverseLogByUserId(string id)
         {
-            var metaverseLog = await _context.MetaverseLogs.FindAsync(id);
-
-            if (metaverseLog == null)
+            try
             {
-                return NotFound();
+                var metaverseLogs = await _context.MetaverseLogs
+                    .Where(x => x.MemberId == id)
+                    .ToListAsync();
+                if (!metaverseLogs.Any())
+                    return NotFound(new { 
+                        success = true,
+                        message = "Not found."
+                    });
+                return Ok(metaverseLogs);
+            }catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
             }
-
-            return metaverseLog;
         }
 
-        //// PUT: api/MetaverseLog/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutMetaverseLog(int id, MetaverseLog metaverseLog)
-        //{
-        //    if (id != metaverseLog.MetaverseId)
-        //    {
-        //        return BadRequest();
-        //    }
+        [HttpGet("list_metaverse/{id}")]
+        public async Task<ActionResult<MetaverseLog>> GetMetaverseLogByMetaverseId(int id)
+        {
+            try
+            {
+                var metaverseLogs = await _context.MetaverseLogs
+                    .Where(x => x.MetaverseId == id)
+                    .ToListAsync();
+                if (!metaverseLogs.Any())
+                    return NotFound(new
+                    {
+                        success = true,
+                        message = "Not found."
+                    });
+                return Ok(metaverseLogs);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
+            }
+        }
 
-        //    _context.Entry(metaverseLog).State = EntityState.Modified;
+        [HttpGet("list_user_metaverse/{user_id}/metaverse_id")]
+        public async Task<ActionResult<MetaverseLog>> GetMetaverseLogByMetaverseId(string user_id, int metaverse_id)
+        {
+            try
+            {
+                var metaverseLogs = await _context.MetaverseLogs
+                    .Where(x => x.MetaverseId == metaverse_id && x.MemberId ==user_id)
+                    .ToListAsync();
+                if (!metaverseLogs.Any())
+                    return NotFound(new
+                    {
+                        success = true,
+                        message = "Not found."
+                    });
+                return Ok(metaverseLogs);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
+            }
+        }
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!MetaverseLogExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
 
-        //    return NoContent();
-        //}
 
-        // POST: api/MetaverseLog
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost("Enter")]
         public async Task<ActionResult<MetaverseLog>> EnterMetaverse(MetaverseLog metaverseLog)
         {
-            var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!_signInManager.IsSignedIn(User))
+                return BadRequest(new {
+                    success = false,
+                    message = "You are not logged in yet."
+                });
+            var user = await _userManager.GetUserAsync(User);
+            var user_id = user.Id;
+            //var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             metaverseLog.MemberId = user_id;
             metaverseLog.StartTime = DateTime.Now;
             _context.MetaverseLogs.Add(metaverseLog);
             await _context.SaveChangesAsync();
 
-            return Ok(new {message = "Create Log Successfully"});
+            return Ok(new {
+                success = true,
+                message = "Create Log Successfully"
+            });
         }
 
         [HttpPatch("Leave")]
         public async Task<ActionResult<MetaverseLog>> LeaveMetaverse()
         {
-            var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!_signInManager.IsSignedIn(User))
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "You are not logged in yet."
+                });
+            var user = await _userManager.GetUserAsync(User);
+            var user_id = user.Id;
+            //var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             MetaverseLog metaverseLog = _context.MetaverseLogs.FirstOrDefault(x => x.MemberId == user_id && x.EndTime == null);
+            if (metaverseLog == null)
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "You haven't entered."
+                });
             _context.Entry(metaverseLog).State = EntityState.Modified;
             metaverseLog.EndTime = DateTime.Now;
             await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Modify Log Successfully" });
+            return Ok(new { 
+                success = true,
+                message = "Modify Log Successfully" 
+            });
         }
 
-        //// DELETE: api/MetaverseLog/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<MetaverseLog>> DeleteMetaverseLog(int id)
-        //{
-        //    var metaverseLog = await _context.MetaverseLogs.FindAsync(id);
-        //    if (metaverseLog == null)
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    _context.MetaverseLogs.Remove(metaverseLog);
-        //    await _context.SaveChangesAsync();
-
-        //    return metaverseLog;
-        //}
 
         private bool MetaverseLogExists(int id)
         {
             return _context.MetaverseLogs.Any(e => e.MetaverseId == id);
         }
+
+
     }
 }
