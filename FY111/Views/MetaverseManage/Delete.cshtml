@@ -39,13 +39,13 @@
             @Html.DisplayNameFor(model => model.SigninEnabled)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SigninEnabled)
+            @Html.DisplayFor(model => model.SigninEnabled, "ToBool")
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.SignupEnabled)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SignupEnabled)
+            @Html.DisplayFor(model => model.SignupEnabled, "ToBool")
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Duration)

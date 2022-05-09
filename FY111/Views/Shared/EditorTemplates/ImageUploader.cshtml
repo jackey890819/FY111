@@ -1,0 +1,17 @@
+﻿@model string
+
+<label class="control-label">@ViewData["attribute"]</label>
+<div class=custom-file>
+    <label asp-for="@ViewData["attribute"]" class="custom-file-label"></label>
+    <input asp-for="@ViewData["attribute"]" class="custom-file-input" type="file" />
+</div>
+
+@section Scripts{
+<script>
+    // Add the following code if you want the name of the file appear on select
+    $(".custom-file-input").on("change", function() {
+      var fileName = $(this).val().split("\\").pop();
+      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+</script>
+}

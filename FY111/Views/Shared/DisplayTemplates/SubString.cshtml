@@ -1,0 +1,10 @@
+﻿@model string
+
+@if (Model != null && Model.Length > 20)
+{
+    <p>@(Model.Substring(0, 20) + "...")</p>
+}
+else
+{
+    <p>@Model</p>
+}

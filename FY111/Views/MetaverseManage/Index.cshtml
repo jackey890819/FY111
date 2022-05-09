@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<FY111.Models.FY111.Metaverse>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "元宇宙管理";
 }
 
-<h1>Index</h1>
+<h1>元宇宙管理</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">新增</a>
 </p>
 <table class="table">
     <thead>
@@ -49,13 +49,13 @@
                 @Html.DisplayFor(modelItem => item.Icon)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Introduction)
+                @Html.DisplayFor(modelItem => item.Introduction, "SubString")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SigninEnabled)
+                @Html.DisplayFor(modelItem => item.SigninEnabled, "ToBool")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SignupEnabled)
+                @Html.DisplayFor(modelItem => item.SignupEnabled, "ToBool")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Duration)
