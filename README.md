@@ -2,6 +2,20 @@
 - Framework：   .net core 3.1
 - Database：    MySQL (MariaDB)
 
+## MySQL Database
+
+- 專案預設帳號root，密碼root
+
+- 使用資料庫
+
+    1. FY111
+
+    2. FY111User
+
+## 產生 FY111 資料庫
+
+1. 使用SQL資料夾中的FY111.sql
+
 ## 產生 ASP.NET User 資料表
 
 1. 先自行創建一個名為"FY111User"的資料庫
