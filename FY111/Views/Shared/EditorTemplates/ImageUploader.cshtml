@@ -1,17 +1,43 @@
 ﻿@model string
 
-<label class="control-label">@ViewData["attribute"]</label>
+@if(@Model!=null){
+    <div class="mb-3">
+        <img src="~/image/@Model" class="img-fluid image" />
+    </div>
+}
 <div class=custom-file>
-    <label asp-for="@ViewData["attribute"]" class="custom-file-label"></label>
-    <input asp-for="@ViewData["attribute"]" class="custom-file-input" type="file" />
+    <label asp-for="@Model" class="custom-file-label">
+        @if(@Model!=null){
+            @Model
+        }
+        else
+        {
+            <span>尚未上傳圖片</span>
+        }
+    </label>
+    <input asp-for="@Model" onchange="fileChange();" class="custom-file-input" type="file" accept="image/" />
 </div>
 
-@section Scripts{
-<script>
-    // Add the following code if you want the name of the file appear on select
-    $(".custom-file-input").on("change", function() {
-      var fileName = $(this).val().split("\\").pop();
-      $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-    });
+<script type="text/javascript">
+    function fileChange(){
+        var files = $('input[type="file"]').get(0).files;
+        var fileName = files[0].name;
+        $('input[type="file"]').siblings(".custom-file-label").addClass("selected").html(fileName);
+        if (window.FormData !== undefined) {
+            var formData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                formData.append("files", files[i]);
+            }
+            $.ajax({
+                type: 'POST',
+                url: "/api/Images",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    $('.image').prop('src', '/image/'+fileName);
+                }
+            });
+        }
+    }
 </script>
-}
