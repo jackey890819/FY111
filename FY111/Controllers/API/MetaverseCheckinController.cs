@@ -28,6 +28,7 @@ namespace FY111.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "NormalUser")]
         public async Task<ActionResult<MetaverseCheckin>> PostMetaverseCheckin(MetaverseCheckin metaverseCheckin)
         {
             var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -41,6 +42,7 @@ namespace FY111.Controllers
 
         // DELETE: api/metaverseCheckin/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "NormalUser")]
         public async Task<ActionResult<MetaverseCheckin>> DeleteMetaverseCheckin(string id)
         {
             var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
