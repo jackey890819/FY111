@@ -54,7 +54,7 @@ namespace FY111.Controllers
             }
             catch (DbUpdateException)   // 報名失敗：已經報名過
             {
-                return BadRequest(new { uccess = false, message = "You have signed up the metaverse." });
+                return BadRequest(new { success = false, message = "You have signed up thhis metaverse." });
             }
         }
 
@@ -63,16 +63,17 @@ namespace FY111.Controllers
         [Authorize(Roles = "NormalUser")]
         public async Task<ActionResult<MetaverseSignup>> DeleteMetaverseSignup(int metaverseId)
         {
-            var user = _userManager.GetUserAsync(User);
-            var metaverseSignup = await _context.MetaverseSignups.FindAsync(user.Id, metaverseId);
-            if (metaverseSignup == null)
+            var user = await _userManager.GetUserAsync(User);
+            //var metaverseSignup = await _context.MetaverseSignups.FindAsync( user.Id, metaverseId);
+            var metaverseSignup = await _context.MetaverseSignups.Where(x => x.MetaverseId == metaverseId && x.MemberId == user.Id).ToListAsync();
+            if (!metaverseSignup.Any())
             {
-                return BadRequest(new { success = false, message = "You haven't signed in this metaverse." });
+                return BadRequest(new { success = false, message = "You haven't signed up this metaverse." });
             }
-            _context.MetaverseSignups.Remove(metaverseSignup);
+            _context.MetaverseSignups.Remove(metaverseSignup[0]);
             await _context.SaveChangesAsync();
             //return metaverseSignup;
-            return Ok(new { success = true, message = "Delete signed in metaverse success." });
+            return Ok(new { success = true, message = "Delete signed up metaverse success." });
         }
 
         private bool MetaverseSignupExists(string id)
