@@ -35,3 +35,6 @@
     3|GroupUser|GROUPUSER|NULL
     4|NormalUser|NORMALUSER|NULL
 
+4. 使用register API 或是網頁產生 User
+
+5. 進到資料庫裡更改權限

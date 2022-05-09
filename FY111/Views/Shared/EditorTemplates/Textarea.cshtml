@@ -1,0 +1,9 @@
+﻿@model string
+<textarea asp-for=@Model class="form-control" oninput="autogrow(this);" style="overflow:hidden"></textarea>
+
+<script type="text/javascript">
+    function autogrow(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+</script>               
