@@ -169,7 +169,11 @@
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span> &copy; 2022 - FY111</span>
-                    </div>
+                        <span class="text-right">
+                            @await Html.PartialAsync("_SelectLanguagePartial")
+                        </span>
+                    </div>  
+                    
                 </div>
             </footer>
             <!-- End of Footer -->

@@ -20,9 +20,9 @@ namespace FY111.Models.FY111
         public virtual DbSet<Device> Devices { get; set; }
         public virtual DbSet<LoginLog> LoginLogs { get; set; }
         public virtual DbSet<Metaverse> Metaverses { get; set; }
+        public virtual DbSet<MetaverseCheckin> MetaverseCheckins { get; set; }
         public virtual DbSet<MetaverseLog> MetaverseLogs { get; set; }
-        public virtual DbSet<MetaverseSignIn> MetaverseSignIns { get; set; }
-        public virtual DbSet<MetaverseSignUp> MetaverseSignUps { get; set; }
+        public virtual DbSet<MetaverseSignup> MetaverseSignups { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -85,6 +85,10 @@ namespace FY111.Models.FY111
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.CheckinEnabled)
+                    .HasColumnType("tinyint")
+                    .HasColumnName("checkin_enabled");
+
                 entity.Property(e => e.Duration).HasColumnName("duration");
 
                 entity.Property(e => e.Icon)
@@ -104,13 +108,35 @@ namespace FY111.Models.FY111
                     .HasMaxLength(45)
                     .HasColumnName("name");
 
-                entity.Property(e => e.SigninEnabled)
-                    .HasColumnType("tinyint")
-                    .HasColumnName("signin_enabled");
-
                 entity.Property(e => e.SignupEnabled)
                     .HasColumnType("tinyint")
                     .HasColumnName("signup_enabled");
+            });
+
+            modelBuilder.Entity<MetaverseCheckin>(entity =>
+            {
+                entity.HasKey(e => new { e.MemberId, e.MetaverseId })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("metaverse_checkin");
+
+                entity.HasIndex(e => e.MetaverseId, "fk_Metaverse_has_Member_Metaverse1_idx");
+
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(256)
+                    .HasColumnName("Member_id");
+
+                entity.Property(e => e.MetaverseId).HasColumnName("Metaverse_id");
+
+                entity.Property(e => e.Time)
+                    .HasColumnName("time")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.HasOne(d => d.Metaverse)
+                    .WithMany(p => p.MetaverseCheckins)
+                    .HasForeignKey(d => d.MetaverseId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Metaverse_has_Member_Metaverse1");
             });
 
             modelBuilder.Entity<MetaverseLog>(entity =>
@@ -141,12 +167,12 @@ namespace FY111.Models.FY111
                     .HasConstraintName("fk_Metaverse_Log_Metaverse1");
             });
 
-            modelBuilder.Entity<MetaverseSignIn>(entity =>
+            modelBuilder.Entity<MetaverseSignup>(entity =>
             {
                 entity.HasKey(e => new { e.MemberId, e.MetaverseId })
                     .HasName("PRIMARY");
 
-                entity.ToTable("metaverse_sign_in");
+                entity.ToTable("metaverse_signup");
 
                 entity.HasIndex(e => e.MetaverseId, "fk_Metaverse_has_Member_Metaverse2_idx");
 
@@ -157,36 +183,10 @@ namespace FY111.Models.FY111
                 entity.Property(e => e.MetaverseId).HasColumnName("Metaverse_id");
 
                 entity.HasOne(d => d.Metaverse)
-                    .WithMany(p => p.MetaverseSignIns)
+                    .WithMany(p => p.MetaverseSignups)
                     .HasForeignKey(d => d.MetaverseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Metaverse_has_Member_Metaverse2");
-            });
-
-            modelBuilder.Entity<MetaverseSignUp>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.MetaverseId })
-                    .HasName("PRIMARY");
-
-                entity.ToTable("metaverse_sign_up");
-
-                entity.HasIndex(e => e.MetaverseId, "fk_Metaverse_has_Member_Metaverse1_idx");
-
-                entity.Property(e => e.MemberId)
-                    .HasMaxLength(256)
-                    .HasColumnName("Member_id");
-
-                entity.Property(e => e.MetaverseId).HasColumnName("Metaverse_id");
-
-                entity.Property(e => e.Time)
-                    .HasColumnName("time")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.HasOne(d => d.Metaverse)
-                    .WithMany(p => p.MetaverseSignUps)
-                    .HasForeignKey(d => d.MetaverseId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Metaverse_has_Member_Metaverse1");
             });
 
             OnModelCreatingPartial(modelBuilder);

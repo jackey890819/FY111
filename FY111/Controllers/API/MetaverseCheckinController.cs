@@ -14,48 +14,48 @@ namespace FY111.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class MetaverseSignInController : ControllerBase
+    public class MetaverseCheckinController : ControllerBase
     {
         private readonly FY111Context _context;
 
-        public MetaverseSignInController(FY111Context context)
+        public MetaverseCheckinController(FY111Context context)
         {
             _context = context;
         }
 
-        // GET: api/MetaverseSignIn
+        // GET: api/MetaverseSignUp
         //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<MetaverseSignIn>>> GetMetaverseSignIns()
+        //public async Task<ActionResult<IEnumerable<MetaverseSignUp>>> GetMetaverseSignUps()
         //{
-        //    return await _context.MetaverseSignIns.ToListAsync();
+        //    return await _context.MetaverseSignUps.ToListAsync();
         //}
 
-        // GET: api/MetaverseSignIn/5
+        // GET: api/MetaverseSignUp/5
         //[HttpGet("{id}")]
-        //public async Task<ActionResult<MetaverseSignIn>> GetMetaverseSignIn(string id)
+        //public async Task<ActionResult<MetaverseSignUp>> GetMetaverseSignUp(string id)
         //{
-        //    var metaverseSignIn = await _context.MetaverseSignIns.FindAsync(id);
+        //    var metaverseSignUp = await _context.MetaverseSignUps.FindAsync(id);
 
-        //    if (metaverseSignIn == null)
+        //    if (metaverseSignUp == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    return metaverseSignIn;
+        //    return metaverseSignUp;
         //}
 
-        // PUT: api/MetaverseSignIn/5
+        // PUT: api/MetaverseSignUp/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutMetaverseSignIn(string id, MetaverseSignIn metaverseSignIn)
+        //public async Task<IActionResult> PutMetaverseSignUp(string id, MetaverseSignUp metaverseSignUp)
         //{
-        //    if (id != metaverseSignIn.MemberId)
+        //    if (id != metaverseSignUp.MemberId)
         //    {
         //        return BadRequest();
         //    }
 
-        //    _context.Entry(metaverseSignIn).State = EntityState.Modified;
+        //    _context.Entry(metaverseSignUp).State = EntityState.Modified;
 
         //    try
         //    {
@@ -63,7 +63,7 @@ namespace FY111.Controllers
         //    }
         //    catch (DbUpdateConcurrencyException)
         //    {
-        //        if (!MetaverseSignInExists(id))
+        //        if (!MetaverseSignUpExists(id))
         //        {
         //            return NotFound();
         //        }
@@ -76,40 +76,41 @@ namespace FY111.Controllers
         //    return NoContent();
         //}
 
-        // POST: api/MetaverseSignIn
+        // POST: api/MetaverseSignUp
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<MetaverseSignIn>> PostMetaverseSignIn(MetaverseSignIn metaverseSignIn)
+        public async Task<ActionResult<MetaverseCheckin>> PostMetaverseSignUp(MetaverseCheckin metaverseSignUp)
         {
             var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            metaverseSignIn.MemberId = user_id;
-            _context.MetaverseSignIns.Add(metaverseSignIn);
+            metaverseSignUp.MemberId = user_id;
+            metaverseSignUp.Time = DateTime.Now;
+            _context.MetaverseCheckins.Add(metaverseSignUp);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Create Successfully" });
         }
 
-        // DELETE: api/MetaverseSignIn/5
-        [HttpDelete("id")]
-        public async Task<ActionResult<MetaverseSignIn>> DeleteMetaverseSignIn(int id)
+        // DELETE: api/MetaverseSignUp/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<MetaverseCheckin>> DeleteMetaverseSignUp(string id)
         {
             var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var metaverseSignIn = await _context.MetaverseSignIns.FindAsync(id, user_id);
-            if (metaverseSignIn == null)
+            var metaverseSignUp = await _context.MetaverseCheckins.FindAsync(id, user_id);
+            if (metaverseSignUp == null)
             {
                 return NotFound();
             }
 
-            _context.MetaverseSignIns.Remove(metaverseSignIn);
+            _context.MetaverseCheckins.Remove(metaverseSignUp);
             await _context.SaveChangesAsync();
 
-            return metaverseSignIn;
+            return metaverseSignUp;
         }
 
-        private bool MetaverseSignInExists(string id)
+        private bool MetaverseSignUpExists(string id)
         {
-            return _context.MetaverseSignIns.Any(e => e.MemberId == id);
+            return _context.MetaverseCheckins.Any(e => e.MemberId == id);
         }
     }
 }

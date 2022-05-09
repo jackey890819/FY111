@@ -22,9 +22,15 @@ namespace FY111.Controllers
         private SignInManager<FY111User> _signInManager;
         private readonly ApplicationSettings _appSettings;
 
-        public MetaverseLogController(FY111Context context)
+        public MetaverseLogController(
+            FY111Context context,
+            UserManager<FY111User> userManager,
+            SignInManager<FY111User> signInManager
+            )
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         //// GET: api/MetaverseLog

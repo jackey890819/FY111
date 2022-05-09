@@ -9,9 +9,9 @@ namespace FY111.Models.FY111
     {
         public Metaverse()
         {
+            MetaverseCheckins = new HashSet<MetaverseCheckin>();
             MetaverseLogs = new HashSet<MetaverseLog>();
-            MetaverseSignIns = new HashSet<MetaverseSignIn>();
-            MetaverseSignUps = new HashSet<MetaverseSignUp>();
+            MetaverseSignups = new HashSet<MetaverseSignup>();
         }
 
         public int Id { get; set; }
@@ -19,12 +19,12 @@ namespace FY111.Models.FY111
         public string Ip { get; set; }
         public string Icon { get; set; }
         public string Introduction { get; set; }
-        public byte SigninEnabled { get; set; }
         public byte SignupEnabled { get; set; }
+        public byte CheckinEnabled { get; set; }
         public int? Duration { get; set; }
 
+        public virtual ICollection<MetaverseCheckin> MetaverseCheckins { get; set; }
         public virtual ICollection<MetaverseLog> MetaverseLogs { get; set; }
-        public virtual ICollection<MetaverseSignIn> MetaverseSignIns { get; set; }
-        public virtual ICollection<MetaverseSignUp> MetaverseSignUps { get; set; }
+        public virtual ICollection<MetaverseSignup> MetaverseSignups { get; set; }
     }
 }
