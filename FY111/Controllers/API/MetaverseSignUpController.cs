@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using FY111.Areas.Identity.Data;
 
+
 namespace FY111.Controllers
 {
     [Authorize]
@@ -20,17 +21,17 @@ namespace FY111.Controllers
     {
         private readonly FY111Context _context;
         private UserManager<FY111User> _userManager;
-        private SignInManager<FY111User> _SignInManager;
+        private SignInManager<FY111User> _signInManager;
 
         public MetaverseSignupController(
             FY111Context context,
             UserManager<FY111User> userManager,
-            SignInManager<FY111User> SignInManager
+            SignInManager<FY111User> signInManager
             )
         {
             _context = context;
             _userManager = userManager;
-            _SignInManager = SignInManager;
+            _signInManager = signInManager;
         }
 
 
@@ -39,28 +40,31 @@ namespace FY111.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "NormalUser")]
         public async Task<ActionResult<MetaverseSignup>> PostMetaverseSignup(MetaverseSignup metaverseSignup)
         {
-            var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            metaverseSignup.MemberId = user_id;
+
+            var user = await _userManager.GetUserAsync(User);
+            metaverseSignup.MemberId = user.Id;
             try
             {
                 _context.MetaverseSignups.Add(metaverseSignup);
                 await _context.SaveChangesAsync();
-                return Ok(new { message = "Sign up successfully." });
+                return Ok(new { success = true, message = "Sign up successfully." });
             }
             catch (DbUpdateException)   // 報名失敗：已經報名過
             {
-                return BadRequest(new { message = "You have signed up the metaverse." });
+                return BadRequest(new { uccess = false, message = "You have signed up the metaverse." });
             }
         }
 
         // DELETE: api/MetaverseSignUp/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<MetaverseSignup>> DeleteMetaverseSignup(int id)
+        [HttpDelete("{metaverseId}")]
+        [Authorize(Roles = "NormalUser")]
+        public async Task<ActionResult<MetaverseSignup>> DeleteMetaverseSignup(int metaverseId)
         {
-            var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var metaverseSignup = await _context.MetaverseSignups.FindAsync(user_id, id);
+            var user = _userManager.GetUserAsync(User);
+            var metaverseSignup = await _context.MetaverseSignups.FindAsync(user.Id, metaverseId);
             if (metaverseSignup == null)
             {
                 return BadRequest(new { success = false, message = "You haven't signed in this metaverse." });
