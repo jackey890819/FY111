@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using FY111.Areas.Identity.Data;
 
 namespace FY111.Controllers
 {
@@ -17,10 +19,18 @@ namespace FY111.Controllers
     public class MetaverseCheckinController : ControllerBase
     {
         private readonly FY111Context _context;
+        private UserManager<FY111User> _userManager;
+        private SignInManager<FY111User> _signInManager;
 
-        public MetaverseCheckinController(FY111Context context)
+        public MetaverseCheckinController(
+            FY111Context context,
+            UserManager<FY111User> userManager,
+            SignInManager<FY111User> signInManager
+            )
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
 
@@ -28,34 +38,58 @@ namespace FY111.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [Authorize(Roles = "NormalUser")]
         public async Task<ActionResult<MetaverseCheckin>> PostMetaverseCheckin(MetaverseCheckin metaverseCheckin)
         {
-            var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            metaverseCheckin.MemberId = user_id;
-            metaverseCheckin.Time = DateTime.Now;
-            _context.MetaverseCheckins.Add(metaverseCheckin);
-            await _context.SaveChangesAsync();
+            if (!_signInManager.IsSignedIn(User))
+                //return Unauthorized();
+                return BadRequest(new { success = false, message = "Please log in." });
+            if (!User.IsInRole("NormalUser"))
+                return Forbid();
 
-            return Ok(new { message = "Create Successfully" });
+            var user = await _userManager.GetUserAsync(User);
+            var hasSignup = await _context.MetaverseSignups
+                .Where(x => x.MetaverseId == metaverseCheckin.MetaverseId && x.MemberId == user.Id)
+                .ToListAsync();
+            if (!hasSignup.Any())
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "You have not signed up this metaverse."
+                });
+            try
+            {
+                metaverseCheckin.MemberId = user.Id;
+                metaverseCheckin.Time = DateTime.Now;
+                _context.MetaverseCheckins.Add(metaverseCheckin);
+                await _context.SaveChangesAsync();
+            } catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = "You have checked in." });
+            }
+            return Ok(new { success = true, message = "Create Successfully" });
         }
 
-        // DELETE: api/metaverseCheckin/5
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "NormalUser")]
-        public async Task<ActionResult<MetaverseCheckin>> DeleteMetaverseCheckin(string id)
+        [HttpDelete("{metaverseId}")]
+        public async Task<ActionResult<MetaverseCheckin>> DeleteMetaverseCheckin(int metaverseId)
         {
-            var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var metaverseCheckin = await _context.MetaverseCheckins.FindAsync(id, user_id);
-            if (metaverseCheckin == null)
+            if (!_signInManager.IsSignedIn(User))
+                //return Unauthorized();
+                return BadRequest(new { success = false, message = "Please log in." });
+            if (!User.IsInRole("NormalUser"))
+                return Forbid();
+
+            var user = await _userManager.GetUserAsync(User);
+            
+            var metaverseCheckin = await _context.MetaverseCheckins.Where(x => x.MemberId == user.Id && x.MetaverseId == metaverseId).ToListAsync();
+            if (!metaverseCheckin.Any())
             {
-                return NotFound();
+                return BadRequest(new { success = false, message = "You haven't checked in this metaverse." });
+                //return NotFound();
             }
 
-            _context.MetaverseCheckins.Remove(metaverseCheckin);
+            _context.MetaverseCheckins.Remove(metaverseCheckin[0]);
             await _context.SaveChangesAsync();
-
-            return metaverseCheckin;
+            return Ok(new { success = true, message = "Delete check in metaverse success." });
         }
 
         private bool MetaverseCheckinExists(string id)

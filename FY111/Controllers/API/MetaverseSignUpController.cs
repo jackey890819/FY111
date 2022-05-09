@@ -40,10 +40,13 @@ namespace FY111.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [Authorize(Roles = "NormalUser")]
         public async Task<ActionResult<MetaverseSignup>> PostMetaverseSignup(MetaverseSignup metaverseSignup)
         {
-
+            if (!_signInManager.IsSignedIn(User))
+                //return Unauthorized();
+                return BadRequest(new { success = false, message = "Please log in." });
+            if (!User.IsInRole("NormalUser"))
+                return Forbid();
             var user = await _userManager.GetUserAsync(User);
             metaverseSignup.MemberId = user.Id;
             try
@@ -60,9 +63,13 @@ namespace FY111.Controllers
 
         // DELETE: api/MetaverseSignUp/5
         [HttpDelete("{metaverseId}")]
-        [Authorize(Roles = "NormalUser")]
         public async Task<ActionResult<MetaverseSignup>> DeleteMetaverseSignup(int metaverseId)
         {
+            if (!_signInManager.IsSignedIn(User))
+                //return Unauthorized();
+                return BadRequest(new { success = false, message = "Please log in." });
+            if (!User.IsInRole("NormalUser"))
+                return Forbid();
             var user = await _userManager.GetUserAsync(User);
             //var metaverseSignup = await _context.MetaverseSignups.FindAsync( user.Id, metaverseId);
             var metaverseSignup = await _context.MetaverseSignups.Where(x => x.MetaverseId == metaverseId && x.MemberId == user.Id).ToListAsync();
