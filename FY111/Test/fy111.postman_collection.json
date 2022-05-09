@@ -1,0 +1,571 @@
+{
+	"info": {
+		"_postman_id": "9cd634f6-2045-4902-939b-78b7ea2a60ed",
+		"name": "fy111",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "UsersController",
+			"item": [
+				{
+					"name": "註冊帳號",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UserName\": \"User99\",\r\n    \"Password\": \"Password99@\",\r\n    \"Email\": \"\",\r\n    \"PhoneNumber\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/users/register",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "登入",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UserName\": \"User99\",\r\n    \"Password\": \"Password99@\",\r\n    \"DeviceType\": 1\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/users/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "登出",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44380/api/users/logout",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login SuperAdmin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UserName\": \"User01\",\r\n    \"Password\": \"User01@\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/Users/Login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"Users",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login NormalUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"UserName\": \"User04\",\r\n    \"Password\": \"User04@\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/Users/Login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"Users",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LoginLogController",
+			"item": [
+				{
+					"name": "依據使用者ID查詢登入紀錄",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/LoginLog/list/6c0f52a1-950c-4c6b-9821-9b6ca8f98e41",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"LoginLog",
+								"list",
+								"6c0f52a1-950c-4c6b-9821-9b6ca8f98e41"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MetaverseController",
+			"item": [
+				{
+					"name": "建立元宇宙資料",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"NewMetaverse\",\r\n    \"Ip\": \"99.99.99.99\",\r\n    \"Introduction\": \"元宇宙資料測試\",\r\n    \"SignupEnabled\": 1,\r\n    \"CheckinEnabled\": 1,\r\n    \"Duration\": 60\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/Metaverse/create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"Metaverse",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "依據Id查詢元宇宙資料",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44380/api/Metaverse/id/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"Metaverse",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更新元宇宙資料",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": 19,\r\n    \"Ip\": \"99.88.99.88\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/Metaverse/update",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"Metaverse",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更新元宇宙資料 Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": 19,\r\n    \"Ip\": \"99.88.99.88\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/Metaverse/delete/19",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"Metaverse",
+								"delete",
+								"19"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MetaverseLogController",
+			"item": [
+				{
+					"name": "進入元宇宙",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "Application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"MetaverseId\" : 1\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/MetaverseLog/Enter",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"MetaverseLog",
+								"Enter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "離開元宇宙",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "Application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44380/api/MetaverseLog/Leave",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"MetaverseLog",
+								"Leave"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "根據使用者Id查詢紀錄",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/MetaverseLog/list_user/245d9c67-e78a-44a4-9f19-68b6bc644feb",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"MetaverseLog",
+								"list_user",
+								"245d9c67-e78a-44a4-9f19-68b6bc644feb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "根據元宇宙Id查詢紀錄",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/MetaverseLog/list_metaverse/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"MetaverseLog",
+								"list_metaverse",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MetaverseSignupController",
+			"item": [
+				{
+					"name": "報名元宇宙",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"MetaverseId\": 1\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/MetaverseSignup/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"MetaverseSignup",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取消報名元宇宙",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44380/api/MetaverseSignup/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"MetaverseSignup",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MetaverseCheckinController",
+			"item": [
+				{
+					"name": "報到元宇宙",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"MetaverseId\": 1\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/MetaverseCheckin/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"MetaverseCheckin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取消報到元宇宙",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44380/api/MetaverseCheckin/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"MetaverseCheckin",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
