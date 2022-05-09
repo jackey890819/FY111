@@ -56,15 +56,26 @@ namespace FY111.Controllers.API
                     {
                         await _userManager.AddToRoleAsync(user, "NormalUser");
                     }
-                    return Ok(result);
+                    return Ok(new
+                    {
+                        success = true,
+                        message = $"Create successed. UserName: {user.UserName}"
+                    });
                 }
                 else
                 {
-                    return BadRequest("UserName exist.");
+                    return BadRequest(new 
+                    {
+                        success = false,
+                        message = "UserName exist."
+                    });
                 }
             } catch (Exception ex)
             {
-                return BadRequest(model);
+                return BadRequest(new {
+                    success = false,
+                    message = ex.Message
+                });
                 throw ex;
             }
         }
@@ -98,7 +109,7 @@ namespace FY111.Controllers.API
                 #endregion JWT
 
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);  // 登入
-                await GenerateLoginLogAsync(user);      // 存入Log data到資料庫
+                await GenerateLoginLogAsync(user, (model.DeviceType!=0)?model.DeviceType:1);      // 存入Log data到資料庫
                 return await GetMetaverse(user);        // 根據身分取得元宇宙列表
                 //return Ok(new { token });
                 //return Ok(result);
@@ -112,11 +123,11 @@ namespace FY111.Controllers.API
             }
         }
 
-        private async Task GenerateLoginLogAsync(FY111User user)
+        private async Task GenerateLoginLogAsync(FY111User user, int deviceType = 1)
         {
             LoginLog log = new LoginLog();
             log.MemberId = user.Id;
-            log.DeviceType = 1;
+            log.DeviceType = deviceType;
             log.StartTime = DateTime.Now;
             _context.LoginLogs.Add(log);
             await _context.SaveChangesAsync();
@@ -150,8 +161,10 @@ namespace FY111.Controllers.API
                         metaverse = all_metaverse
                     });
             }
- 
-            return BadRequest();
+            return BadRequest(new {
+                success=false,
+                message="Get metverse error."
+            });
         }
 
         [HttpPost]
@@ -159,16 +172,20 @@ namespace FY111.Controllers.API
         //POST：/api/User/Logout
         public async Task<IActionResult> Logout()
         {
-            if (_signInManager.IsSignedIn(User))
-            {
-                await AddLogoutLog();
-                await _signInManager.SignOutAsync();
-                return Ok(new { message = "Logout successed." });
-            }
-            else
-            {
-                return BadRequest(new { message = "You haven't login system." });
-            }
+            // 使用者未登入
+            if (!_signInManager.IsSignedIn(User))
+                return BadRequest(new { 
+                    success = false,
+                    message = "You haven't login system." 
+                });
+            // 使用者已登入，執行登出
+            await AddLogoutLog();
+            await _signInManager.SignOutAsync();
+            return Ok(new { 
+                success = true,
+                message = "Logout successed." 
+            });
+
         }
         private async Task AddLogoutLog()
         {

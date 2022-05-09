@@ -28,7 +28,7 @@ namespace FY111.Controllers
         //        return await _context.LoginLogs.ToListAsync();
         //    }
 
-        //    // GET: api/Log/5
+        //    // GET: api/LoginLog/5
         [HttpGet("list/{id}")]
         public async Task<ActionResult<List<LoginLog>>> GetLog(string id)
         {
