@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.Icon)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Icon, "ToImage")
+            @Html.DisplayFor(model => model.Icon, "ToImage", new{ @belong = "Device" })
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)

@@ -25,22 +25,27 @@ namespace FY111.Controllers.API
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFiles(IList<IFormFile> files)
+        public async Task<IActionResult> UploadFiles(IFormCollection data, IList<IFormFile> files)
         {
             if (_signInManager.IsSignedIn(User))
             {
                 foreach (IFormFile source in files)
                 {
                     var fileName = source.FileName;
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/image", fileName);
+                    var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\" + data["dirPath"]);
+                    var filePath = Path.Combine(dirPath, fileName);
+                    if (!Directory.Exists(dirPath))
+                    {
+                        Directory.CreateDirectory(dirPath);
+                    }
                     using (var fileSrteam = new FileStream(filePath, FileMode.Create))
                     {
                         await source.CopyToAsync(fileSrteam);
                     }
+                    return Ok(new { success = true});
                 }
-                return Ok(new { success = true });
             }
-            else { return BadRequest(new { success = false }); }   
+            return BadRequest(new { success = false }); 
         }
 
     }

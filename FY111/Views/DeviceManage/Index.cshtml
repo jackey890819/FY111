@@ -31,7 +31,7 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Icon, "ToImage")
+                @Html.DisplayFor(modelItem => item.Icon, "ToImage", new{ @belong = "Device" })
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

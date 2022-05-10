@@ -301,7 +301,7 @@
 					"response": []
 				},
 				{
-					"name": "更新元宇宙資料 Copy",
+					"name": "刪除元宇宙資料",
 					"request": {
 						"method": "DELETE",
 						"header": [
