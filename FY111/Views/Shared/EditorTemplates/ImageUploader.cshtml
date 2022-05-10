@@ -1,10 +1,9 @@
 ﻿@model string
-
+@{string dirPath = ViewData["belong"] + "/";}
 <div class="mb-3">
     @if (@Model != null)
     {
-        <img src="~/image/@Model" class="img-fluid image" style="display:block"/>
-
+        <img src="~/image/@(dirPath + Model)" class="img-fluid image" style="display:block"/>
     }
     else
     {
@@ -22,16 +21,18 @@
             <span>尚未上傳圖片</span>
         }
     </label>
-    <input asp-for="@Model" onchange="fileChange();" value="@Model" class="custom-file-input" type="file" accept="image/" />
+    <input asp-for="@Model" onchange="fileChange();" value="@Model" class="custom-file-input" type="file" accept="image/*" />
 </div>
 
 <script type="text/javascript">
     function fileChange(){
         var files = $('input[type="file"]').get(0).files;
         var fileName = files[0].name;
+        var dirpath = '@ViewData["belong"]'+"\\";
         $('input[type="file"]').siblings(".custom-file-label").addClass("selected").html(fileName);
         if (window.FormData !== undefined) {
             var formData = new FormData();
+            formData.append("dirPath", dirpath);
             for (var i = 0; i < files.length; i++) {
                 formData.append("files", files[i]);
             }
@@ -42,7 +43,7 @@
                 processData: false,
                 contentType: false,
                 success: function(data){
-                    $('.image').prop('src', '/image/'+fileName).prop('style', 'display:block;');
+                    $('.image').prop('src', '/image/' + "@dirPath" + fileName).prop('style', 'display:block;');
                     $('input[type="file"]').prop('value', fileName)
                 }
             });
