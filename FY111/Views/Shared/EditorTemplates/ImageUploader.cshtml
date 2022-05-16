@@ -1,13 +1,15 @@
 ﻿@model string
-@{string dirPath = ViewData["belong"] + "/";}
+@{
+    string dirPath = ViewData["belong"] + "/";
+}
 <div class="mb-3">
     @if (@Model != null)
     {
-        <img src="~/image/@(dirPath + Model)" class="img-fluid image" style="display:block"/>
+        <img src="~/image/@(dirPath + Model)" class="img-thumbnail image" style="display:block" />
     }
     else
     {
-        <img src="" class="img-fluid image" style="display:none"/>
+        <img src="" class="img-fluid image" style="display:none" />
     }
 </div>
 <div class=custom-file>
@@ -21,7 +23,8 @@
             <span>尚未上傳圖片</span>
         }
     </label>
-    <input asp-for="@Model" onchange="fileChange();" value="@Model" class="custom-file-input" type="file" accept="image/*" />
+    <input asp-for="@Model" onchange="fileChange();" value="@Model"  class="custom-file-input" type="file" accept="image/*" />
+    <span class="text-danger"></span>
 </div>
 
 <script type="text/javascript">
@@ -29,7 +32,6 @@
         var files = $('input[type="file"]').get(0).files;
         var fileName = files[0].name;
         var dirpath = '@ViewData["belong"]'+"\\";
-        $('input[type="file"]').siblings(".custom-file-label").addClass("selected").html(fileName);
         if (window.FormData !== undefined) {
             var formData = new FormData();
             formData.append("dirPath", dirpath);
@@ -41,10 +43,15 @@
                 url: "/api/Images",
                 data: formData,
                 processData: false,
-                contentType: false,
-                success: function(data){
+                contentType: false
+            }).done(function(data){
+                if(data.message === undefined){
+                    $('input[type="file"]').siblings(".custom-file-label").addClass("selected").html(fileName);
                     $('.image').prop('src', '/image/' + "@dirPath" + fileName).prop('style', 'display:block;');
-                    $('input[type="file"]').prop('value', fileName)
+                    $('input[type="file"]').prop('value', fileName);
+                }
+                else{
+                    //$('input[type="file"]').siblings(".text-danger").html(data.message)
                 }
             });
         }

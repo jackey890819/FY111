@@ -1,7 +1,7 @@
 ﻿@model string
 @{string dirPath = ViewData["belong"] + "/";}
 @if(@Model != null){
-    <img src="~/image/@(dirPath + Model)" class="img-fluid" />
+    <img src="~/image/@(dirPath + Model)" class="img-thumbnail" />
 }
 else{
     <p>尚未上傳圖片</p>
