@@ -12,19 +12,22 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using FY111.Models.FY111;
+using Microsoft.EntityFrameworkCore;
 
 namespace FY111.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly FY111Context _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, FY111Context context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (User.IsInRole("NormalUser"))
                 ViewData["UserRole"] = "NormalUser";
@@ -36,7 +39,7 @@ namespace FY111.Controllers
                 ViewData["UserRole"] = "SuperAdmin";
             else
                 ViewData["UserRole"] = null;
-            return View();
+            return View(await _context.Metaverses.ToListAsync());
         }
 
         public IActionResult Privacy()

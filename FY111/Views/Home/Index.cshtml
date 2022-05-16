@@ -1,21 +1,57 @@
-﻿@{
+﻿@model IEnumerable<FY111.Models.FY111.Metaverse>
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+@section Head{
+<link rel="stylesheet" type="text/css" href="~/lib/slick/slick.css" />
+<!-- Add the new slick-theme.css if you want the default styling-->
+<link rel="stylesheet" type="text/css" href="~/lib/slick/slick-theme.css" />
+}
+@section Scripts{
+<script type="text/javascript" src="~/lib/slick/slick.min.js"></script>
+<script type="text/javascript">
+    $('.autoplay').slick({
+        dots: true,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        speed: 300,
+        centerMode: true,
+        variableWidth: true
+    });
+</script>
+}
+@*<h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <img src="~/image/test_img.jpg" class="img" width="200px" height="200"/>
-    <br />
-    @{
-        if (ViewData["UserRole"]!=null)
+    <img src="~/image/test_img.jpg" class="img" width="200px" height="200" />
+    <br />*@
+
+<div class="autoplay">
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        var item = Model.ElementAt(i);
+        if (item.Icon != null)
         {
-            <p>@ViewData["UserRole"]</p>
-        }
-        else
-        {
-            <p>anonymous</p>
+            <div class="text-center">
+                <img src="~/image/Metaverse/@item.Icon" class="img m-auto" height="200px"/>
+                <span>@item.Name</span>
+            </div>
         }
     }
+    
+    
+    @*<li>
+        <img src="~/image/教室.jpg" class="img" width="70%" />
+        </li>
+        <li>
+        <img src="~/image/工廠.jpg" class="img" width="70%" />
+        </li>
+        <li>
+        <img src="~/image/手術.jpg" class="img" width="70%" />
+        </li>
+        <li>
+        <img src="~/image/會議.jpg" class="img" width="70%" />
+        </li>*@
 </div>
-
