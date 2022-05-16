@@ -38,11 +38,15 @@ namespace FY111.Controllers.API
                     {
                         Directory.CreateDirectory(dirPath);
                     }
+                    //if (System.IO.File.Exists(filePath))
+                    //{
+                    //    return Ok(new { success = true, message = "File existed already"});
+                    //}
                     using (var fileSrteam = new FileStream(filePath, FileMode.Create))
                     {
                         await source.CopyToAsync(fileSrteam);
                     }
-                    return Ok(new { success = true});
+                    return Ok(new { success = true });
                 }
             }
             return BadRequest(new { success = false }); 

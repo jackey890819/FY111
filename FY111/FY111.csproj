@@ -1572,4 +1572,8 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\image\Metaverse\" />
+  </ItemGroup>
+
 </Project>

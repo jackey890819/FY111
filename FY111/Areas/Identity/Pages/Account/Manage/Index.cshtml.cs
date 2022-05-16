@@ -14,6 +14,7 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<FY111User> _userManager;
         private readonly SignInManager<FY111User> _signInManager;
+        public string UserId;
 
         public IndexModel(
             UserManager<FY111User> userManager,
@@ -36,27 +37,33 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Avater")]
+            public string Avater { get; set; }
         }
 
         private async Task LoadAsync(FY111User user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var avater = user.Avatar;
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Avater = avater
             };
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            UserId = _userManager.GetUserId(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{UserId}'.");
             }
 
             await LoadAsync(user);
@@ -76,7 +83,6 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
-
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -84,6 +90,17 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
+                    return RedirectToPage();
+                }
+            }
+
+            if(Input.Avater != null)
+            {
+                user.Avatar = Input.Avater;
+                var setAvaterResult = await _userManager.UpdateAsync(user);
+                if (!setAvaterResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set avater.";
                     return RedirectToPage();
                 }
             }
