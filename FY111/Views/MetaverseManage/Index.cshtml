@@ -9,6 +9,7 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">新增</a>
 </p>
+
 <table class="table table-hover table-responsive">
     <thead>
         <tr>
@@ -37,35 +38,36 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ip)
-            </td>
-            <td width="10%">
-                @Html.DisplayFor(modelItem => item.Icon, "ToImage", new{ @belong = "Metaverse" })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Introduction, "SubString")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SignupEnabled, "ToBool")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckinEnabled, "ToBool")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td class="btn-group">
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ip)
+                </td>
+                <td width="10%">
+                    @Html.DisplayFor(modelItem => item.Icon, "ToImage", new{ @belong = "Metaverse" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Introduction, "SubString")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SignupEnabled, "ToBool")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckinEnabled, "ToBool")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td class="btn-group">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
