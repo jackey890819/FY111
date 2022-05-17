@@ -27,7 +27,6 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <img src="~/image/test_img.jpg" class="img" width="200px" height="200" />
     <br />*@
-
 <div class="autoplay">
     @for (int i = 0; i < Model.Count(); i++)
     {
@@ -35,8 +34,7 @@
         if (item.Icon != null)
         {
             <div class="text-center">
-                <img src="~/image/Metaverse/@item.Icon" class="img m-auto" height="200px"/>
-                <span>@item.Name</span>
+                <img src="~/image/Metaverse/@item.Icon" class="img mr-3 ml-3" height="350px"/>
             </div>
         }
     }
@@ -55,3 +53,5 @@
         <img src="~/image/會議.jpg" class="img" width="70%" />
         </li>*@
 </div>
+
+
