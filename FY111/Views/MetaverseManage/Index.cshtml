@@ -1,71 +1,102 @@
-﻿@model IEnumerable<FY111.Models.FY111.Metaverse>
+﻿@model PaginatedList<FY111.Models.FY111.Metaverse>
 
 @{
     ViewData["Title"] = "元宇宙管理";
 }
 
-<h1>元宇宙管理</h1>
+<div class="row">
+    
+    <h1 class="col-sm-6">元宇宙管理</h1>
+    <form asp-action="Index" method="get" class="ml-auto col-sm-6">
+        <div class="form-actions no-color row">
+            <input type="text" id="search" class="form-control col-sm-7" placeholder="Search.." name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default form-inline col-sm-2" />
+            <a asp-action="Index" class="btn btn-default col-sm-3">Back to Full List</a>
+        </div>
+    </form>
+    <div class="col-sm-2"> 
+        <a asp-action="Create" class="btn btn-primary">新增</a>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">新增</a>
-</p>
 <table class="table table-hover table-responsive">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ip)
+                Ip
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Icon)
+                Icon
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Introduction)
+                Introduction
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SignupEnabled)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SignUpParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">SignUpEnabled</a>
+            </th>
+            <th> 
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["CheckinParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">CheckinEnabled</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CheckinEnabled)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duration)
+                Duration
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ip)
-            </td>
-            <td width="10%">
-                @Html.DisplayFor(modelItem => item.Icon, "ToImage", new{ @belong = "Metaverse" })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Introduction, "SubString")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SignupEnabled, "ToBool")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckinEnabled, "ToBool")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td class="btn-group">
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ip)
+                </td>
+                <td width="10%">
+                    @Html.DisplayFor(modelItem => item.Icon, "ToImage", new{ @belong = "Metaverse" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Introduction, "SubString")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SignupEnabled, "ToBool")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckinEnabled, "ToBool")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td class="btn-group">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

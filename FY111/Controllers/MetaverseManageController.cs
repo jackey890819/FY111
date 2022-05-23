@@ -18,11 +18,52 @@ namespace FY111.Controllers
             _context = context;
         }
 
-        // GET: MetaverseManage
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            return View(await _context.Metaverses.ToListAsync());
+            ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
+            ViewData["CheckInParm"] = sortOrder == "checkin" ? "checkin_desc" : "checkin";
+            ViewData["CurrentSort"] = sortOrder;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            var mateverse = _context.Metaverses.Select(x=>x);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                mateverse = mateverse.Where(s => s.Name.Contains(searchString)
+                                       || s.Introduction.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "signup_desc":
+                    mateverse = mateverse.OrderByDescending(x => x.SignupEnabled);
+                    break;
+                case "checkin":
+                    mateverse = mateverse.OrderBy(x => x.CheckinEnabled);
+                    break;
+                case "checkin_desc":
+                    mateverse = mateverse.OrderByDescending(x => x.CheckinEnabled);
+                    break;
+                default:
+                    mateverse = mateverse.OrderBy(x => x.SignupEnabled);
+                    break;
+            }
+            int pageSize = 5;
+            return View(await PaginatedList<Metaverse>.CreateAsync(mateverse.AsNoTracking(), pageNumber ?? 1, pageSize));
+            //return View(await mateverse.AsNoTracking().ToListAsync());
         }
+
+        // GET: MetaverseManage
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Metaverses.ToListAsync());
+        //}
 
         // GET: MetaverseManage/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -96,6 +137,11 @@ namespace FY111.Controllers
             {
                 try
                 {
+                    if (metaverse.Icon == null)
+                    {
+                        string result = (await _context.Metaverses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Icon;
+                        metaverse.Icon = result;
+                    }
                     _context.Update(metaverse);
                     await _context.SaveChangesAsync();
                 }
