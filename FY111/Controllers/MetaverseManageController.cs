@@ -54,7 +54,7 @@ namespace FY111.Controllers
                     mateverse = mateverse.OrderBy(x => x.SignupEnabled);
                     break;
             }
-            int pageSize = 5;
+            int pageSize = 3;
             return View(await PaginatedList<Metaverse>.CreateAsync(mateverse.AsNoTracking(), pageNumber ?? 1, pageSize));
             //return View(await mateverse.AsNoTracking().ToListAsync());
         }

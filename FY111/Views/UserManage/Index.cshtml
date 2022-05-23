@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Role)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoleParm"]">@Html.DisplayNameFor(model => model.Role)</a>
             </th>
             <th></th>
         </tr>
