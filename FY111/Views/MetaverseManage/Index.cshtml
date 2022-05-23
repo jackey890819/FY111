@@ -26,10 +26,10 @@
                 @Html.DisplayNameFor(model => model.Introduction)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SignupEnabled)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SignUpParm"]">@Html.DisplayNameFor(model => model.SignupEnabled)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CheckinEnabled)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["CheckinParm"]">@Html.DisplayNameFor(model => model.CheckinEnabled)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Duration)

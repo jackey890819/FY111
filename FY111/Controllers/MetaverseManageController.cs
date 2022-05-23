@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,11 +18,34 @@ namespace FY111.Controllers
             _context = context;
         }
 
-        // GET: MetaverseManage
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            return View(await _context.Metaverses.ToListAsync());
+            ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
+            ViewData["CheckInParm"] = sortOrder == "checkin" ? "checkin_desc" : "checkin";
+            var mateverse = _context.Metaverses.Select(x=>x);
+            switch (sortOrder)
+            {
+                case "signup_desc":
+                    mateverse = mateverse.OrderByDescending(x => x.SignupEnabled);
+                    break;
+                case "checkin":
+                    mateverse = mateverse.OrderBy(x => x.CheckinEnabled);
+                    break;
+                case "checkin_desc":
+                    mateverse = mateverse.OrderByDescending(x => x.CheckinEnabled);
+                    break;
+                default:
+                    mateverse = mateverse.OrderBy(x => x.SignupEnabled);
+                    break;
+            }
+            return View(await mateverse.AsNoTracking().ToListAsync());
         }
+
+        // GET: MetaverseManage
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Metaverses.ToListAsync());
+        //}
 
         // GET: MetaverseManage/Details/5
         public async Task<IActionResult> Details(int? id)
