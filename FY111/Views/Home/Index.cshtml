@@ -6,8 +6,18 @@
 <link rel="stylesheet" type="text/css" href="~/lib/slick/slick.css" />
 <!-- Add the new slick-theme.css if you want the default styling-->
 <link rel="stylesheet" type="text/css" href="~/lib/slick/slick-theme.css" />
+<style>
+    .slick-prev:before {
+        color: #4066D4;
+    }
+
+    .slick-next:before {
+        color: #4066D4;
+    }
+</style>
 }
 @section Scripts{
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script>
 <script type="text/javascript" src="~/lib/slick/slick.min.js"></script>
 <script type="text/javascript">
     $('.autoplay').slick({
@@ -21,12 +31,90 @@
         centerMode: true,
         variableWidth: true
     });
+
+    function fontSize(res) {
+        let clientWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        if (!clientWidth) return;
+        let fontSize = (clientWidth / 1920);
+        return res * fontSize;
+    }
+
+    function setOption(myChart){
+        var option;
+
+        option = {
+            graphic: {
+                elements: [
+                    {
+                        id: 'graph1',
+                        type: 'text',
+                        left: 'center',
+                        top: 'center',
+                        style: {
+                            text: 'FY111元宇宙課程介紹',
+                            fontSize: fontSize(100),
+                            fontWeight: 'bold',
+                            lineDash: [0, 200],
+                            lineDashOffset: 0,
+                            fill: 'transparent',
+                            stroke: '#000',
+                            lineWidth: 1
+                        },
+                        keyframeAnimation: {
+                            duration: 3000,
+                            loop: false,
+                            keyframes: [
+                                {
+                                    percent: 0.7,
+                                    style: {
+                                        fill: 'transparent',
+                                        lineDashOffset: 200,
+                                        lineDash: [200, 0]
+                                    }
+                                },
+                                {
+                                    // Stop for a while.
+                                    percent: 0.8,
+                                    style: {
+                                        fill: 'transparent'
+                                    }
+                                },
+                                {
+                                    percent: 1,
+                                    style: {
+                                        fill: '#4E73DF'
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        };
+
+        myChart.setOption(option);
+    }
+    var dom = document.getElementById('title');
+    var myChart = echarts.init(dom, null, {
+        renderer: 'canvas',
+        useDirtyRect: false
+    });
+    var app = {};
+    setOption(myChart);
+    
+    window.addEventListener('resize',function(){
+        setOption(myChart);
+        myChart.resize({animation: {
+            duration: 1000
+        }});
+    })
 </script>
 }
 @*<h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <img src="~/image/test_img.jpg" class="img" width="200px" height="200" />
     <br />*@
+<div id="title" style="width:100%;min-height:350px;" :lazy='true'></div>
 <div class="autoplay">
     @for (int i = 0; i < Model.Count(); i++)
     {
@@ -34,12 +122,12 @@
         if (item.Icon != null)
         {
             <div class="text-center">
-                <img src="~/image/Metaverse/@item.Icon" class="img mr-3 ml-3" height="350px"/>
+                <img src="~/image/Metaverse/@item.Icon" class="img mr-3 ml-3" height="200px" />
             </div>
         }
     }
-    
-    
+
+
     @*<li>
         <img src="~/image/教室.jpg" class="img" width="70%" />
         </li>

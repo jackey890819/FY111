@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FY111.Models.FY111User;
+using System;
+using System.Linq;
 
 namespace FY111.Controllers
 {
@@ -18,11 +20,11 @@ namespace FY111.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
+            ViewData["RoleParm"] = String.IsNullOrEmpty(sortOrder) ? "role_desc" : "";
             var Users = await _userManager.Users.ToListAsync();
             List<ManageModel> manageModel = new List<ManageModel>();
-            
             for (int i = 0; i < Users.Count; i++)
             {
                 ManageModel model = new ManageModel();
@@ -33,6 +35,16 @@ namespace FY111.Controllers
                 model.Role = (await _userManager.GetRolesAsync(Users[i]))[0];
                 manageModel.Add(model);
             }
+            switch (sortOrder)
+            {
+                case "role_desc":
+                    manageModel = manageModel.OrderByDescending(x => x.Role).ToList();
+                    break;
+                default:
+                    manageModel = manageModel.OrderBy(x => x.Role).ToList();
+                    break;
+            }
+
             return View(manageModel);
         }
 
