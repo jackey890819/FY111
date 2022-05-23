@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -96,6 +96,11 @@ namespace FY111.Controllers
             {
                 try
                 {
+                    if (metaverse.Icon == null)
+                    {
+                        string result = (await _context.Metaverses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Icon;
+                        metaverse.Icon = result;
+                    }
                     _context.Update(metaverse);
                     await _context.SaveChangesAsync();
                 }

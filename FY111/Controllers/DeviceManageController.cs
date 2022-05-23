@@ -96,6 +96,11 @@ namespace FY111.Controllers
             {
                 try
                 {
+                    if (device.Icon == null)
+                    {
+                        string result = (await _context.Devices.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Icon;
+                        device.Icon = result;
+                    }
                     _context.Update(device);
                     await _context.SaveChangesAsync();
                 }
