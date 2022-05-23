@@ -18,11 +18,21 @@ namespace FY111.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
             ViewData["CheckInParm"] = sortOrder == "checkin" ? "checkin_desc" : "checkin";
+            ViewData["CurrentSort"] = sortOrder;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
             ViewData["CurrentFilter"] = searchString;
+
             var mateverse = _context.Metaverses.Select(x=>x);
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -44,7 +54,9 @@ namespace FY111.Controllers
                     mateverse = mateverse.OrderBy(x => x.SignupEnabled);
                     break;
             }
-            return View(await mateverse.AsNoTracking().ToListAsync());
+            int pageSize = 5;
+            return View(await PaginatedList<Metaverse>.CreateAsync(mateverse.AsNoTracking(), pageNumber ?? 1, pageSize));
+            //return View(await mateverse.AsNoTracking().ToListAsync());
         }
 
         // GET: MetaverseManage
