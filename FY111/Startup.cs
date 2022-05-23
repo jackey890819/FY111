@@ -24,6 +24,7 @@ namespace FY111
 {
     public class Startup
     {
+        private string _policyName = "CorsPolicy";
         public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
@@ -33,6 +34,17 @@ namespace FY111
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _policyName, builder =>
+                {
+                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+                    //builder.AllowAnyOrigin()
+                    //    .AllowAnyHeader()
+                    //    .AllowAnyMethod();
+                });
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             /*
@@ -150,7 +162,10 @@ namespace FY111
                 app.UseHsts();
             }
             Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
-            app.UseHttpsRedirection();  
+            app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");
+
             app.UseStaticFiles();       
             // app.UseCookiePolicy();
             app.UseRouting();
