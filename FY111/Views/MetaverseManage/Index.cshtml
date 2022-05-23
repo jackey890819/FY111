@@ -4,11 +4,20 @@
     ViewData["Title"] = "元宇宙管理";
 }
 
-<h1>元宇宙管理</h1>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">新增</a>
-</p>
+<div class="row">
+    
+    <h1 class="col-sm-6">元宇宙管理</h1>
+    <form asp-action="Index" method="get" class="ml-auto col-sm-6">
+        <div class="form-actions no-color row">
+            <input type="text" id="search" class="form-control col-sm-7" placeholder="Search.." name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default form-inline col-sm-2" />
+            <a asp-action="Index" class="btn btn-default col-sm-3">Back to Full List</a>
+        </div>
+    </form>
+    <div class="col-sm-2"> 
+        <a asp-action="Create" class="btn btn-primary">新增</a>
+    </div>
+</div>
 
 <table class="table table-hover table-responsive">
     <thead>

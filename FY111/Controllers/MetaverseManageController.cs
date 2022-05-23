@@ -18,11 +18,17 @@ namespace FY111.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
             ViewData["CheckInParm"] = sortOrder == "checkin" ? "checkin_desc" : "checkin";
+            ViewData["CurrentFilter"] = searchString;
             var mateverse = _context.Metaverses.Select(x=>x);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                mateverse = mateverse.Where(s => s.Name.Contains(searchString)
+                                       || s.Introduction.Contains(searchString));
+            }
             switch (sortOrder)
             {
                 case "signup_desc":
