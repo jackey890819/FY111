@@ -63,6 +63,10 @@ namespace FY111.Controllers
         {
             return View(await _context.MetaverseLogs.Where(x => x.MemberId == _userManager.GetUserId(User)).ToListAsync());
         }
+        public async Task<IActionResult> Organization()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
