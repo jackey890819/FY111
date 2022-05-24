@@ -54,12 +54,22 @@ namespace FY111.Controllers.API
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        await _userManager.AddToRoleAsync(user, "NormalUser");
+                        await _userManager.AddToRoleAsync(user, "NormalUser"); 
+                        return Ok(new
+                        {
+                            success = true,
+                            message = $"Create successed. UserName: {user.UserName}"
+                        });
                     }
-                    return Ok(new
+                    List<string> message = new List<string>();
+                    foreach (var error in result.Errors)
+                    {
+                        message.Add(error.Description);
+                    }
+                    return BadRequest(new
                     {
                         success = true,
-                        message = $"Create successed. UserName: {user.UserName}"
+                        message = message
                     });
                 }
                 else
