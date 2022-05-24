@@ -75,12 +75,26 @@
                             <span>帳戶管理</span>
                         </a>
                     </li>
+                    
+                    @if (User.IsInRole("GroupUser"))
+                    {
+                        <!-- Divider -->
+                        <hr class="sidebar-divider my-0">
+
+                        <!-- Nav Item - Dashboard -->
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-controller="Home" asp-action="Organization">
+                                <i class="fa fa-users-cog fa-fw" aria-hidden="true"></i>
+                                <span>組織成員管理</span>
+                            </a>
+                        </li>
+                    }
                     <!-- Divider -->
                     <hr class="sidebar-divider my-0">
 
                     <!-- Nav Item - Dashboard -->
                     <li class="nav-item active">
-                        <a class="nav-link" asp-controller="MetaverseManage" asp-action="Log">
+                        <a class="nav-link" asp-controller="Home" asp-action="Log">
                             <i class="fa fa-align-left fa-fw" aria-hidden="true"></i>
                             <span>使用情況分析</span>
                         </a>
@@ -157,7 +171,7 @@
             <div class="sidebar-card d-none d-lg-flex align-content-end mt-auto">
                 <font color="white">
                     <div class="small">拜訪人數</div>
-                    <div><span id="visit">1</span></div>
+                    <div><span id="visit"></span></div>
                     <div class="small">目前時間</div>
                     <div id="showbox"></div>
                 </font>

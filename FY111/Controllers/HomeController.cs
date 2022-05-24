@@ -13,6 +13,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using FY111.Models.FY111;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using FY111.Areas.Identity.Data;
 
 namespace FY111.Controllers
 {
@@ -20,11 +22,13 @@ namespace FY111.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly FY111Context _context;
+        private UserManager<FY111User> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, FY111Context context)
+        public HomeController(ILogger<HomeController> logger, UserManager<FY111User> userManager, FY111Context context)
         {
             _logger = logger;
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -52,6 +56,14 @@ namespace FY111.Controllers
             return View();
         }
         public IActionResult Analysis()
+        {
+            return View();
+        }
+        public async Task<IActionResult> Log()
+        {
+            return View(await _context.MetaverseLogs.Where(x => x.MemberId == _userManager.GetUserId(User)).ToListAsync());
+        }
+        public async Task<IActionResult> Organization()
         {
             return View();
         }

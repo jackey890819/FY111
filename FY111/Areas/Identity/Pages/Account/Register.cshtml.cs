@@ -89,7 +89,7 @@ namespace FY111.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "NormalUser");
-                    return Content("Success.");
+                    return Redirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
                 {

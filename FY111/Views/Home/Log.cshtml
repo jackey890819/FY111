@@ -1,0 +1,179 @@
+﻿@model IEnumerable<FY111.Models.FY111.MetaverseLog>
+
+@{
+    ViewData["Title"] = "Log";
+}
+
+
+<div class="row">
+    <div class="col-xl-8 col-lg-7">
+        <div id="Population" style="width:100%;height:350px;" :lazy='true'></div>
+    </div>
+    <div class="col-xl-4 col-lg-5">
+        <div id="Device" style="width:100%;height:350px;" :lazy='true'></div>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Detail</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                <div class="col-sm-12">
+                    <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                        <thead>
+                            <tr role="row">
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MemberId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MetaverseId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.StartTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EndTime)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model) {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MemberId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MetaverseId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StartTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EndTime)
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script>
+
+    <script type="text/javascript">
+        var myChart1 = echarts.init(document.getElementById('Population'));
+
+        var option1 = {
+            title: {
+                text: 'Population Chart',
+                textStyle: {
+                    color: '#4E73DF'
+                }
+            },
+            tooltip: {},
+            xAxis: {
+                data: ['工廠', '手術', '會議', '教室']
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: 'Population',
+                    type: 'bar',
+                    barWidth: '35%',
+                    data: [
+                        {
+                            value: 13,
+                            itemStyle: {
+                                color: '#FF6384'
+                            }
+                        },
+                        {
+                            value: 21,
+                            itemStyle: {
+                                color: '#36A2EB'
+                            }
+                        },
+                        {
+                            value: 27,
+                            itemStyle: {
+                                color: '#FFCD56'
+                            }
+                        },
+                        {
+                            value: 36,
+                            itemStyle: {
+                                color: '#9B69BA'
+                            }
+                        },
+                    ]
+                }
+            ]
+        };
+
+        var myChart2 = echarts.init(document.getElementById('Device'));
+
+        var option2 = {
+            title: {
+                text: 'Device Chart',
+                textStyle: {
+                    color: '#4E73DF'
+                }
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',     //圖例垂直排序
+                x: 'right'
+            },
+            series: [
+                {
+                    name: 'Quantity',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        borderRadius: 10,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [
+                        { value: 3, name: 'PC' },
+                        { value: 3, name: 'Phone' },
+                        { value: 3, name: 'AR' },
+                        { value: 3, name: 'VR' }
+                    ]
+                }
+            ]
+        };
+
+        myChart1.setOption(option1);
+        myChart2.setOption(option2);
+        window.onresize = function () {
+            myChart1.resize();
+            myChart2.resize();
+        }
+    </script>
+}
