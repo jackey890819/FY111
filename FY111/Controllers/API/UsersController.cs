@@ -66,9 +66,9 @@ namespace FY111.Controllers.API
                     {
                         message.Add(error.Description);
                     }
-                    return BadRequest(new
+                    return Ok(new
                     {
-                        success = true,
+                        success = false,
                         message = message
                     });
                 }
