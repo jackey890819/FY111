@@ -33,16 +33,16 @@ namespace FY111.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (User.IsInRole("NormalUser"))
-                ViewData["UserRole"] = "NormalUser";
-            else if (User.IsInRole("GroupUser"))
-                ViewData["UserRole"] = "GroupUser";
-            else if (User.IsInRole("MetaverseAdmin"))
-                ViewData["UserRole"] = "MetaverseAdmin";
-            else if (User.IsInRole("SuperAdmin"))
-                ViewData["UserRole"] = "SuperAdmin";
-            else
-                ViewData["UserRole"] = null;
+            //if (User.IsInRole("NormalUser"))
+            //    ViewData["UserRole"] = "NormalUser";
+            //else if (User.IsInRole("GroupUser"))
+            //    ViewData["UserRole"] = "GroupUser";
+            //else if (User.IsInRole("MetaverseAdmin"))
+            //    ViewData["UserRole"] = "MetaverseAdmin";
+            //else if (User.IsInRole("SuperAdmin"))
+            //    ViewData["UserRole"] = "SuperAdmin";
+            //else
+            //    ViewData["UserRole"] = null;
             return View(await _context.Metaverses.ToListAsync());
         }
 
@@ -62,10 +62,6 @@ namespace FY111.Controllers
         public async Task<IActionResult> Log()
         {
             return View(await _context.MetaverseLogs.Where(x => x.MemberId == _userManager.GetUserId(User)).ToListAsync());
-        }
-        public async Task<IActionResult> Organization()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
