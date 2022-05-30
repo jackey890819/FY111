@@ -3,14 +3,16 @@ using System;
 using FY111.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FY111.Migrations
 {
     [DbContext(typeof(FY111UserDbContext))]
-    partial class FY111UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220530030616_AddOrganization")]
+    partial class AddOrganization
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
