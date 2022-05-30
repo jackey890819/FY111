@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using FY111.Models.FY111User;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
@@ -20,9 +21,11 @@ namespace FY111.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Index(string sortOrder)
         {
             ViewData["RoleParm"] = String.IsNullOrEmpty(sortOrder) ? "role_desc" : "";
+            ViewData["OrganizationParm"] = sortOrder == "organization" ? "organization_desc" : "organization";
             var Users = await _userManager.Users.ToListAsync();
             List<ManageModel> manageModel = new List<ManageModel>();
             for (int i = 0; i < Users.Count; i++)
@@ -32,6 +35,7 @@ namespace FY111.Controllers
                 model.Id = Users[i].Id;
                 model.Email = Users[i].Email;
                 model.Avatar = Users[i].Avatar;
+                model.Organization = Users[i].Organization;
                 model.Role = (await _userManager.GetRolesAsync(Users[i]))[0];
                 manageModel.Add(model);
             }
@@ -39,6 +43,12 @@ namespace FY111.Controllers
             {
                 case "role_desc":
                     manageModel = manageModel.OrderByDescending(x => x.Role).ToList();
+                    break;
+                case "organization":
+                    manageModel = manageModel.OrderBy(x => x.Organization).ToList();
+                    break;
+                case "organization_desc":
+                    manageModel = manageModel.OrderByDescending(x => x.Organization).ToList();
                     break;
                 default:
                     manageModel = manageModel.OrderBy(x => x.Role).ToList();
@@ -65,6 +75,7 @@ namespace FY111.Controllers
             model.Id = user.Id;
             model.Email = user.Email;
             model.Avatar = user.Avatar;
+            model.Organization = user.Organization;
             model.Role = (await _userManager.GetRolesAsync(user))[0];
             return View(model);
         }
@@ -86,6 +97,7 @@ namespace FY111.Controllers
             model.Id = user.Id;
             model.Email = user.Email;
             model.Avatar = user.Avatar;
+            model.Organization = user.Organization;
             model.Role = (await _userManager.GetRolesAsync(user))[0];
             return View(model);
         }
@@ -108,6 +120,8 @@ namespace FY111.Controllers
                     await _userManager.RemoveFromRoleAsync(user, prevRole);
                     await _userManager.AddToRoleAsync(user, model.Role);
                 }
+                user.Organization = model.Organization;
+                await _userManager.UpdateAsync(user);
             }
             return RedirectToAction(nameof(Index));
         }
@@ -129,6 +143,7 @@ namespace FY111.Controllers
             model.Id = user.Id;
             model.Email = user.Email;
             model.Avatar = user.Avatar;
+            model.Organization = user.Organization;
             model.Role = (await _userManager.GetRolesAsync(user))[0];
             return View(model);
         }
@@ -140,6 +155,56 @@ namespace FY111.Controllers
             var user = await _userManager.FindByIdAsync(id);
             var result = await _userManager.DeleteAsync(user);
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Organization()
+        {
+            var user = (await _userManager.GetUserAsync(User));
+            var Users = await _userManager.Users.ToListAsync();
+            List<ManageModel> manageModel = new List<ManageModel>(); 
+            for (int i = 0; i < Users.Count; i++)
+            {
+                var role = (await _userManager.GetRolesAsync(Users[i]))[0];
+                if (Users[i].Organization == user.Organization && role == "NormalUser")
+                {
+                    ManageModel model = new ManageModel();
+                    model.UserName = Users[i].UserName;
+                    model.Id = Users[i].Id;
+                    model.Email = Users[i].Email;
+                    model.Avatar = Users[i].Avatar;
+                    model.Organization = Users[i].Organization;
+                    manageModel.Add(model);
+                }
+            }
+            return View(manageModel);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var organization = (await _userManager.GetUserAsync(User)).Organization;
+                var user = new FY111User { UserName = model.UserName };
+                user.Organization = organization;
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "NormalUser");
+                    return RedirectToAction(nameof(Organization));
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View();
         }
     }
 }

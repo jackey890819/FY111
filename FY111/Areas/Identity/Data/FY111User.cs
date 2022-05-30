@@ -13,5 +13,10 @@ namespace FY111.Areas.Identity.Data
         [PersonalData]
         [Column(TypeName = "nvarchar(256)")]
         public string Avatar { get; set; }
+
+
+        [PersonalData]
+        [Column(TypeName = "nvarchar(256)")]
+        public string Organization { get; set; }
     }
 }

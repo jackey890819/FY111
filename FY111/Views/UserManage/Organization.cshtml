@@ -1,10 +1,12 @@
 ﻿@model IEnumerable<FY111.Models.FY111User.ManageModel>
-
 @{
-    ViewData["Title"] = "用戶管理";
+    ViewData["Title"] = "組織管理";
 }
 
-<h1>用戶管理</h1>
+<h1>組織管理 - @Html.DisplayFor(model => model.ElementAt(0).Organization)</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
 
 <table class="table table-hover table-responsive">
     <thead>
@@ -20,12 +22,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["OrganizationParm"]">@Html.DisplayNameFor(model => model.Organization)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoleParm"]">@Html.DisplayNameFor(model => model.Role)</a>
             </th>
             <th></th>
         </tr>
@@ -45,15 +41,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Organization)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role)
-            </td>
             <td class="btn-group">
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>
