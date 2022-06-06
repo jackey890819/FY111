@@ -53,29 +53,18 @@
 
             @if (SignInManager.IsSignedIn(User))
             {
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index">
+                        <i class="fa fa-address-card fa-fw" aria-hidden="true"></i>
+                        <span>帳戶管理</span>
+                    </a>
+                </li>
                 @if (User.IsInRole("NormalUser") || User.IsInRole("GroupUser"))
                 {
-                    <!-- Divider -->
-                    <hr class="sidebar-divider my-0">
-
-                    <!-- Nav Item - Dashboard -->
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-controller="Home" asp-action="Download">
-                            <i class="fa fa-download fa-fw" aria-hidden="true"></i>
-                            <span>軟體下載</span>
-                        </a>
-                    </li>
-                    <!-- Divider -->
-                    <hr class="sidebar-divider my-0">
-
-                    <!-- Nav Item - Dashboard -->
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index">
-                            <i class="fa fa-address-book fa-fw" aria-hidden="true"></i>
-                            <span>帳戶管理</span>
-                        </a>
-                    </li>
-                    
                     @if (User.IsInRole("GroupUser"))
                     {
                         <!-- Divider -->
@@ -88,7 +77,19 @@
                                 <span>組織成員管理</span>
                             </a>
                         </li>
+
+                        <!-- Divider -->
+                        <hr class="sidebar-divider my-0">
+
+                        <!-- Nav Item - Dashboard -->
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-controller="SignupManage" asp-action="OrganizationSignup">
+                                <i class="fa fa-school fa-fw" aria-hidden="true"></i>
+                                <span>組織課程管理</span>
+                            </a>
+                        </li>
                     }
+                    
                     <!-- Divider -->
                     <hr class="sidebar-divider my-0">
 
@@ -97,6 +98,17 @@
                         <a class="nav-link" asp-controller="Home" asp-action="Log">
                             <i class="fa fa-align-left fa-fw" aria-hidden="true"></i>
                             <span>使用情況分析</span>
+                        </a>
+                    </li>
+
+                    <!-- Divider -->
+                    <hr class="sidebar-divider my-0">
+
+                    <!-- Nav Item - Dashboard -->
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-controller="Home" asp-action="Download">
+                            <i class="fa fa-download fa-fw" aria-hidden="true"></i>
+                            <span>軟體下載</span>
                         </a>
                     </li>
                 }
@@ -114,24 +126,6 @@
                 }
                 else if (User.IsInRole("SuperAdmin"))
                 {
-                    <!-- Divider -->
-                    <hr class="sidebar-divider my-0">
-                    <!-- Nav Item - Dashboard -->
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-controller="Home" asp-action="Upload">
-                            <i class="fa fa-upload fa-fw" aria-hidden="true"></i>
-                            <span>軟體上傳</span>
-                        </a>
-                    </li>
-                    <!-- Divider -->
-                    <hr class="sidebar-divider my-0">
-                    <!-- Nav Item - Dashboard -->
-                    <li class="nav-item active">
-                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index">
-                            <i class="fa fa-address-book fa-fw" aria-hidden="true"></i>
-                            <span>帳戶管理</span>
-                        </a>
-                    </li>
                     <!-- Divider -->
                     <hr class="sidebar-divider my-0">
                     <!-- Nav Item - Dashboard -->
@@ -157,6 +151,15 @@
                         <a class="nav-link" asp-controller="DeviceManage" asp-action="Index">
                             <i class="fa fa-mobile-alt fa-fw" aria-hidden="true"></i>
                             <span>裝置管理</span>
+                        </a>
+                    </li>
+                    <!-- Divider -->
+                    <hr class="sidebar-divider my-0">
+                    <!-- Nav Item - Dashboard -->
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-controller="Home" asp-action="Upload">
+                            <i class="fa fa-upload fa-fw" aria-hidden="true"></i>
+                            <span>軟體上傳</span>
                         </a>
                     </li>
                 }
