@@ -190,21 +190,32 @@ namespace FY111.Controllers
         {
             if (ModelState.IsValid)
             {
-                var organization = (await _userManager.GetUserAsync(User)).Organization;
-                var user = new FY111User { UserName = model.UserName };
-                user.Organization = organization;
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                var exist = await _userManager.FindByNameAsync(model.UserName);
+                if (exist == null)
                 {
-                    await _userManager.AddToRoleAsync(user, "NormalUser");
-                    return RedirectToAction(nameof(Organization));
+                    var organization = (await _userManager.GetUserAsync(User)).Organization;
+                    var user = new FY111User { UserName = model.UserName };
+                    user.Organization = organization;
+                    var result = await _userManager.CreateAsync(user, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, "NormalUser");
+                        return RedirectToAction(nameof(Organization));
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(string.Empty, "UserName exist");
+                    return View(model);
                 }
+                    
             }
-            return View();
+            return View(model);
         }
     }
 }
