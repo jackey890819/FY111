@@ -3,7 +3,7 @@
     ViewData["Title"] = "組織管理";
 }
 
-<h1>組織管理 - @Html.DisplayFor(model => model.ElementAt(0).Organization)</h1>
+<h1>組織管理 - @ViewData["Organization"]</h1>
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
