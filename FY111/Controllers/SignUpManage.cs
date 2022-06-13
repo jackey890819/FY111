@@ -24,7 +24,7 @@ namespace FY111.Controllers
         {
             ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
             var metaverse = await _context.Metaverses.Where(x => x.SignupEnabled == 1).ToListAsync();
-            string user_id = _userManager.GetUserId(User);
+            FY111User user = await _userManager.GetUserAsync(User);
             List<SignUpManageModel> manageModel = new List<SignUpManageModel>();
             foreach (var verse in metaverse)
             {
@@ -34,7 +34,7 @@ namespace FY111.Controllers
                 model.Icon = verse.Icon;
                 model.Introduction = verse.Introduction;
                 model.Duration = verse.Duration;
-                bool result = _context.MetaverseSignups.Where(x => x.MetaverseId == verse.Id).Select(x => x.MemberId).Contains(user_id);
+                bool result = _context.MetaverseSignups.Where(x => x.MetaverseId == verse.Id).Select(x => x.MemberId).Contains(user.Id);
                 model.isSignedUp = result;
                 manageModel.Add(model);
             }
@@ -47,6 +47,8 @@ namespace FY111.Controllers
                     manageModel = manageModel.OrderBy(x => x.isSignedUp).ToList();
                     break;
             }
+
+            ViewData["Organization"] = user.Organization;
             return View(manageModel);
         }
 

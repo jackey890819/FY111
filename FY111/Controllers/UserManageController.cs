@@ -159,7 +159,7 @@ namespace FY111.Controllers
 
         public async Task<IActionResult> Organization()
         {
-            var user = (await _userManager.GetUserAsync(User));
+            var user = await _userManager.GetUserAsync(User);
             var Users = await _userManager.Users.ToListAsync();
             List<ManageModel> manageModel = new List<ManageModel>(); 
             for (int i = 0; i < Users.Count; i++)
@@ -172,10 +172,11 @@ namespace FY111.Controllers
                     model.Id = Users[i].Id;
                     model.Email = Users[i].Email;
                     model.Avatar = Users[i].Avatar;
-                    model.Organization = Users[i].Organization;
                     manageModel.Add(model);
                 }
             }
+
+            ViewData["Organization"] = user.Organization;
             return View(manageModel);
         }
 
