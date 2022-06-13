@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
+using System.IO;
 
 namespace FY111.Controllers
 {
@@ -56,10 +57,9 @@ namespace FY111.Controllers
             }
             int pageSize = 3;
             return View(await PaginatedList<Class>.CreateAsync(classes.AsNoTracking(), pageNumber ?? 1, pageSize));
-            //return View(await mateverse.AsNoTracking().ToListAsync());
         }
 
-        // GET: MetaverseManage/Details/5
+        // GET: ClassManage/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -77,13 +77,13 @@ namespace FY111.Controllers
             return View(classes);
         }
 
-        // GET: MetaverseManage/Create
+        // GET: ClassManage/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: MetaverseManage/Create
+        // POST: ClassManage/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -99,7 +99,7 @@ namespace FY111.Controllers
             return View(classes);
         }
 
-        // GET: MetaverseManage/Edit/5
+        // GET: ClassManage/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -107,22 +107,22 @@ namespace FY111.Controllers
                 return NotFound();
             }
 
-            var metaverse = await _context.Classes.FindAsync(id);
-            if (metaverse == null)
+            var @class = await _context.Classes.FindAsync(id);
+            if (@class == null)
             {
                 return NotFound();
             }
-            return View(metaverse);
+            return View(@class);
         }
 
-        // POST: MetaverseManage/Edit/5
+        // POST: ClassManage/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Ip,Image,Content,SignupEnabled,CheckinEnabled,Duration")] Class classes)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Ip,Image,Content,SignupEnabled,CheckinEnabled,Duration")] Class @class)
         {
-            if (id != classes.Id)
+            if (id != @class.Id)
             {
                 return NotFound();
             }
@@ -131,17 +131,23 @@ namespace FY111.Controllers
             {
                 try
                 {
-                    if (classes.Image == null)
+                    if (@class.Image == null)
                     {
                         string result = (await _context.Classes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Image;
-                        classes.Image = result;
+                        @class.Image = result;
                     }
-                    _context.Update(classes);
+                    else
+                    {
+                        var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\Class\\");
+                        var imageName = (await _context.Classes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Image;
+                        System.IO.File.Delete(dirPath+imageName);
+                    }
+                    _context.Update(@class);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MetaverseExists(classes.Id))
+                    if (!ClassExists(@class.Id))
                     {
                         return NotFound();
                     }
@@ -152,10 +158,10 @@ namespace FY111.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(classes);
+            return View(@class);
         }
 
-        // GET: MetaverseManage/Delete/5
+        // GET: ClassManage/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -173,7 +179,7 @@ namespace FY111.Controllers
             return View(classes);
         }
 
-        // POST: MetaverseManage/Delete/5
+        // POST: ClassManage/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -184,7 +190,7 @@ namespace FY111.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MetaverseExists(int id)
+        private bool ClassExists(int id)
         {
             return _context.Classes.Any(e => e.Id == id);
         }
