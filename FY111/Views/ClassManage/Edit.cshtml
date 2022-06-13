@@ -1,17 +1,18 @@
-﻿@model FY111.Models.FY111.Metaverse
+﻿@model FY111.Models.FY111.Class
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>Metaverse</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -23,16 +24,16 @@
                 <span asp-validation-for="Ip" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Icon" class="control-label"></label>
-                @*<input asp-for="Icon" class="form-control"/>*@
-                @Html.EditorFor(model => model.Icon, "ImageUploader", new{ @belong = "Metaverse" })
-                <span asp-validation-for="Icon" class="text-danger"></span>
+                <label asp-for="Image" class="control-label"></label>
+                @*<input asp-for="Icon" class="form-control" />*@
+                @Html.EditorFor(model => model.Image, "ImageUploader", new{ @belong = "Class" })
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Introduction" class="control-label"></label>
+                <label asp-for="Content" class="control-label"></label>
                 @*<input asp-for="Introduction" class="form-control" />*@
-                @Html.EditorFor(model => model.Introduction, "Textarea")
-                <span asp-validation-for="Introduction" class="text-danger"></span>
+                @Html.EditorFor(model => model.Content, "Textarea")
+                <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SignupEnabled" class="control-label"></label>
@@ -52,14 +53,14 @@
                 <span asp-validation-for="Duration" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" class="btn btn-primary" >Back to List</a>
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
 </div>
 
 @section Scripts {

@@ -16,13 +16,13 @@ namespace FY111.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MetaverseLogController : ControllerBase
+    public class ClassLogController : ControllerBase
     {
         private readonly FY111Context _context;
         private UserManager<FY111User> _userManager;
         private SignInManager<FY111User> _signInManager;
 
-        public MetaverseLogController(
+        public ClassLogController(
             FY111Context context,
             UserManager<FY111User> userManager,
             SignInManager<FY111User> signInManager
@@ -34,19 +34,19 @@ namespace FY111.Controllers
         }
 
         [HttpGet("list_user/{id}")]
-        public async Task<ActionResult<MetaverseLog>> GetMetaverseLogByUserId(string id)
+        public async Task<ActionResult<ClassLog>> GetClassLogByUserId(string id)
         {
             try
             {
-                var metaverseLogs = await _context.MetaverseLogs
+                var classLogs = await _context.ClassLogs
                     .Where(x => x.MemberId == id)
                     .ToListAsync();
-                if (!metaverseLogs.Any())
+                if (!classLogs.Any())
                     return NotFound(new { 
                         success = true,
                         message = "Not found."
                     });
-                return Ok(metaverseLogs);
+                return Ok(classLogs);
             }catch (Exception ex)
             {
                 return BadRequest(new
@@ -57,21 +57,21 @@ namespace FY111.Controllers
             }
         }
 
-        [HttpGet("list_metaverse/{id}")]
-        public async Task<ActionResult<MetaverseLog>> GetMetaverseLogByMetaverseId(int id)
+        [HttpGet("list_Class/{id}")]
+        public async Task<ActionResult<ClassLog>> GetClassLogByClassId(int id)
         {
             try
             {
-                var metaverseLogs = await _context.MetaverseLogs
-                    .Where(x => x.MetaverseId == id)
+                var classLogs = await _context.ClassLogs
+                    .Where(x => x.ClassId == id)
                     .ToListAsync();
-                if (!metaverseLogs.Any())
+                if (!classLogs.Any())
                     return NotFound(new
                     {
                         success = true,
                         message = "Not found."
                     });
-                return Ok(metaverseLogs);
+                return Ok(classLogs);
             }
             catch (Exception ex)
             {
@@ -83,21 +83,21 @@ namespace FY111.Controllers
             }
         }
 
-        [HttpGet("list_user_metaverse/{user_id}/metaverse_id")]
-        public async Task<ActionResult<MetaverseLog>> GetMetaverseLogByMetaverseId(string user_id, int metaverse_id)
+        [HttpGet("list_user_Class/{user_id}/Class_id")]
+        public async Task<ActionResult<ClassLog>> GetClassLogByClassId(string user_id, int class_id)
         {
             try
             {
-                var metaverseLogs = await _context.MetaverseLogs
-                    .Where(x => x.MetaverseId == metaverse_id && x.MemberId ==user_id)
+                var classLogs = await _context.ClassLogs
+                    .Where(x => x.ClassId == class_id && x.MemberId ==user_id)
                     .ToListAsync();
-                if (!metaverseLogs.Any())
+                if (!classLogs.Any())
                     return NotFound(new
                     {
                         success = true,
                         message = "Not found."
                     });
-                return Ok(metaverseLogs);
+                return Ok(classLogs);
             }
             catch (Exception ex)
             {
@@ -112,7 +112,7 @@ namespace FY111.Controllers
 
 
         [HttpPost("Enter")]
-        public async Task<ActionResult<MetaverseLog>> EnterMetaverse(MetaverseLog metaverseLog)
+        public async Task<ActionResult<ClassLog>> EnterClass(ClassLog classLog)
         {
             if (!_signInManager.IsSignedIn(User))
                 return BadRequest(new {
@@ -122,9 +122,9 @@ namespace FY111.Controllers
             var user = await _userManager.GetUserAsync(User);
             var user_id = user.Id;
             //var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            metaverseLog.MemberId = user_id;
-            metaverseLog.StartTime = DateTime.Now;
-            _context.MetaverseLogs.Add(metaverseLog);
+            classLog.MemberId = user_id;
+            classLog.StartTime = DateTime.Now;
+            _context.ClassLogs.Add(classLog);
             await _context.SaveChangesAsync();
 
             return Ok(new {
@@ -134,7 +134,7 @@ namespace FY111.Controllers
         }
 
         [HttpPatch("Leave")]
-        public async Task<ActionResult<MetaverseLog>> LeaveMetaverse()
+        public async Task<ActionResult<ClassLog>> LeaveClass()
         {
             if (!_signInManager.IsSignedIn(User))
                 return BadRequest(new
@@ -145,15 +145,15 @@ namespace FY111.Controllers
             var user = await _userManager.GetUserAsync(User);
             var user_id = user.Id;
             //var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            MetaverseLog metaverseLog = _context.MetaverseLogs.FirstOrDefault(x => x.MemberId == user_id && x.EndTime == null);
-            if (metaverseLog == null)
+            ClassLog classLog = _context.ClassLogs.FirstOrDefault(x => x.MemberId == user_id && x.EndTime == null);
+            if (classLog == null)
                 return BadRequest(new
                 {
                     success = false,
                     message = "You haven't entered."
                 });
-            _context.Entry(metaverseLog).State = EntityState.Modified;
-            metaverseLog.EndTime = DateTime.Now;
+            _context.Entry(classLog).State = EntityState.Modified;
+            classLog.EndTime = DateTime.Now;
             await _context.SaveChangesAsync();
             return Ok(new { 
                 success = true,
@@ -163,9 +163,9 @@ namespace FY111.Controllers
 
 
 
-        private bool MetaverseLogExists(int id)
+        private bool ClassLogExists(int id)
         {
-            return _context.MetaverseLogs.Any(e => e.MetaverseId == id);
+            return _context.ClassLogs.Any(e => e.ClassId == id);
         }
 
 

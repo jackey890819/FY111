@@ -17,12 +17,15 @@ namespace FY111.Models.FY111
         {
         }
 
+        public virtual DbSet<Class> Classes { get; set; }
+        public virtual DbSet<ClassCheckin> ClassCheckins { get; set; }
+        public virtual DbSet<ClassLittleunit> ClassLittleunits { get; set; }
+        public virtual DbSet<ClassLog> ClassLogs { get; set; }
+        public virtual DbSet<ClassQuestion> ClassQuestions { get; set; }
+        public virtual DbSet<ClassSignup> ClassSignups { get; set; }
+        public virtual DbSet<ClassUnit> ClassUnits { get; set; }
         public virtual DbSet<Device> Devices { get; set; }
         public virtual DbSet<LoginLog> LoginLogs { get; set; }
-        public virtual DbSet<Metaverse> Metaverses { get; set; }
-        public virtual DbSet<MetaverseCheckin> MetaverseCheckins { get; set; }
-        public virtual DbSet<MetaverseLog> MetaverseLogs { get; set; }
-        public virtual DbSet<MetaverseSignup> MetaverseSignups { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,6 +38,212 @@ namespace FY111.Models.FY111
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Class>(entity =>
+            {
+                entity.ToTable("class");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CheckinEnabled)
+                    .HasColumnType("tinyint")
+                    .HasColumnName("checkin_enabled");
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(45)
+                    .HasColumnName("code");
+
+                entity.Property(e => e.Content).HasColumnName("content");
+
+                entity.Property(e => e.Duration).HasColumnName("duration");
+
+                entity.Property(e => e.Image)
+                    .HasMaxLength(45)
+                    .HasColumnName("image");
+
+                entity.Property(e => e.Ip)
+                    .IsRequired()
+                    .HasMaxLength(15)
+                    .HasColumnName("ip")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(45)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.SignupEnabled)
+                    .HasColumnType("tinyint")
+                    .HasColumnName("signup_enabled");
+            });
+
+            modelBuilder.Entity<ClassCheckin>(entity =>
+            {
+                entity.HasKey(e => new { e.MemberId, e.ClassId })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("class_checkin");
+
+                entity.HasIndex(e => e.ClassId, "fk_Metaverse_has_Member_Metaverse1_idx");
+
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(256)
+                    .HasColumnName("Member_id");
+
+                entity.Property(e => e.ClassId).HasColumnName("Class_id");
+
+                entity.Property(e => e.Time)
+                    .HasColumnName("time")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.ClassCheckins)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Metaverse_has_Member_Metaverse1");
+            });
+
+            modelBuilder.Entity<ClassLittleunit>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.ClassUnitId })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("class_littleunit");
+
+                entity.HasIndex(e => e.ClassUnitId, "fk_class_littleunit_class_unit1");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.ClassUnitId).HasColumnName("Class_unit_id");
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(45)
+                    .HasColumnName("code");
+
+                entity.Property(e => e.Image)
+                    .HasMaxLength(45)
+                    .HasColumnName("image");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(45)
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<ClassLog>(entity =>
+            {
+                entity.HasKey(e => new { e.MemberId, e.StartTime })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("class_log");
+
+                entity.HasIndex(e => e.ClassId, "fk_Metaverse_Log_Metaverse1_idx");
+
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(256)
+                    .HasColumnName("Member_id");
+
+                entity.Property(e => e.StartTime)
+                    .HasColumnName("start_time")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.ClassId).HasColumnName("Class_id");
+
+                entity.Property(e => e.EndTime).HasColumnName("end_time");
+
+                entity.Property(e => e.Score).HasColumnName("score");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.ClassLogs)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Metaverse_Log_Metaverse1");
+            });
+
+            modelBuilder.Entity<ClassQuestion>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.ClassId })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("class_question");
+
+                entity.HasIndex(e => e.ClassId, "fk_class_question_class1");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.ClassId).HasColumnName("Class_id");
+
+                entity.Property(e => e.Discription)
+                    .HasMaxLength(100)
+                    .HasColumnName("discription");
+
+                entity.Property(e => e.Option).HasColumnName("option");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.ClassQuestions)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_class_question_class1");
+            });
+
+            modelBuilder.Entity<ClassSignup>(entity =>
+            {
+                entity.HasKey(e => new { e.MemberId, e.ClassId })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("class_signup");
+
+                entity.HasIndex(e => e.ClassId, "fk_Metaverse_has_Member_Metaverse2_idx");
+
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(256)
+                    .HasColumnName("Member_id");
+
+                entity.Property(e => e.ClassId).HasColumnName("Class_id");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.ClassSignups)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Metaverse_has_Member_Metaverse2");
+            });
+
+            modelBuilder.Entity<ClassUnit>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.ClassId })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("class_unit");
+
+                entity.HasIndex(e => e.ClassId, "fk_class_unit_class1");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.ClassId).HasColumnName("Class_id");
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(45)
+                    .HasColumnName("code");
+
+                entity.Property(e => e.Image)
+                    .HasMaxLength(45)
+                    .HasColumnName("image");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(45)
+                    .HasColumnName("name");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.ClassUnits)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_class_unit_class1");
+            });
+
             modelBuilder.Entity<Device>(entity =>
             {
                 entity.ToTable("device");
@@ -77,116 +286,6 @@ namespace FY111.Models.FY111
                     .HasForeignKey(d => d.DeviceType)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Login_Log_Device1");
-            });
-
-            modelBuilder.Entity<Metaverse>(entity =>
-            {
-                entity.ToTable("metaverse");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.CheckinEnabled)
-                    .HasColumnType("tinyint")
-                    .HasColumnName("checkin_enabled");
-
-                entity.Property(e => e.Duration).HasColumnName("duration");
-
-                entity.Property(e => e.Icon)
-                    .HasMaxLength(45)
-                    .HasColumnName("icon");
-
-                entity.Property(e => e.Introduction).HasColumnName("introduction");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(15)
-                    .HasColumnName("ip")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(45)
-                    .HasColumnName("name");
-
-                entity.Property(e => e.SignupEnabled)
-                    .HasColumnType("tinyint")
-                    .HasColumnName("signup_enabled");
-            });
-
-            modelBuilder.Entity<MetaverseCheckin>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.MetaverseId })
-                    .HasName("PRIMARY");
-
-                entity.ToTable("metaverse_checkin");
-
-                entity.HasIndex(e => e.MetaverseId, "fk_Metaverse_has_Member_Metaverse1_idx");
-
-                entity.Property(e => e.MemberId)
-                    .HasMaxLength(256)
-                    .HasColumnName("Member_id");
-
-                entity.Property(e => e.MetaverseId).HasColumnName("Metaverse_id");
-
-                entity.Property(e => e.Time)
-                    .HasColumnName("time")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.HasOne(d => d.Metaverse)
-                    .WithMany(p => p.MetaverseCheckins)
-                    .HasForeignKey(d => d.MetaverseId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Metaverse_has_Member_Metaverse1");
-            });
-
-            modelBuilder.Entity<MetaverseLog>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.StartTime })
-                    .HasName("PRIMARY");
-
-                entity.ToTable("metaverse_log");
-
-                entity.HasIndex(e => e.MetaverseId, "fk_Metaverse_Log_Metaverse1_idx");
-
-                entity.Property(e => e.MemberId)
-                    .HasMaxLength(256)
-                    .HasColumnName("Member_id");
-
-                entity.Property(e => e.StartTime)
-                    .HasColumnName("start_time")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.EndTime).HasColumnName("end_time");
-
-                entity.Property(e => e.MetaverseId).HasColumnName("Metaverse_id");
-
-                entity.HasOne(d => d.Metaverse)
-                    .WithMany(p => p.MetaverseLogs)
-                    .HasForeignKey(d => d.MetaverseId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Metaverse_Log_Metaverse1");
-            });
-
-            modelBuilder.Entity<MetaverseSignup>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.MetaverseId })
-                    .HasName("PRIMARY");
-
-                entity.ToTable("metaverse_signup");
-
-                entity.HasIndex(e => e.MetaverseId, "fk_Metaverse_has_Member_Metaverse2_idx");
-
-                entity.Property(e => e.MemberId)
-                    .HasMaxLength(256)
-                    .HasColumnName("Member_id");
-
-                entity.Property(e => e.MetaverseId).HasColumnName("Metaverse_id");
-
-                entity.HasOne(d => d.Metaverse)
-                    .WithMany(p => p.MetaverseSignups)
-                    .HasForeignKey(d => d.MetaverseId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Metaverse_has_Member_Metaverse2");
             });
 
             OnModelCreatingPartial(modelBuilder);

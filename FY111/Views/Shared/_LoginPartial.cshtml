@@ -11,7 +11,7 @@
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
         <button type="submit" class="nav-link dropdown-toggle btn btn-link">
             <i class="fa fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-            <span class="mr-2 d-none d-lg-inline text-gray ">登出</span>
+            <span class="mr-2 d-none d-lg-inline text-gray ">@Localizer["登出"]</span>
         </button>
         </form>
     </li>
@@ -21,7 +21,7 @@ else
     <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" id="login" asp-area="Identity" asp-page="/Account/Login">
             <i class="fa fa-sign-in-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-            <span class="mr-2 d-none d-lg-inline text-gray ">登入</span>
+            <span class="mr-2 d-none d-lg-inline text-gray ">@Localizer["登入"]</span>
         </a>
     </li>
 }

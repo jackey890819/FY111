@@ -9,11 +9,11 @@ using FY111.Models.FY111;
 
 namespace FY111.Controllers
 {
-    public class MetaverseManageController : Controller
+    public class ClassManageController : Controller
     {
         private readonly FY111Context _context;
 
-        public MetaverseManageController(FY111Context context)
+        public ClassManageController(FY111Context context)
         {
             _context = context;
         }
@@ -33,37 +33,31 @@ namespace FY111.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
-            var mateverse = _context.Metaverses.Select(x=>x);
+            var classes = _context.Classes.Select(x=>x);
             if (!String.IsNullOrEmpty(searchString))
             {
-                mateverse = mateverse.Where(s => s.Name.Contains(searchString)
-                                       || s.Introduction.Contains(searchString));
+                classes = classes.Where(s => s.Name.Contains(searchString)
+                                       || s.Content.Contains(searchString));
             }
             switch (sortOrder)
             {
                 case "signup_desc":
-                    mateverse = mateverse.OrderByDescending(x => x.SignupEnabled);
+                    classes = classes.OrderByDescending(x => x.SignupEnabled);
                     break;
                 case "checkin":
-                    mateverse = mateverse.OrderBy(x => x.CheckinEnabled);
+                    classes = classes.OrderBy(x => x.CheckinEnabled);
                     break;
                 case "checkin_desc":
-                    mateverse = mateverse.OrderByDescending(x => x.CheckinEnabled);
+                    classes = classes.OrderByDescending(x => x.CheckinEnabled);
                     break;
                 default:
-                    mateverse = mateverse.OrderBy(x => x.SignupEnabled);
+                    classes = classes.OrderBy(x => x.SignupEnabled);
                     break;
             }
             int pageSize = 3;
-            return View(await PaginatedList<Metaverse>.CreateAsync(mateverse.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Class>.CreateAsync(classes.AsNoTracking(), pageNumber ?? 1, pageSize));
             //return View(await mateverse.AsNoTracking().ToListAsync());
         }
-
-        // GET: MetaverseManage
-        //public async Task<IActionResult> Index()
-        //{
-        //    return View(await _context.Metaverses.ToListAsync());
-        //}
 
         // GET: MetaverseManage/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -73,14 +67,14 @@ namespace FY111.Controllers
                 return NotFound();
             }
 
-            var metaverse = await _context.Metaverses
+            var classes = await _context.Classes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (metaverse == null)
+            if (classes == null)
             {
                 return NotFound();
             }
 
-            return View(metaverse);
+            return View(classes);
         }
 
         // GET: MetaverseManage/Create
@@ -94,15 +88,15 @@ namespace FY111.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Ip,Icon,Introduction,SignupEnabled,CheckinEnabled,Duration")] Metaverse metaverse)
+        public async Task<IActionResult> Create([Bind("Id,Name,Ip,Image,Content,SignupEnabled,CheckinEnabled,Duration")] Class classes)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(metaverse);
+                _context.Add(classes);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(metaverse);
+            return View(classes);
         }
 
         // GET: MetaverseManage/Edit/5
@@ -113,7 +107,7 @@ namespace FY111.Controllers
                 return NotFound();
             }
 
-            var metaverse = await _context.Metaverses.FindAsync(id);
+            var metaverse = await _context.Classes.FindAsync(id);
             if (metaverse == null)
             {
                 return NotFound();
@@ -126,9 +120,9 @@ namespace FY111.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Ip,Icon,Introduction,SignupEnabled,CheckinEnabled,Duration")] Metaverse metaverse)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Ip,Image,Content,SignupEnabled,CheckinEnabled,Duration")] Class classes)
         {
-            if (id != metaverse.Id)
+            if (id != classes.Id)
             {
                 return NotFound();
             }
@@ -137,17 +131,17 @@ namespace FY111.Controllers
             {
                 try
                 {
-                    if (metaverse.Icon == null)
+                    if (classes.Image == null)
                     {
-                        string result = (await _context.Metaverses.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Icon;
-                        metaverse.Icon = result;
+                        string result = (await _context.Classes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Image;
+                        classes.Image = result;
                     }
-                    _context.Update(metaverse);
+                    _context.Update(classes);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MetaverseExists(metaverse.Id))
+                    if (!MetaverseExists(classes.Id))
                     {
                         return NotFound();
                     }
@@ -158,7 +152,7 @@ namespace FY111.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(metaverse);
+            return View(classes);
         }
 
         // GET: MetaverseManage/Delete/5
@@ -169,14 +163,14 @@ namespace FY111.Controllers
                 return NotFound();
             }
 
-            var metaverse = await _context.Metaverses
+            var classes = await _context.Classes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (metaverse == null)
+            if (classes == null)
             {
                 return NotFound();
             }
 
-            return View(metaverse);
+            return View(classes);
         }
 
         // POST: MetaverseManage/Delete/5
@@ -184,15 +178,15 @@ namespace FY111.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var metaverse = await _context.Metaverses.FindAsync(id);
-            _context.Metaverses.Remove(metaverse);
+            var classes = await _context.Classes.FindAsync(id);
+            _context.Classes.Remove(classes);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MetaverseExists(int id)
         {
-            return _context.Metaverses.Any(e => e.Id == id);
+            return _context.Classes.Any(e => e.Id == id);
         }
     }
 }

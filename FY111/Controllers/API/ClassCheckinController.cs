@@ -11,19 +11,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using FY111.Areas.Identity.Data;
 
-
 namespace FY111.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class MetaverseSignupController : ControllerBase
+    public class ClassCheckinController : ControllerBase
     {
         private readonly FY111Context _context;
         private UserManager<FY111User> _userManager;
         private SignInManager<FY111User> _signInManager;
 
-        public MetaverseSignupController(
+        public ClassCheckinController(
             FY111Context context,
             UserManager<FY111User> userManager,
             SignInManager<FY111User> signInManager
@@ -35,57 +34,67 @@ namespace FY111.Controllers
         }
 
 
-
-        // POST: api/MetaverseSignUp
+        // POST: api/ClassCheckin
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<MetaverseSignup>> PostMetaverseSignup(MetaverseSignup metaverseSignup)
+        public async Task<ActionResult<ClassCheckin>> PostClassCheckin(ClassCheckin classCheckin)
         {
             if (!_signInManager.IsSignedIn(User))
                 //return Unauthorized();
                 return BadRequest(new { success = false, message = "Please log in." });
             if (!User.IsInRole("NormalUser"))
                 return Forbid();
+
             var user = await _userManager.GetUserAsync(User);
-            metaverseSignup.MemberId = user.Id;
+            var hasSignup = await _context.ClassSignups
+                .Where(x => x.ClassId == classCheckin.ClassId && x.MemberId == user.Id)
+                .ToListAsync();
+            if (!hasSignup.Any())
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "You have not signed up this class."
+                });
             try
             {
-                _context.MetaverseSignups.Add(metaverseSignup);
+                classCheckin.MemberId = user.Id;
+                classCheckin.Time = DateTime.Now;
+                _context.ClassCheckins.Add(classCheckin);
                 await _context.SaveChangesAsync();
-                return Ok(new { success = true, message = "Sign up successfully." });
-            }
-            catch (DbUpdateException)   // 報名失敗：已經報名過
+            } catch (Exception ex)
             {
-                return BadRequest(new { success = false, message = "You have signed up thhis metaverse." });
+                return BadRequest(new { success = false, message = "You have checked in." });
             }
+            return Ok(new { success = true, message = "Create Successfully" });
         }
 
-        // DELETE: api/MetaverseSignUp/5
-        [HttpDelete("{metaverseId}")]
-        public async Task<ActionResult<MetaverseSignup>> DeleteMetaverseSignup(int metaverseId)
+        [HttpDelete("{classId}")]
+        public async Task<ActionResult<ClassCheckin>> DeleteClassCheckin(int classId)
         {
             if (!_signInManager.IsSignedIn(User))
                 //return Unauthorized();
                 return BadRequest(new { success = false, message = "Please log in." });
             if (!User.IsInRole("NormalUser"))
                 return Forbid();
+
             var user = await _userManager.GetUserAsync(User);
-            //var metaverseSignup = await _context.MetaverseSignups.FindAsync( user.Id, metaverseId);
-            var metaverseSignup = await _context.MetaverseSignups.Where(x => x.MetaverseId == metaverseId && x.MemberId == user.Id).ToListAsync();
-            if (!metaverseSignup.Any())
+            
+            var classCheckin = await _context.ClassCheckins.Where(x => x.MemberId == user.Id && x.ClassId == classId).ToListAsync();
+            if (!classCheckin.Any())
             {
-                return BadRequest(new { success = false, message = "You haven't signed up this metaverse." });
+                return BadRequest(new { success = false, message = "You haven't checked in this class." });
+                //return NotFound();
             }
-            _context.MetaverseSignups.Remove(metaverseSignup[0]);
+
+            _context.ClassCheckins.Remove(classCheckin[0]);
             await _context.SaveChangesAsync();
-            //return metaverseSignup;
-            return Ok(new { success = true, message = "Delete signed up metaverse success." });
+            return Ok(new { success = true, message = "Delete check in class success." });
         }
 
-        private bool MetaverseSignupExists(string id)
+        private bool ClassCheckinExists(string id)
         {
-            return _context.MetaverseSignups.Any(e => e.MemberId == id);
+            return _context.ClassCheckins.Any(e => e.MemberId == id);
         }
     }
 }

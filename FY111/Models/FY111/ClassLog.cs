@@ -5,13 +5,14 @@ using System.Collections.Generic;
 
 namespace FY111.Models.FY111
 {
-    public partial class MetaverseLog
+    public partial class ClassLog
     {
         public string MemberId { get; set; }
-        public int MetaverseId { get; set; }
+        public int ClassId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
+        public int? Score { get; set; }
 
-        public virtual Metaverse Metaverse { get; set; }
+        public virtual Class Class { get; set; }
     }
 }

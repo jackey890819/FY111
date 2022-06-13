@@ -16,13 +16,13 @@ namespace FY111.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MetaverseController : ControllerBase
+    public class ClassController : ControllerBase
     {
         private readonly FY111Context _context;
         private UserManager<FY111User> _userManager;
         private SignInManager<FY111User> _signInManager;
 
-        public MetaverseController(
+        public ClassController(
             FY111Context context,
             UserManager<FY111User> userManager,
             SignInManager<FY111User> signInManager
@@ -33,23 +33,23 @@ namespace FY111.Controllers
             _signInManager = signInManager;
         }
 
-        // GET: api/Metaverse/id/{id}
+        // GET: api/Class/id/{id}
         [HttpGet("id/{id}")]
-        public async Task<IActionResult> GetMetaverse(int id)
+        public async Task<IActionResult> GetClass(int id)
         {
             if (User.IsInRole("SuperAdmin"))
             {
                 try
                 {
-                    var result = await _context.Metaverses
+                    var result = await _context.Classes
                         .Where(x => x.Id == id)
-                        .Select(x => new MetaverseDetailDto
+                        .Select(x => new ClassDetailDto
                         {
                             Id = x.Id,
                             Name = x.Name,
                             Ip = x.Ip,
-                            Icon = x.Icon,
-                            Introduction = x.Introduction,
+                            Image = x.Image,
+                            Content = x.Content,
                             SignupEnabled = x.SignupEnabled,
                             CheckinEnabled = x.CheckinEnabled,
                             Duration = x.Duration
@@ -78,13 +78,13 @@ namespace FY111.Controllers
             {
                 try
                 {
-                    var result = await _context.Metaverses
+                    var result = await _context.Classes
                         .Where(x => x.Id == id)
-                        .Select(x => new MetaverseDto
+                        .Select(x => new ClassDto
                         {
                             Id = x.Id,
                             Name = x.Name,
-                            Introduction = x.Introduction,
+                            Content = x.Content,
                             Duration = x.Duration
                         })
                         .ToListAsync();
@@ -111,10 +111,10 @@ namespace FY111.Controllers
         }
 
 
-        // POST: api/Metaverses/create
+        // POST: api/Classes/create
         [HttpPost("create")]
         [Authorize(Roles = "SuperAdmin")]
-        public async Task<ActionResult> CreateMetaverse(MetaverseCreateModel model)
+        public async Task<ActionResult> CreateMetaverse(ClassCreateModel model)
         {
             // 檢查輸入
             if (!ModelState.IsValid)
@@ -127,31 +127,31 @@ namespace FY111.Controllers
             }
                 
             // 重複命名檢查
-            var existed = await _context.Metaverses.Where(x => x.Name == model.Name).ToListAsync();
+            var existed = await _context.Classes.Where(x => x.Name == model.Name).ToListAsync();
             if (existed.Any())
                 return BadRequest(new
                 {
                     success = false,
-                    message = "Metaverse name existed."
+                    message = "Class name existed."
                 });
             // 檢查名稱無重複後，嘗試建立資料
             try
             {
-                Metaverse metaverse = new Metaverse{ 
+                Class @class = new Class{ 
                     Name = model.Name,
                     Ip = model.Ip,
-                    Introduction = model.Introduction,
+                    Content = model.Content,
                     SignupEnabled = model.SignupEnabled,
                     CheckinEnabled = model.CheckinEnabled,
                     Duration = model.Duration
                 };
-                _context.Metaverses.Add(metaverse);
+                _context.Classes.Add(@class);
                 await _context.SaveChangesAsync();
-                var id = await _context.Metaverses
-                            .Where(x => x.Name == metaverse.Name)
+                var id = await _context.Classes
+                            .Where(x => x.Name == @class.Name)
                             .Select(x => x.Id)
                             .ToListAsync();
-                MetaverseDetailDto result = new MetaverseDetailDto(metaverse);
+                ClassDetailDto result = new ClassDetailDto(@class);
                 result.Id = id[0];
                 return Ok(result);
             }
@@ -165,10 +165,10 @@ namespace FY111.Controllers
         }
 
 
-        // PUT: api/Metaverses/update      
+        // PUT: api/Class/update      
         [HttpPut("update")]
         [Authorize(Roles = "SuperAdmin")]
-        public async Task<IActionResult> UpdateMetaverse(MetaverseUpdateModel model)
+        public async Task<IActionResult> UpdateClass(ClassUpdateModel model)
         {
             // 檢查ModelState
             if (!ModelState.IsValid)
@@ -179,20 +179,20 @@ namespace FY111.Controllers
                     message = "Input error."
                 });
             }
-            var metaverse = await _context.Metaverses
+            var @class = await _context.Classes
                 .Where(x=>x.Id == model.Id)
                 .ToListAsync();
-            metaverse[0].Name = (model.Name == null) ? metaverse[0].Name : model.Name;
-            metaverse[0].Ip = (model.Ip == null) ? metaverse[0].Ip : model.Ip;
-            metaverse[0].Icon = (model.Icon == null) ? metaverse[0].Icon : model.Icon;
-            metaverse[0].Introduction = (model.Introduction == null) ? metaverse[0].Introduction : model.Name;
-            metaverse[0].SignupEnabled = (byte)((model.SignupEnabled == null) ? metaverse[0].SignupEnabled : model.SignupEnabled);
-            metaverse[0].CheckinEnabled = (byte)((model.CheckinEnabled == null) ? metaverse[0].CheckinEnabled : model.CheckinEnabled);
-            metaverse[0].Duration = (model.Duration == null) ? metaverse[0].Duration : model.Duration;
+            @class[0].Name = (model.Name == null) ? @class[0].Name : model.Name;
+            @class[0].Ip = (model.Ip == null) ? @class[0].Ip : model.Ip;
+            @class[0].Image = (model.Image == null) ? @class[0].Image : model.Image;
+            @class[0].Content = (model.Content == null) ? @class[0].Content : model.Name;
+            @class[0].SignupEnabled = (byte)((model.SignupEnabled == null) ? @class[0].SignupEnabled : model.SignupEnabled);
+            @class[0].CheckinEnabled = (byte)((model.CheckinEnabled == null) ? @class[0].CheckinEnabled : model.CheckinEnabled);
+            @class[0].Duration = (model.Duration == null) ? @class[0].Duration : model.Duration;
 
             try
             {
-                _context.Entry(metaverse[0]).State = EntityState.Modified;
+                _context.Entry(@class[0]).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)
@@ -212,11 +212,11 @@ namespace FY111.Controllers
 
         
 
-        // DELETE: api/Metaverses/delete/{id}
+        // DELETE: api/Classes/delete/{id}
         // 依據id刪除元宇宙
         [HttpDelete("delete/{id}")]
         [Authorize(Roles = "SuperAdmin")]
-        public async Task<ActionResult<Metaverse>> DeleteMetaverse(int id)
+        public async Task<ActionResult<Class>> DeleteClass(int id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new 
@@ -225,17 +225,17 @@ namespace FY111.Controllers
                     message = "Input error."
                 });
 
-            var metaverse = await _context.Metaverses.FindAsync(id);
-            if (metaverse == null)
+            var @class = await _context.Classes.FindAsync(id);
+            if (@class == null)
             {
                 return NotFound(new {
                     success = false,
-                    message = "Metaverse not found."
+                    message = "Class not found."
                 });
             }
             try
             {
-                _context.Metaverses.Remove(metaverse);
+                _context.Classes.Remove(@class);
                 await _context.SaveChangesAsync();
             }catch (DbUpdateConcurrencyException ex)
             {
@@ -293,14 +293,14 @@ namespace FY111.Controllers
         //}
 
         [HttpPost("test")]
-        public async Task<ActionResult> Test(MetaverseUpdateModel model)
+        public async Task<ActionResult> Test(ClassUpdateModel model)
         {
             return Ok(model);
         }
 
-        private bool MetaverseExists(int id)
+        private bool ClassExists(int id)
         {
-            return _context.Metaverses.Any(e => e.Id == id);
+            return _context.Classes.Any(e => e.Id == id);
         }
     }
 }
