@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FY111.Models.FY111.Metaverse>
+﻿@model IEnumerable<FY111.Models.FY111.Class>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -51,7 +51,7 @@
                         left: 'center',
                         top: 'center',
                         style: {
-                            text: 'FY111元宇宙課程介紹',
+                            text: '@Localizer["元宇宙課程介紹"]',
                             fontSize: fontSize(100),
                             fontWeight: 'bold',
                             lineDash: [0, 200],
@@ -119,27 +119,13 @@
     @for (int i = 0; i < Model.Count(); i++)
     {
         var item = Model.ElementAt(i);
-        if (item.Icon != null)
+        if (item.Image != null)
         {
             <div class="text-center">
-                <img src="~/image/Metaverse/@item.Icon" class="img mr-3 ml-3" height="200px" />
+                <img src="~/image/Metaverse/@item.Image" class="img mr-3 ml-3" height="200px" />
             </div>
         }
     }
-
-
-    @*<li>
-        <img src="~/image/教室.jpg" class="img" width="70%" />
-        </li>
-        <li>
-        <img src="~/image/工廠.jpg" class="img" width="70%" />
-        </li>
-        <li>
-        <img src="~/image/手術.jpg" class="img" width="70%" />
-        </li>
-        <li>
-        <img src="~/image/會議.jpg" class="img" width="70%" />
-        </li>*@
 </div>
 
 

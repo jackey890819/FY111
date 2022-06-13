@@ -1,4 +1,4 @@
-﻿@model FY111.Models.FY111.Metaverse
+﻿@model FY111.Models.FY111.Class
 
 @{
     ViewData["Title"] = "Details";
@@ -23,16 +23,16 @@
             @Html.DisplayFor(model => model.Ip)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Icon)
+            @Html.DisplayNameFor(model => model.Image)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Icon, "ToImage", new{ @belong = "Metaverse" })
+            @Html.DisplayFor(model => model.Image, "ToImage", new{ @belong = "Class" })
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Introduction)
+            @Html.DisplayNameFor(model => model.Content)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Introduction)
+            @Html.DisplayFor(model => model.Content)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.SignupEnabled)

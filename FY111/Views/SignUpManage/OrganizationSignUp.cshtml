@@ -14,10 +14,10 @@
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Icon)
+                    @Html.DisplayNameFor(model => model.Image)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Introduction)
+                    @Html.DisplayNameFor(model => model.Content)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Duration)
@@ -35,10 +35,10 @@
                     @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
                 </td>
                 <td width="10%">
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Icon, "ToImage", new{ @belong = "Metaverse"})
+                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Image, "ToImage", new{ @belong = "Class"})
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Introduction)
+                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Content)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => Model.ElementAt(i).Duration)

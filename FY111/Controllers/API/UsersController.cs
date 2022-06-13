@@ -120,7 +120,7 @@ namespace FY111.Controllers.API
 
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);  // 登入
                 await GenerateLoginLogAsync(user, (model.DeviceType!=0)?model.DeviceType:1);      // 存入Log data到資料庫
-                return await GetMetaverse(user);        // 根據身分取得元宇宙列表
+                return await GetClass(user);        // 根據身分取得元宇宙列表
                 //return Ok(new { token });
                 //return Ok(result);
             }
@@ -143,32 +143,32 @@ namespace FY111.Controllers.API
             await _context.SaveChangesAsync();
         }
 
-        private async Task<IActionResult> GetMetaverse(FY111User user)
+        private async Task<IActionResult> GetClass(FY111User user)
         {
             string user_roles = (await _userManager.GetRolesAsync(user))[0];
             switch (user_roles)
             {
                 case "NormalUser":
                 case "GroupUser":
-                    var selected_list = await _context.MetaverseSignups
+                    var selected_list = await _context.ClassSignups
                                 .Where(x => x.MemberId == user.Id)
-                                .Select(x => x.MetaverseId).ToListAsync();
-                    var selected_metaverse = await _context.Metaverses
+                                .Select(x => x.ClassId).ToListAsync();
+                    var selected_class = await _context.Classes
                                             .Where(x => selected_list.Contains(x.Id)).ToListAsync();
-                    var metaverse = await _context.Metaverses
-                                    .Where(b => b.SignupEnabled == 1 && !selected_metaverse.Contains(b)) // 列出尚未選擇並且可選擇的元宇宙
+                    var @class = await _context.Classes
+                                    .Where(b => b.SignupEnabled == 1 && !selected_class.Contains(b)) // 列出尚未選擇並且可選擇的元宇宙
                                     .ToListAsync();
                     return Ok(new
                     {
-                        selected_list = selected_metaverse,
-                        none_selected_list = metaverse
+                        selected_list = selected_class,
+                        none_selected_list = @class
                     });
                 case "MetaverseAdmin":
                 case "SuperAdmin":
-                    var all_metaverse = await _context.Metaverses.ToListAsync();
+                    var all_class = await _context.Classes.ToListAsync();
                     return Ok(new
                     {
-                        metaverse = all_metaverse
+                        none_selected_list = all_class
                     });
             }
             return BadRequest(new {

@@ -47,7 +47,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="~/Home">
                     <i class="fa fa-home fa-fw" aria-hidden="true"></i>
-                    <span>元宇宙介紹</span>
+                    <span>@Localizer["元宇宙課程介紹"]</span>
                 </a>
             </li>
 
@@ -60,7 +60,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index">
                         <i class="fa fa-address-card fa-fw" aria-hidden="true"></i>
-                        <span>帳戶管理</span>
+                        <span>@Localizer["帳戶管理"]</span>
                     </a>
                 </li>
                 @if (User.IsInRole("NormalUser") || User.IsInRole("GroupUser"))
@@ -74,7 +74,7 @@
                         <li class="nav-item active">
                             <a class="nav-link" asp-controller="UserManage" asp-action="Organization">
                                 <i class="fa fa-users-cog fa-fw" aria-hidden="true"></i>
-                                <span>組織成員管理</span>
+                                <span>@Localizer["組織成員管理"]</span>
                             </a>
                         </li>
 
@@ -85,7 +85,7 @@
                         <li class="nav-item active">
                             <a class="nav-link" asp-controller="SignupManage" asp-action="OrganizationSignup">
                                 <i class="fa fa-school fa-fw" aria-hidden="true"></i>
-                                <span>組織課程管理</span>
+                                <span>@Localizer["組織課程管理"]</span>
                             </a>
                         </li>
                     }
@@ -97,7 +97,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" asp-controller="Home" asp-action="Log">
                             <i class="fa fa-align-left fa-fw" aria-hidden="true"></i>
-                            <span>使用情況分析</span>
+                            <span>@Localizer["使用情況分析"]</span>
                         </a>
                     </li>
 
@@ -108,7 +108,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" asp-controller="Home" asp-action="Download">
                             <i class="fa fa-download fa-fw" aria-hidden="true"></i>
-                            <span>軟體下載</span>
+                            <span>@Localizer["軟體下載"]</span>
                         </a>
                     </li>
                 }
@@ -118,9 +118,9 @@
                     <hr class="sidebar-divider my-0">
                     <!-- Nav Item - Dashboard -->
                     <li class="nav-item active">
-                        <a class="nav-link" asp-controller="MetaverseManage" asp-action="Index">
+                        <a class="nav-link" asp-controller="ClassManage" asp-action="Index">
                             <i class="fa fa-globe-asia fa-fw" aria-hidden="true"></i>
-                            <span>元宇宙管理</span>
+                            <span>@Localizer["元宇宙課程管理"]</span>
                         </a>
                     </li>
                 }
@@ -132,16 +132,16 @@
                     <li class="nav-item active">
                         <a class="nav-link" asp-controller="UserManage" asp-action="Index">
                             <i class="fa fa-users-cog fa-fw" aria-hidden="true"></i>
-                            <span>用戶管理</span>
+                            <span>@Localizer["用戶管理"]</span>
                         </a>
                     </li>
                     <!-- Divider -->
                     <hr class="sidebar-divider my-0">
                     <!-- Nav Item - Dashboard -->
                     <li class="nav-item active">
-                        <a class="nav-link" asp-controller="MetaverseManage" asp-action="Index">
+                        <a class="nav-link" asp-controller="ClassManage" asp-action="Index">
                             <i class="fa fa-globe-asia fa-fw" aria-hidden="true"></i>
-                            <span>元宇宙管理</span>
+                            <span>@Localizer["元宇宙課程管理"]</span>
                         </a>
                     </li>
                     <!-- Divider -->
@@ -150,7 +150,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" asp-controller="DeviceManage" asp-action="Index">
                             <i class="fa fa-mobile-alt fa-fw" aria-hidden="true"></i>
-                            <span>裝置管理</span>
+                            <span>@Localizer["裝置管理"]</span>
                         </a>
                     </li>
                     <!-- Divider -->
@@ -159,7 +159,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" asp-controller="Home" asp-action="Upload">
                             <i class="fa fa-upload fa-fw" aria-hidden="true"></i>
-                            <span>軟體上傳</span>
+                            <span>@Localizer["軟體上傳"]</span>
                         </a>
                     </li>
                 }
@@ -173,9 +173,9 @@
 
             <div class="sidebar-card d-none d-lg-flex align-content-end mt-auto">
                 <font color="white">
-                    <div class="small">拜訪人數</div>
+                    <div class="small">@Localizer["拜訪人數"]</div>
                     <div><span id="visit"></span></div>
-                    <div class="small">目前時間</div>
+                    <div class="small">@Localizer["目前時間"]</div>
                     <div id="showbox"></div>
                 </font>
             </div>
@@ -212,11 +212,11 @@
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span> &copy; 2022 - FY111</span>
-                        <span class="text-right">
-                            <!--await Html.PartialAsync("_SelectLanguagePartial")-->
-                        </span>
+                    <div class="copyright text-center row align-items-center">
+                        <div class="col-sm-6 offset-sm-3"> &copy; 2022 - FY111</div>
+                        <div class="col-sm-2 ml-auto">
+                            @await Html.PartialAsync("_SelectLanguagePartial")
+                        </div>
                     </div>  
                     
                 </div>
@@ -279,7 +279,7 @@
         function ShowTime() {
 
             var timestamp = new Date().getTime(); // 1566267029738
-            var ShowTime = new Date(timestamp).toLocaleString(); // "2019/8/20 上午9:10:29"
+            var ShowTime = new Date(timestamp).toLocaleString("@System.Globalization.CultureInfo.CurrentCulture.Name"); // "2019/8/20 上午9:10:29"
 
             document.getElementById('showbox').innerHTML = ShowTime;
             setTimeout('ShowTime()', 1000);

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FY111.Models.FY111.MetaverseLog>
+﻿@model IEnumerable<FY111.Models.FY111.ClassLog>
 
 @{
     ViewData["Title"] = "Log";
@@ -29,7 +29,7 @@
                                     @Html.DisplayNameFor(model => model.MemberId)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.MetaverseId)
+                                    @Html.DisplayNameFor(model => model.ClassId)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.StartTime)
@@ -46,7 +46,7 @@
                                         @Html.DisplayFor(modelItem => item.MemberId)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.MetaverseId)
+                                        @Html.DisplayFor(modelItem => item.ClassId)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.StartTime)
