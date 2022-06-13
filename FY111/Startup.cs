@@ -36,13 +36,20 @@ namespace FY111
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(name: _policyName, builder =>
+                options.AddPolicy(_policyName, policy =>
                 {
-                    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
-                    //builder.AllowAnyOrigin()
-                    //    .AllowAnyHeader()
-                    //    .AllowAnyMethod();
+                    policy.WithOrigins("http://localhost")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
                 });
+                //options.AddPolicy(name: _policyName, builder =>
+                //{
+                //    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+                //    //builder.AllowAnyOrigin()
+                //    //    .AllowAnyHeader()
+                //    //    .AllowAnyMethod();
+                //});
             });
 
             services.AddControllersWithViews();
