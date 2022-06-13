@@ -1574,6 +1574,7 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.7" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>
