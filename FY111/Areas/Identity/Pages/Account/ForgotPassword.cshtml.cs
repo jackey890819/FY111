@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
+using FY111.Resources;
 
 namespace FY111.Areas.Identity.Pages.Account
 {
@@ -19,11 +21,13 @@ namespace FY111.Areas.Identity.Pages.Account
     {
         private readonly UserManager<FY111User> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer<ForgotPasswordModel> _localizer;
 
-        public ForgotPasswordModel(UserManager<FY111User> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<FY111User> userManager, IEmailSender emailSender, IStringLocalizer<ForgotPasswordModel> localizer)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            _localizer = localizer;
         }
 
         [BindProperty]
@@ -31,7 +35,7 @@ namespace FY111.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(ErrorMessageResources))]
             [EmailAddress]
             public string Email { get; set; }
         }
@@ -59,8 +63,8 @@ namespace FY111.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    _localizer["Reset Password"],
+                    _localizer["Please reset your password by <a href='{0}'>clicking here</a>.", HtmlEncoder.Default.Encode(callbackUrl)]);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

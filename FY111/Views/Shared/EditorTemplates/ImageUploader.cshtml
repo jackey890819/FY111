@@ -20,7 +20,7 @@
         }
         else
         {
-            <span>尚未上傳圖片</span>
+            <span>@Localizer["尚未上傳圖片"]</span>
         }
     </label>
     <input asp-for="@Model" onchange="fileChange();" value="@Model"  class="custom-file-input" type="file" accept="image/*" />

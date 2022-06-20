@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using FY111.Resources;
+using Microsoft.Extensions.Localization;
+
 namespace FY111.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
@@ -15,15 +18,18 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<FY111User> _userManager;
         private readonly SignInManager<FY111User> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
+        private readonly IStringLocalizer<ChangePasswordModel> _localizer;
 
         public ChangePasswordModel(
             UserManager<FY111User> userManager,
             SignInManager<FY111User> signInManager,
-            ILogger<ChangePasswordModel> logger)
+            ILogger<ChangePasswordModel> logger,
+            IStringLocalizer<ChangePasswordModel> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _localizer = localizer;
         }
 
         [BindProperty]
@@ -34,20 +40,20 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(ErrorMessageResources))]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "CurrentPassword", ResourceType = typeof(DisplayAttributeResources))]
             public string OldPassword { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(ErrorMessageResources))]
+            [StringLength(100, ErrorMessageResourceName = "CharacterLimitation", MinimumLength = 6, ErrorMessageResourceType = typeof(ErrorMessageResources))]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "NewPassword", ResourceType = typeof(DisplayAttributeResources))]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "NewPasswordConfirm", ResourceType = typeof(DisplayAttributeResources))]
+            [Compare("NewPassword", ErrorMessageResourceName ="NewPasswordCompare", ErrorMessageResourceType = typeof(ErrorMessageResources))]
             public string ConfirmPassword { get; set; }
         }
 
@@ -93,7 +99,7 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            StatusMessage = _localizer["Your password has been changed."];
 
             return RedirectToPage();
         }

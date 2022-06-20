@@ -184,8 +184,11 @@ namespace FY111.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var classes = await _context.Classes.FindAsync(id);
-            _context.Classes.Remove(classes);
+            var @class = await _context.Classes.FindAsync(id);
+            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\Class\\");
+            var imageName = @class.Image;
+            System.IO.File.Delete(dirPath + imageName);
+            _context.Classes.Remove(@class);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

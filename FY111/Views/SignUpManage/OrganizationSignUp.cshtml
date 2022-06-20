@@ -1,15 +1,18 @@
 ﻿@model IEnumerable<FY111.Models.FY111.SignUpManageModel>
 
 @{
-    ViewData["Title"] = "組織課程管理";
+    ViewData["Title"] = @Localizer["組織課程管理"];
 }
 
-<h1>組織課程管理 - @ViewData["Organization"]</h1>
+<h1>@ViewData["Title"] - @ViewData["Organization"]</h1>
 
 <form asp-action="OrganizationSignUp" >
     <table class="table table-hover table-responsive">
         <thead>
             <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Code)
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
@@ -32,6 +35,9 @@
             <tr>
                 <input type="text" value=@Model.ElementAt(i).Id name="models[@i.ToString()].Id" hidden/>
                 <td>
+                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Code)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
                 </td>
                 <td width="10%">
@@ -50,7 +56,7 @@
         }
         </tbody>
     </table>
-    <input type="submit" value="Save" class="btn btn-primary" />
+    <input type="submit" value="@(Localizer["Save"])" class="btn btn-primary" />
 </form>
 
 @section Scripts{

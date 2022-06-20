@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using FY111.Resources;
+using Microsoft.Extensions.Localization;
 
 namespace FY111.Areas.Identity.Pages.Account
 {
@@ -21,14 +23,17 @@ namespace FY111.Areas.Identity.Pages.Account
         private readonly UserManager<FY111User> _userManager;
         private readonly SignInManager<FY111User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IStringLocalizer<LoginModel> _localizer;
 
         public LoginModel(SignInManager<FY111User> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<FY111User> userManager)
+            UserManager<FY111User> userManager,
+            IStringLocalizer<LoginModel> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _localizer = localizer;
         }
 
         [BindProperty]
@@ -48,16 +53,17 @@ namespace FY111.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
             */
-            [Required]
-            [StringLength(256, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(ErrorMessageResources))]
+            [StringLength(256, ErrorMessageResourceName = "CharacterLimitation", MinimumLength = 6, ErrorMessageResourceType = typeof(ErrorMessageResources))]
             [DataType(DataType.Text)]
-            [Display(Name = "UserName")]
+            [Display(Name = "UserName", ResourceType = typeof(DisplayAttributeResources))]
             public string UserName { get; set; }
-            [Required]
+            [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(ErrorMessageResources))]
             [DataType(DataType.Password)]
+            [Display(Name = "Password", ResourceType = typeof(DisplayAttributeResources))]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Remember", ResourceType = typeof(DisplayAttributeResources))]
             public bool RememberMe { get; set; }
         }
 
@@ -101,7 +107,7 @@ namespace FY111.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, _localizer["Invalid login attempt."]);
                     return Page();
                 }
             }

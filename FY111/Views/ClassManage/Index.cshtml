@@ -1,21 +1,21 @@
 ﻿@model PaginatedList<FY111.Models.FY111.Class>
 
 @{
-    ViewData["Title"] = "元宇宙管理";
+    ViewData["Title"] = @Localizer["Class Management"];
 }
 
 <div class="row">
     
-    <h1 class="col-sm-6">元宇宙管理</h1>
+    <h1 class="col-sm-6">@ViewData["Title"]</h1>
     <form asp-action="Index" method="get" class="ml-auto col-sm-6">
         <div class="form-actions no-color row">
-            <input type="text" id="search" class="form-control col-sm-7" placeholder="Search.." name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-default form-inline col-sm-2" />
-            <a asp-action="Index" class="btn btn-default col-sm-3">Back to Full List</a>
+            <input type="text" id="search" class="form-control col-sm-7" placeholder="@(Localizer["Search"]).." name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="@(Localizer["Search"])" class="btn btn-default form-inline col-sm-2" />
+            <a asp-action="Index" class="btn btn-default col-sm-3">@Localizer["Back to Full List"]</a>
         </div>
     </form>
     <div class="col-sm-2"> 
-        <a asp-action="Create" class="btn btn-primary">Create New</a>
+        <a asp-action="Create" class="btn btn-primary">@Localizer["Create New"]</a>
     </div>
 </div>
 
@@ -23,25 +23,25 @@
     <thead>
         <tr>
             <th>
-                Name
+                @Html.DisplayNameFor(model => model[0].Name)
             </th>
             <th>
-                Ip
+                @Html.DisplayNameFor(model => model[0].Ip)
             </th>
             <th>
-                Image
+                @Html.DisplayNameFor(model => model[0].Image)
             </th>
             <th>
-                Content
+                @Html.DisplayNameFor(model => model[0].Content)
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["SignUpParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">SignUpEnabled</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SignUpParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model[0].SignupEnabled)</a>
             </th>
             <th> 
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["CheckinParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">CheckinEnabled</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["CheckinParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model[0].CheckinEnabled)</a>
             </th>
             <th>
-                Duration
+                @Html.DisplayNameFor(model => model[0].Duration)
             </th>
             <th></th>
         </tr>
@@ -72,9 +72,9 @@
                     @Html.DisplayFor(modelItem => item.Duration)
                 </td>
                 <td class="btn-group">
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">@Localizer["Edit"]</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">@Localizer["Details"]</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">@Localizer["Delete"]</a>
                 </td>
             </tr>
         }
@@ -91,12 +91,12 @@
    asp-route-pageNumber="@(Model.PageIndex - 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-default @prevDisabled">
-    Previous
+    @Localizer["Previous"]
 </a>
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex + 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-default @nextDisabled">
-    Next
+    @Localizer["Next"]
 </a>
