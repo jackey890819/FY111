@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\UsersController.cs" />
+    <Compile Remove="Resources\SharedResource.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -1574,10 +1575,47 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.7" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\image\Metaverse\" />
+    <Compile Update="Resources\DisplayAttributeResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DisplayAttributeResources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\ErrorMessageResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ErrorMessageResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\DisplayAttributeResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DisplayAttributeResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\DisplayAttributeResources.zh-CN.resx">
+      <LastGenOutput>DisplayAttributeResources - 複製.zh-TW.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\DisplayAttributeResources.en-US.resx">
+      <LastGenOutput>DisplayAttributeResources - 複製.zh-TW.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ErrorMessageResources.en-US.resx">
+      <LastGenOutput>ErrorMessageResources - 複製.zh-TW.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ErrorMessageResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessageResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ErrorMessageResources.zh-CN.resx">
+      <LastGenOutput>ErrorMessageResources - 複製.zh-TW.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

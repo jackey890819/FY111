@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using FY111.Areas.Identity.Data;
+using FY111.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -30,8 +31,9 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(ErrorMessageResources))]
             [DataType(DataType.Password)]
+            [Display(Name = "Password", ResourceType = typeof(DisplayAttributeResources))]
             public string Password { get; set; }
         }
 

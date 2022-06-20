@@ -1,14 +1,14 @@
 ﻿@model FY111.Models.FY111User.ManageModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @Localizer["Delete"];
 }
 
-<h1>Delete</h1>
+<h1>@ViewData["Title"]</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>@Localizer["Are you sure you want to delete this?"]</h3>
 <div>
-    <h4>User</h4>
+    <h4>@Localizer["User"]</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -50,7 +50,7 @@
     </dl>
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+        <input type="submit" value="@(Localizer["Delete"])" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-primary">@Localizer["Back to List"]</a>
     </form>
 </div>

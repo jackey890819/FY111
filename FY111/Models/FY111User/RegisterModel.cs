@@ -1,19 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using FY111.Resources;
 
 namespace FY111.Models.FY111User
 {
     public class RegisterModel
     {
-        [Required]
-        [StringLength(256, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(ErrorMessageResources))]
+        [StringLength(256, ErrorMessageResourceName = "CharacterLimitation", MinimumLength = 6, ErrorMessageResourceType = typeof(ErrorMessageResources))]
         [DataType(DataType.Text)]
-        [Display(Name = "UserName")]
+        [Display(Name = "UserName", ResourceType = typeof(DisplayAttributeResources))]
         public string UserName { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(ErrorMessageResources))]
+        [StringLength(100, ErrorMessageResourceName = "CharacterLimitation", MinimumLength = 6, ErrorMessageResourceType = typeof(ErrorMessageResources))]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Password", ResourceType = typeof(DisplayAttributeResources))]
         public string Password { get; set; }
     }
 }

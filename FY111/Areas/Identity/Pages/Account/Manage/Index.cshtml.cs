@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FY111.Areas.Identity.Data;
+using FY111.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace FY111.Areas.Identity.Pages.Account.Manage
 {
@@ -14,16 +17,20 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<FY111User> _userManager;
         private readonly SignInManager<FY111User> _signInManager;
+        private readonly IStringLocalizer<IndexModel> _localizer;
         public string UserId;
 
         public IndexModel(
             UserManager<FY111User> userManager,
-            SignInManager<FY111User> signInManager)
+            SignInManager<FY111User> signInManager,
+            IStringLocalizer<IndexModel> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _localizer = localizer;
         }
 
+        [Display(Name = "UserName", ResourceType = typeof(DisplayAttributeResources))]
         public string Username { get; set; }
 
         [TempData]
@@ -35,11 +42,11 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "PhoneNumber", ResourceType = typeof(DisplayAttributeResources))]
             public string PhoneNumber { get; set; }
 
-            [Display(Name = "Avater")]
-            public string Avater { get; set; }
+            [Display(Name = "Avatar", ResourceType = typeof(DisplayAttributeResources))]
+            public string Avatar { get; set; }
         }
 
         private async Task LoadAsync(FY111User user)
@@ -53,7 +60,7 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-                Avater = avater
+                Avatar = avater
             };
         }
 
@@ -94,9 +101,12 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            if(Input.Avater != null)
+            if(Input.Avatar != null)
             {
-                user.Avatar = Input.Avater;
+                var prevAvater = user.Avatar;
+                var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\User\\" + user.Id + "\\");
+                System.IO.File.Delete(dirPath + prevAvater);
+                user.Avatar = Input.Avatar;
                 var setAvaterResult = await _userManager.UpdateAsync(user);
                 if (!setAvaterResult.Succeeded)
                 {
@@ -106,7 +116,7 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = _localizer["Your profile has been updated"];
             return RedirectToPage();
         }
     }
