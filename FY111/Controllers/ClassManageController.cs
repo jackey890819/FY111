@@ -88,7 +88,7 @@ namespace FY111.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Ip,Image,Content,SignupEnabled,CheckinEnabled,Duration")] Class classes)
+        public async Task<IActionResult> Create([Bind("Id,Code,Name,Ip,Image,Content,SignupEnabled,CheckinEnabled,Duration")] Class classes)
         {
             if (ModelState.IsValid)
             {
@@ -120,7 +120,7 @@ namespace FY111.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Ip,Image,Content,SignupEnabled,CheckinEnabled,Duration")] Class @class)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Name,Ip,Image,Content,SignupEnabled,CheckinEnabled,Duration")] Class @class)
         {
             if (id != @class.Id)
             {
