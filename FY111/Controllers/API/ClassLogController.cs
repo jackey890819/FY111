@@ -9,6 +9,7 @@ using FY111.Models.FY111;
 using Microsoft.AspNetCore.Identity;
 using FY111.Areas.Identity.Data;
 using FY111.Models;
+using FY111.Models.Dto;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
@@ -161,7 +162,25 @@ namespace FY111.Controllers
             });
         }
 
-
+        [HttpGet("GetAttendees/{ClassId}/{date}")]
+        public async Task<IActionResult> GetClassAttendees(int ClassId, DateTime date)
+        {
+            var signUpList = await _context.ClassSignups.Where(x => x.ClassId == ClassId).Select(x => x.MemberId).ToListAsync();
+            var attendees = await _context.ClassLogs.Where(x => x.ClassId == ClassId && DateTime.Compare(x.StartTime, date) >= 0).Select(x => x.MemberId).ToListAsync();
+            var logs = new List<AttendeeLogDto>();
+            for (int i = 0; i < signUpList.Count; i++)
+            {
+                bool checkin = false;
+                string name = (await _userManager.FindByIdAsync(signUpList[i])).UserName;
+                if (attendees.Contains(signUpList[i])) checkin = true;
+                var log = new AttendeeLogDto(signUpList[i], name, checkin);
+                logs.Add(log);
+            }
+            return Ok(new
+            {
+                data = logs
+            });
+        }
 
         private bool ClassLogExists(int id)
         {
