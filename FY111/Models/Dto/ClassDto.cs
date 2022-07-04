@@ -1,14 +1,26 @@
 ﻿using FY111.Models.FY111;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FY111.Models.Dto
 {
     public class ClassDto
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Content { get; set; }
-        public int? Duration { get; set; }
+        public int id { get; set; }
+        public string code { get; set; }
+        public string name { get; set; }
+        public string content { get; set; }
+        public string image { get; set; }
+        //public int? Duration { get; set; }
+
+        public ClassDto(Class @class)
+        {
+            id = @class.Id;
+            code = @class.Code;
+            name = @class.Name;
+            content = @class.Content;
+            image = @class.Image;
+        }
     }
 
     public class ClassDetailDto
@@ -59,5 +71,37 @@ namespace FY111.Models.Dto
         public byte? CheckinEnabled { get; set; }
         public int? Duration { get; set; }
     }
+    public class UnitDto
+    {
+        public int id { get; set; }
+        public string code { get; set; }
+        public string name { get; set; }
+        public string image { get; set; }
+        public ICollection<ClassLittleUnitDto> littleUnits { get; set; }
+    }
+    public class ClassUnitDto
+    {
+        public UnitDto unit { get; set; }
+        public ClassUnitDto(ClassUnit u)
+        {
+            unit = new UnitDto();
+            unit.id = u.Id;
+            unit.code = u.Code;
+            unit.name = u.Name;
+            unit.image = u.Image;
+        }
+    }
+    public class ClassLittleUnitDto
+    {
+        public string code { get; set; }
+        public string name { get; set; }
+        public string image { get; set; }
 
+        public ClassLittleUnitDto(ClassLittleunit lu)
+        {
+            code = lu.Code;
+            name = lu.Name;
+            image = lu.Image;
+        }
+    }
 }

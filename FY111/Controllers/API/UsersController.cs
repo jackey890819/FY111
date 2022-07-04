@@ -96,12 +96,16 @@ namespace FY111.Controllers.API
         public async Task<IActionResult> Login(LoginModel model)
         {
             if (_signInManager.IsSignedIn(User))
-                return BadRequest(new { 
-                    success = false,
-                    message = "You are already logged in."
+                return BadRequest(new
+                {
+                    errors = "Login failed"
                 });
-            var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password) && !_signInManager.IsSignedIn(User))
+                //return BadRequest(new { 
+                //    success = false,
+                //    message = "You are already logged in."
+                //});
+            var user = await _userManager.FindByNameAsync(model.account);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.password) && !_signInManager.IsSignedIn(User))
             {
                 #region JWT
                 //var tokenDescriptor = new SecurityTokenDescriptor
@@ -118,18 +122,22 @@ namespace FY111.Controllers.API
                 //var token = tokenHandler.WriteToken(secutityToken);
                 #endregion JWT
 
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);  // 登入
-                await GenerateLoginLogAsync(user, (model.DeviceType!=0)?model.DeviceType:1);      // 存入Log data到資料庫
-                return await GetClass(user);        // 根據身分取得元宇宙列表
-                //return Ok(new { token });
+                var result = await _signInManager.PasswordSignInAsync(model.account, model.password, false, lockoutOnFailure: false);  // 登入
+                //await GenerateLoginLogAsync(user, (model.DeviceType!=0)?model.DeviceType:1);      // 存入Log data到資料庫
+                //return await GetClass(user);        // 根據身分取得元宇宙列表
+                return Ok(new { token = "todo..." });
                 //return Ok(result);
             }
             else
             {
-                return BadRequest( new { 
-                    success = false,
-                    message = "Username or password is incorrect." 
+                return BadRequest(new
+                {
+                    errors = "Login failed"
                 });
+                //return BadRequest( new { 
+                //    success = false,
+                //    message = "Username or password is incorrect." 
+                //});
             }
         }
 
@@ -184,17 +192,21 @@ namespace FY111.Controllers.API
         {
             // 使用者未登入
             if (!_signInManager.IsSignedIn(User))
-                return BadRequest(new { 
-                    success = false,
-                    message = "You haven't login system." 
+                return BadRequest(new{
+                    errors = "Logout failed"
                 });
+                //return BadRequest(new { 
+                //    success = false,
+                //    message = "You haven't login system." 
+                //});
             // 使用者已登入，執行登出
-            await AddLogoutLog();
+            //await AddLogoutLog();
             await _signInManager.SignOutAsync();
-            return Ok(new { 
-                success = true,
-                message = "Logout successed." 
-            });
+            return Ok();
+            //return Ok(new { 
+            //    success = true,
+            //    message = "Logout successed." 
+            //});
 
         }
         private async Task AddLogoutLog()
