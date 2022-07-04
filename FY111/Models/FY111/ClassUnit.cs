@@ -7,6 +7,11 @@ namespace FY111.Models.FY111
 {
     public partial class ClassUnit
     {
+        public ClassUnit()
+        {
+            ClassLittleunits = new HashSet<ClassLittleunit>();
+        }
+
         public int Id { get; set; }
         public int ClassId { get; set; }
         public string Code { get; set; }
@@ -14,5 +19,6 @@ namespace FY111.Models.FY111
         public string Image { get; set; }
 
         public virtual Class Class { get; set; }
+        public virtual ICollection<ClassLittleunit> ClassLittleunits { get; set; }
     }
 }

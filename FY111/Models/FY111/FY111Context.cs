@@ -20,13 +20,16 @@ namespace FY111.Models.FY111
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<ClassCheckin> ClassCheckins { get; set; }
         public virtual DbSet<ClassLittleunit> ClassLittleunits { get; set; }
-        public virtual DbSet<ClassLog> ClassLogs { get; set; }
-        public virtual DbSet<ClassQuestion> ClassQuestions { get; set; }
         public virtual DbSet<ClassSignup> ClassSignups { get; set; }
         public virtual DbSet<ClassUnit> ClassUnits { get; set; }
         public virtual DbSet<Device> Devices { get; set; }
         public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; }
         public virtual DbSet<LoginLog> LoginLogs { get; set; }
+        public virtual DbSet<Occdisaster> Occdisasters { get; set; }
+        public virtual DbSet<OperationCheckpoint> OperationCheckpoints { get; set; }
+        public virtual DbSet<OperationLittleunitLog> OperationLittleunitLogs { get; set; }
+        public virtual DbSet<OperationOccdisaster> OperationOccdisasters { get; set; }
+        public virtual DbSet<OperationUnitLog> OperationUnitLogs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -62,7 +65,6 @@ namespace FY111.Models.FY111
                     .HasColumnName("image");
 
                 entity.Property(e => e.Ip)
-                    .IsRequired()
                     .HasMaxLength(15)
                     .HasColumnName("ip")
                     .IsFixedLength(true);
@@ -105,16 +107,11 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<ClassLittleunit>(entity =>
             {
-                entity.HasKey(e => new { e.Id, e.ClassUnitId })
-                    .HasName("PRIMARY");
-
                 entity.ToTable("class_littleunit");
 
                 entity.HasIndex(e => e.ClassUnitId, "fk_class_littleunit_class_unit1");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.ClassUnitId).HasColumnName("Class_unit_id");
 
@@ -129,64 +126,12 @@ namespace FY111.Models.FY111
                 entity.Property(e => e.Name)
                     .HasMaxLength(45)
                     .HasColumnName("name");
-            });
 
-            modelBuilder.Entity<ClassLog>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.StartTime })
-                    .HasName("PRIMARY");
-
-                entity.ToTable("class_log");
-
-                entity.HasIndex(e => e.ClassId, "fk_Metaverse_Log_Metaverse1_idx");
-
-                entity.Property(e => e.MemberId)
-                    .HasMaxLength(256)
-                    .HasColumnName("Member_id");
-
-                entity.Property(e => e.StartTime)
-                    .HasColumnName("start_time")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.ClassId).HasColumnName("Class_id");
-
-                entity.Property(e => e.EndTime).HasColumnName("end_time");
-
-                entity.Property(e => e.Score).HasColumnName("score");
-
-                entity.HasOne(d => d.Class)
-                    .WithMany(p => p.ClassLogs)
-                    .HasForeignKey(d => d.ClassId)
+                entity.HasOne(d => d.ClassUnit)
+                    .WithMany(p => p.ClassLittleunits)
+                    .HasForeignKey(d => d.ClassUnitId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Metaverse_Log_Metaverse1");
-            });
-
-            modelBuilder.Entity<ClassQuestion>(entity =>
-            {
-                entity.HasKey(e => new { e.Id, e.ClassId })
-                    .HasName("PRIMARY");
-
-                entity.ToTable("class_question");
-
-                entity.HasIndex(e => e.ClassId, "fk_class_question_class1");
-
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
-
-                entity.Property(e => e.ClassId).HasColumnName("Class_id");
-
-                entity.Property(e => e.Discription)
-                    .HasMaxLength(100)
-                    .HasColumnName("discription");
-
-                entity.Property(e => e.Option).HasColumnName("option");
-
-                entity.HasOne(d => d.Class)
-                    .WithMany(p => p.ClassQuestions)
-                    .HasForeignKey(d => d.ClassId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_class_question_class1");
+                    .HasConstraintName("fk_class_littleunit_class_unit1");
             });
 
             modelBuilder.Entity<ClassSignup>(entity =>
@@ -213,16 +158,11 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<ClassUnit>(entity =>
             {
-                entity.HasKey(e => new { e.Id, e.ClassId })
-                    .HasName("PRIMARY");
-
                 entity.ToTable("class_unit");
 
                 entity.HasIndex(e => e.ClassId, "fk_class_unit_class1");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.ClassId).HasColumnName("Class_id");
 
@@ -301,6 +241,110 @@ namespace FY111.Models.FY111
                     .HasForeignKey(d => d.DeviceType)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Login_Log_Device1");
+            });
+
+            modelBuilder.Entity<Occdisaster>(entity =>
+            {
+                entity.HasKey(e => e.Code)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("occdisaster");
+
+                entity.Property(e => e.Code).HasMaxLength(45);
+
+                entity.Property(e => e.Content).HasColumnName("content");
+            });
+
+            modelBuilder.Entity<OperationCheckpoint>(entity =>
+            {
+                entity.HasKey(e => new { e.OperationLittleunitLogId, e.CkptId })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("operation_checkpoint");
+
+                entity.HasIndex(e => e.OperationLittleunitLogId, "fk_operation_checkpoint_operation_littleunit_log1_idx");
+
+                entity.Property(e => e.OperationLittleunitLogId).HasColumnName("operation_littleunit_log_id");
+
+                entity.Property(e => e.CkptId)
+                    .HasMaxLength(45)
+                    .HasColumnName("CKPT_id");
+
+                entity.HasOne(d => d.OperationLittleunitLog)
+                    .WithMany(p => p.OperationCheckpoints)
+                    .HasForeignKey(d => d.OperationLittleunitLogId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_operation_checkpoint_operation_littleunit_log1");
+            });
+
+            modelBuilder.Entity<OperationLittleunitLog>(entity =>
+            {
+                entity.ToTable("operation_littleunit_log");
+
+                entity.HasIndex(e => e.OperationLogId, "fk_operation_checkpoint_operation_log1");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.EndTime).HasColumnName("end_time");
+
+                entity.Property(e => e.LittleunitCode)
+                    .HasMaxLength(45)
+                    .HasColumnName("littleunit_code");
+
+                entity.Property(e => e.OperationLogId).HasColumnName("operation_log_id");
+
+                entity.Property(e => e.Pass)
+                    .HasColumnType("tinyint")
+                    .HasColumnName("pass");
+
+                entity.Property(e => e.Score).HasColumnName("score");
+
+                entity.Property(e => e.StartTime).HasColumnName("start_time");
+
+                entity.HasOne(d => d.OperationLog)
+                    .WithMany(p => p.OperationLittleunitLogs)
+                    .HasForeignKey(d => d.OperationLogId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_operation_checkpoint_operation_log1");
+            });
+
+            modelBuilder.Entity<OperationOccdisaster>(entity =>
+            {
+                entity.HasKey(e => e.OperationLittleunitLogId)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("operation_occdisaster");
+
+                entity.Property(e => e.OperationLittleunitLogId).HasColumnName("operation_littleunit_log_id");
+
+                entity.Property(e => e.OccDisasterCode)
+                    .HasMaxLength(45)
+                    .HasColumnName("OccDisaster_code");
+
+                entity.HasOne(d => d.OperationLittleunitLog)
+                    .WithOne(p => p.OperationOccdisaster)
+                    .HasForeignKey<OperationOccdisaster>(d => d.OperationLittleunitLogId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_table1_operation_littleunit_log1");
+            });
+
+            modelBuilder.Entity<OperationUnitLog>(entity =>
+            {
+                entity.ToTable("operation_unit_log");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(256)
+                    .HasColumnName("Member_id");
+
+                entity.Property(e => e.Pass)
+                    .HasColumnType("tinyint")
+                    .HasColumnName("pass");
+
+                entity.Property(e => e.UnitCode)
+                    .HasMaxLength(45)
+                    .HasColumnName("unit_code");
             });
 
             OnModelCreatingPartial(modelBuilder);

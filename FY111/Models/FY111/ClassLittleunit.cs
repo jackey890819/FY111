@@ -12,5 +12,6 @@ namespace FY111.Models.FY111
         public string Code { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
+        public virtual ClassUnit ClassUnit { get; set; }
     }
 }

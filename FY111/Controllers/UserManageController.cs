@@ -160,12 +160,12 @@ namespace FY111.Controllers
         public async Task<IActionResult> Organization()
         {
             var user = await _userManager.GetUserAsync(User);
-            var Users = await _userManager.Users.ToListAsync();
+            var Users = await _userManager.Users.Where(x => x.Organization == user.Organization).ToListAsync();
             List<ManageModel> manageModel = new List<ManageModel>(); 
             for (int i = 0; i < Users.Count; i++)
             {
                 var role = (await _userManager.GetRolesAsync(Users[i]))[0];
-                if (Users[i].Organization == user.Organization && role == "NormalUser")
+                if (role == "NormalUser")
                 {
                     ManageModel model = new ManageModel();
                     model.UserName = Users[i].UserName;
