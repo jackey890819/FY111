@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using FY111.Resources;
+using Microsoft.Extensions.Localization;
 
 namespace FY111.Areas.Identity.Pages.Account.Manage
 {
@@ -19,15 +21,18 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<FY111User> _userManager;
         private readonly SignInManager<FY111User> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer<EmailModel> _localizer;
 
         public EmailModel(
             UserManager<FY111User> userManager,
             SignInManager<FY111User> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IStringLocalizer<EmailModel> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _localizer = localizer;
         }
 
         public string Username { get; set; }
@@ -44,9 +49,9 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessageResourceName = "Required", ErrorMessageResourceType = typeof(ErrorMessageResources))]
             [EmailAddress]
-            [Display(Name = "New email")]
+            [Display(Name = "NewEmail", ResourceType = typeof(DisplayAttributeResources))]
             public string NewEmail { get; set; }
         }
 
@@ -101,14 +106,14 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
                     protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    _localizer["Confirm your email"],
+                    _localizer["Please confirm your account by <a href='{0}'>clicking here</a>.", HtmlEncoder.Default.Encode(callbackUrl)]);
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = _localizer["Confirmation link to change email sent. Please check your email."];
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = _localizer["Your email is unchanged."];
             return RedirectToPage();
         }
 
@@ -137,10 +142,10 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                _localizer["Confirm your email"],
+                _localizer["Please confirm your account by <a href='{0}'>clicking here</a>.", HtmlEncoder.Default.Encode(callbackUrl)]);
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = _localizer["Verification email sent. Please check your email."];
             return RedirectToPage();
         }
     }

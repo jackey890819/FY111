@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
@@ -38,14 +41,10 @@ namespace FY111.Controllers.API
                     {
                         Directory.CreateDirectory(dirPath);
                     }
-                    //if (System.IO.File.Exists(filePath))
-                    //{
-                    //    return Ok(new { success = true, message = "File existed already"});
-                    //}
-                    using (var fileSrteam = new FileStream(filePath, FileMode.Create))
-                    {
-                        await source.CopyToAsync(fileSrteam);
-                    }
+
+                    using var image = Image.Load(source.OpenReadStream());
+                    image.Mutate(x => x.Resize(0, 480));
+                    image.Save(filePath);
                     return Ok(new { success = true });
                 }
             }

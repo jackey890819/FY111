@@ -1,6 +1,4 @@
-﻿// 用詞尚未修正
-
-using FY111.Areas.Identity.Data;
+﻿using FY111.Areas.Identity.Data;
 using FY111.Models.FY111;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,18 +23,18 @@ namespace FY111.Controllers
         public async Task<IActionResult> OrganizationSignUp(string sortOrder)
         {
             ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
-            var metaverse = await _context.Classes.Where(x => x.SignupEnabled == 1).ToListAsync();
+            var classes = await _context.Classes.Where(x => x.SignupEnabled == 1).ToListAsync();
             FY111User user = await _userManager.GetUserAsync(User);
             List<SignUpManageModel> manageModel = new List<SignUpManageModel>();
-            foreach (var verse in metaverse)
+            foreach (var c in classes)
             {
                 SignUpManageModel model = new SignUpManageModel();
-                model.Id = verse.Id;
-                model.Name = verse.Name;
-                model.Icon = verse.Image;
-                model.Introduction = verse.Content;
-                model.Duration = verse.Duration;
-                bool result = _context.ClassSignups.Where(x => x.ClassId == verse.Id).Select(x => x.MemberId).Contains(user.Id);
+                model.Id = c.Id;
+                model.Name = c.Name;
+                model.Image = c.Image;
+                model.Content = c.Content;
+                model.Duration = c.Duration;
+                bool result = _context.ClassSignups.Where(x => x.ClassId == c.Id).Select(x => x.MemberId).Contains(user.Id);
                 model.isSignedUp = result;
                 manageModel.Add(model);
             }
@@ -71,10 +69,10 @@ namespace FY111.Controllers
                         var result = _context.ClassSignups.FirstOrDefault(x => x.ClassId == model.Id && x.MemberId == id);
                         if (result == null)
                         {
-                            ClassSignup metaverseSignup = new ClassSignup();
-                            metaverseSignup.ClassId = model.Id;
-                            metaverseSignup.MemberId = id;
-                            add.Add(metaverseSignup);
+                            ClassSignup classSignup = new ClassSignup();
+                            classSignup.ClassId = model.Id;
+                            classSignup.MemberId = id;
+                            add.Add(classSignup);
                         }
                     }
                 }

@@ -1,0 +1,72 @@
+﻿@model FY111.Models.FY111.Class
+
+@{
+    ViewData["Title"] = @Localizer["Create"];
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>@Localizer["Class"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ip" class="control-label"></label>
+                <input asp-for="Ip" class="form-control" />
+                <span asp-validation-for="Ip" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                @*<input asp-for="Icon" class="form-control"/>*@
+                @Html.EditorFor(model => model.Image, "ImageUploader", new{ @belong = "Class" })
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                @*<input asp-for="Introduction" class="form-control" />*@
+                @Html.EditorFor(model => model.Content, "Textarea")
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SignupEnabled" class="control-label"></label>
+                @*<input asp-for="SignupEnabled" class="form-control" />*@
+                @Html.EditorFor(model => model.SignupEnabled, "ToBool")
+                <span asp-validation-for="SignupEnabled" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CheckinEnabled" class="control-label"></label>
+                @*<input asp-for="CheckinEnabled" class="form-control" />*@
+                @Html.EditorFor(model => model.CheckinEnabled, "ToBool")
+                <span asp-validation-for="CheckinEnabled" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@(Localizer["Create"])" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-primary" >@Localizer["Back to List"]</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

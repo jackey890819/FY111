@@ -1,0 +1,63 @@
+﻿@model FY111.Models.FY111.Class
+
+@{
+    ViewData["Title"] = @Localizer["Delete"];
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>@Localizer["Are you sure you want to delete this?"]</h3>
+<div>
+    <h4>@Localizer["Class"]</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ip)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ip)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Image, "ToImage", new{ @belong = "Class" })
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SignupEnabled)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SignupEnabled, "ToBool")
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CheckinEnabled)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CheckinEnabled, "ToBool")
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="@(Localizer["Delete"])" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-primary">@Localizer["Back to List"]</a>
+    </form>
+</div>

@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<FY111.Models.FY111User.ManageModel>
 
 @{
-    ViewData["Title"] = "用戶管理";
+    ViewData["Title"] = @Localizer["User Management"];
 }
 
-<h1>用戶管理</h1>
+<h1>@ViewData["Title"]</h1>
 
 <table class="table table-hover table-responsive">
     <thead>
@@ -52,9 +52,9 @@
                 @Html.DisplayFor(modelItem => item.Role)
             </td>
             <td class="btn-group">
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">@Localizer["Edit"]</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">@Localizer["Details"]</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">@Localizer["Delete"]</a>
             </td>
         </tr>
     }

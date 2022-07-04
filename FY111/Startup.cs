@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using FY111.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
+using FY111.Areas.Identity.Data;
 
 namespace FY111
 {
@@ -70,7 +71,6 @@ namespace FY111
             */
 
             //services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
-
             services.AddDirectoryBrowser();
 
             services.AddControllers();
