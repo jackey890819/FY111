@@ -295,7 +295,7 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<OperationOccdisaster>(entity =>
             {
-                entity.HasKey(e => e.OperationLittleunitLogId)
+                entity.HasKey(e => new { e.OperationLittleunitLogId, e.OccDisasterCode })
                     .HasName("PRIMARY");
 
                 entity.ToTable("operation_occdisaster");
@@ -307,8 +307,8 @@ namespace FY111.Models.FY111
                     .HasColumnName("OccDisaster_code");
 
                 entity.HasOne(d => d.OperationLittleunitLog)
-                    .WithOne(p => p.OperationOccdisaster)
-                    .HasForeignKey<OperationOccdisaster>(d => d.OperationLittleunitLogId)
+                    .WithMany(p => p.OperationOccdisasters)
+                    .HasForeignKey(d => d.OperationLittleunitLogId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_table1_operation_littleunit_log1");
             });
