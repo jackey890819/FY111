@@ -1,4 +1,6 @@
-﻿using FY111.Areas.Identity.Data;
+﻿// 用詞尚未修正
+
+using FY111.Areas.Identity.Data;
 using FY111.Models.FY111;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +25,7 @@ namespace FY111.Controllers
         public async Task<IActionResult> OrganizationSignUp(string sortOrder)
         {
             ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
-            var metaverse = await _context.Metaverses.Where(x => x.SignupEnabled == 1).ToListAsync();
+            var metaverse = await _context.Classes.Where(x => x.SignupEnabled == 1).ToListAsync();
             FY111User user = await _userManager.GetUserAsync(User);
             List<SignUpManageModel> manageModel = new List<SignUpManageModel>();
             foreach (var verse in metaverse)
@@ -31,10 +33,10 @@ namespace FY111.Controllers
                 SignUpManageModel model = new SignUpManageModel();
                 model.Id = verse.Id;
                 model.Name = verse.Name;
-                model.Icon = verse.Icon;
-                model.Introduction = verse.Introduction;
+                model.Icon = verse.Image;
+                model.Introduction = verse.Content;
                 model.Duration = verse.Duration;
-                bool result = _context.MetaverseSignups.Where(x => x.MetaverseId == verse.Id).Select(x => x.MemberId).Contains(user.Id);
+                bool result = _context.ClassSignups.Where(x => x.ClassId == verse.Id).Select(x => x.MemberId).Contains(user.Id);
                 model.isSignedUp = result;
                 manageModel.Add(model);
             }
@@ -56,8 +58,8 @@ namespace FY111.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> OrganizationSignUp(List<OrganizationSignUpModel> models)
         {
-            List<MetaverseSignup> add = new List<MetaverseSignup>();
-            List<MetaverseSignup> remove = new List<MetaverseSignup>();
+            List<ClassSignup> add = new List<ClassSignup>();
+            List<ClassSignup> remove = new List<ClassSignup>();
             FY111User organization_admin = await _userManager.GetUserAsync(User);
             List<string> organization_id = await _userManager.Users.Where(x => x.Organization == organization_admin.Organization).Select(x => x.Id).ToListAsync();
             foreach (OrganizationSignUpModel model in models)
@@ -66,11 +68,11 @@ namespace FY111.Controllers
                 {
                     foreach (string id in organization_id)
                     {
-                        var result = _context.MetaverseSignups.FirstOrDefault(x => x.MetaverseId == model.Id && x.MemberId == id);
+                        var result = _context.ClassSignups.FirstOrDefault(x => x.ClassId == model.Id && x.MemberId == id);
                         if (result == null)
                         {
-                            MetaverseSignup metaverseSignup = new MetaverseSignup();
-                            metaverseSignup.MetaverseId = model.Id;
+                            ClassSignup metaverseSignup = new ClassSignup();
+                            metaverseSignup.ClassId = model.Id;
                             metaverseSignup.MemberId = id;
                             add.Add(metaverseSignup);
                         }
@@ -80,13 +82,13 @@ namespace FY111.Controllers
                 {
                     foreach (string id in organization_id)
                     {
-                        var result = _context.MetaverseSignups.FirstOrDefault(x => x.MetaverseId == model.Id && x.MemberId == id);
+                        var result = _context.ClassSignups.FirstOrDefault(x => x.ClassId == model.Id && x.MemberId == id);
                         if(result != null) remove.Add(result);
                     }
                 }
             }
-            _context.MetaverseSignups.AddRange(add);
-            _context.MetaverseSignups.RemoveRange(remove);
+            _context.ClassSignups.AddRange(add);
+            _context.ClassSignups.RemoveRange(remove);
             _context.SaveChanges();
             return RedirectToAction(nameof(OrganizationSignUp));
         }

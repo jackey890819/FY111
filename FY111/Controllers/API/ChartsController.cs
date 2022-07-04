@@ -35,7 +35,7 @@ namespace FY111.Controllers.API
         [HttpGet("MetaverseConnectionStatus")]
         public async Task<IActionResult> getMetaverseConnectionStatus()
         {
-            var checkinEnabled = await _context.Metaverses
+            var checkinEnabled = await _context.Classes
                 //.Where(x => x.CheckinEnabled == 1)
                 .ToListAsync();
             List<string> labels = new List<string> { };
@@ -43,8 +43,8 @@ namespace FY111.Controllers.API
 
             foreach(var meta in checkinEnabled)
             {
-                int count = await _context.MetaverseLogs
-                    .Where(x => x.MetaverseId == meta.Id && x.EndTime==null)
+                int count = await _context.ClassLogs
+                    .Where(x => x.ClassId == meta.Id && x.EndTime==null)
                     .CountAsync();
                 labels.Add(meta.Name);
                 datas.Add(count);

@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FY111.Models.FY111;
 using Microsoft.EntityFrameworkCore;
-using FY111.Models.DriveCourse;
 using Microsoft.AspNetCore.Authentication.Cookies;      //cookies
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -82,11 +81,6 @@ namespace FY111
             services.AddDbContext<FY111Context>(opt =>
             {
                 opt.UseMySQL(Configuration.GetConnectionString("fy111"));
-            });
-            // drive_course Database
-            services.AddDbContext<drive_courseContext>(opt =>
-            {
-                opt.UseMySQL(Configuration.GetConnectionString("drive_course"));
             });
 
             #region Localization

@@ -43,7 +43,7 @@ namespace FY111.Controllers
             //    ViewData["UserRole"] = "SuperAdmin";
             //else
             //    ViewData["UserRole"] = null;
-            return View(await _context.Metaverses.ToListAsync());
+            return View(await _context.Classes.ToListAsync());
         }
 
         public IActionResult Privacy()
@@ -61,7 +61,7 @@ namespace FY111.Controllers
         }
         public async Task<IActionResult> Log()
         {
-            return View(await _context.MetaverseLogs.Where(x => x.MemberId == _userManager.GetUserId(User)).ToListAsync());
+            return View(await _context.ClassLogs.Where(x => x.MemberId == _userManager.GetUserId(User)).ToListAsync());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

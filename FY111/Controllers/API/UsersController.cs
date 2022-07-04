@@ -103,21 +103,6 @@ namespace FY111.Controllers.API
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password) && !_signInManager.IsSignedIn(User))
             {
-                #region JWT
-                //var tokenDescriptor = new SecurityTokenDescriptor
-                //{
-                //    Subject = new ClaimsIdentity(new Claim[]
-                //    {
-                //        new Claim("UserID", user.Id.ToString())
-                //    }),
-                //    Expires = DateTime.UtcNow.AddDays(1),
-                //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                //};
-                //var tokenHandler = new JwtSecurityTokenHandler();
-                //var secutityToken = tokenHandler.CreateToken(tokenDescriptor);
-                //var token = tokenHandler.WriteToken(secutityToken);
-                #endregion JWT
-
                 var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, lockoutOnFailure: false);  // 登入
                 await GenerateLoginLogAsync(user, (model.DeviceType!=0)?model.DeviceType:1);      // 存入Log data到資料庫
                 return await GetMetaverse(user);        // 根據身分取得元宇宙列表
@@ -150,12 +135,12 @@ namespace FY111.Controllers.API
             {
                 case "NormalUser":
                 case "GroupUser":
-                    var selected_list = await _context.MetaverseSignups
+                    var selected_list = await _context.ClassSignups
                                 .Where(x => x.MemberId == user.Id)
-                                .Select(x => x.MetaverseId).ToListAsync();
-                    var selected_metaverse = await _context.Metaverses
+                                .Select(x => x.ClassId).ToListAsync();
+                    var selected_metaverse = await _context.Classes
                                             .Where(x => selected_list.Contains(x.Id)).ToListAsync();
-                    var metaverse = await _context.Metaverses
+                    var metaverse = await _context.Classes
                                     .Where(b => b.SignupEnabled == 1 && !selected_metaverse.Contains(b)) // 列出尚未選擇並且可選擇的元宇宙
                                     .ToListAsync();
                     return Ok(new
@@ -165,7 +150,7 @@ namespace FY111.Controllers.API
                     });
                 case "MetaverseAdmin":
                 case "SuperAdmin":
-                    var all_metaverse = await _context.Metaverses.ToListAsync();
+                    var all_metaverse = await _context.Classes.ToListAsync();
                     return Ok(new
                     {
                         metaverse = all_metaverse
