@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FY111.Models.FY111.ClassLog>
+﻿@model IEnumerable<FY111.Models.FY111.OperationUnitLog>
 
 @{
     ViewData["Title"] = "Log";
@@ -29,13 +29,10 @@
                                     @Html.DisplayNameFor(model => model.MemberId)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.ClassId)
+                                    @Html.DisplayNameFor(model => model.UnitCode)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.StartTime)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.EndTime)
+                                    @Html.DisplayNameFor(model => model.Pass)
                                 </th>
                             </tr>
                         </thead>
@@ -46,15 +43,11 @@
                                         @Html.DisplayFor(modelItem => item.MemberId)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.ClassId)
+                                        @Html.DisplayFor(modelItem => item.UnitCode)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.StartTime)
+                                        @Html.DisplayFor(modelItem => item.Pass)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.EndTime)
-                                    </td>
-
                                 </tr>
                             }
                         </tbody>
