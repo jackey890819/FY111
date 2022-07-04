@@ -23,7 +23,6 @@ namespace FY111.Models.FY111
         public virtual DbSet<ClassSignup> ClassSignups { get; set; }
         public virtual DbSet<ClassUnit> ClassUnits { get; set; }
         public virtual DbSet<Device> Devices { get; set; }
-        public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; }
         public virtual DbSet<LoginLog> LoginLogs { get; set; }
         public virtual DbSet<Occdisaster> Occdisasters { get; set; }
         public virtual DbSet<OperationCheckpoint> OperationCheckpoints { get; set; }
@@ -199,20 +198,6 @@ namespace FY111.Models.FY111
                     .IsRequired()
                     .HasMaxLength(45)
                     .HasColumnName("name");
-            });
-
-            modelBuilder.Entity<Efmigrationshistory>(entity =>
-            {
-                entity.HasKey(e => e.MigrationId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("__efmigrationshistory");
-
-                entity.Property(e => e.MigrationId).HasMaxLength(150);
-
-                entity.Property(e => e.ProductVersion)
-                    .IsRequired()
-                    .HasMaxLength(32);
             });
 
             modelBuilder.Entity<LoginLog>(entity =>
