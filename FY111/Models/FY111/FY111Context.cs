@@ -20,6 +20,7 @@ namespace FY111.Models.FY111
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<ClassCheckin> ClassCheckins { get; set; }
         public virtual DbSet<ClassLittleunit> ClassLittleunits { get; set; }
+        public virtual DbSet<ClassLog> ClassLogs { get; set; }
         public virtual DbSet<ClassSignup> ClassSignups { get; set; }
         public virtual DbSet<ClassUnit> ClassUnits { get; set; }
         public virtual DbSet<Device> Devices { get; set; }
@@ -29,6 +30,7 @@ namespace FY111.Models.FY111
         public virtual DbSet<OperationLittleunitLog> OperationLittleunitLogs { get; set; }
         public virtual DbSet<OperationOccdisaster> OperationOccdisasters { get; set; }
         public virtual DbSet<OperationUnitLog> OperationUnitLogs { get; set; }
+        public virtual DbSet<Timer> Timers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -131,6 +133,32 @@ namespace FY111.Models.FY111
                     .HasForeignKey(d => d.ClassUnitId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_class_littleunit_class_unit1");
+            });
+
+            modelBuilder.Entity<ClassLog>(entity =>
+            {
+                entity.HasKey(e => new { e.MemberId, e.StartTime })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("class_log");
+
+                entity.HasIndex(e => e.ClassId, "fk_class_log_Class1_idx");
+
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(256)
+                    .HasColumnName("Member_id");
+
+                entity.Property(e => e.StartTime).HasColumnName("start_time");
+
+                entity.Property(e => e.ClassId).HasColumnName("Class_id");
+
+                entity.Property(e => e.EndTime).HasColumnName("end_time");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.ClassLogs)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_class_log_Class1");
             });
 
             modelBuilder.Entity<ClassSignup>(entity =>
@@ -330,6 +358,20 @@ namespace FY111.Models.FY111
                 entity.Property(e => e.UnitCode)
                     .HasMaxLength(45)
                     .HasColumnName("unit_code");
+            });
+
+            modelBuilder.Entity<Timer>(entity =>
+            {
+                entity.HasKey(e => new { e.MemberId, e.StartTime })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("timer");
+
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(256)
+                    .HasColumnName("Member_id");
+
+                entity.Property(e => e.StartTime).HasColumnName("start_time");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -12,6 +12,7 @@ namespace FY111.Models.FY111
         public Class()
         {
             ClassCheckins = new HashSet<ClassCheckin>();
+            ClassLogs = new HashSet<ClassLog>();
             ClassSignups = new HashSet<ClassSignup>();
             ClassUnits = new HashSet<ClassUnit>();
         }
@@ -43,6 +44,7 @@ namespace FY111.Models.FY111
         public int? Duration { get; set; }
 
         public virtual ICollection<ClassCheckin> ClassCheckins { get; set; }
+        public virtual ICollection<ClassLog> ClassLogs { get; set; }
         public virtual ICollection<ClassSignup> ClassSignups { get; set; }
         public virtual ICollection<ClassUnit> ClassUnits { get; set; }
     }
