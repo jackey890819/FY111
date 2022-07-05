@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using FY111.Resources;
 
 #nullable disable
 
@@ -13,9 +15,12 @@ namespace FY111.Models.FY111
         }
 
         public int Id { get; set; }
-        public string Icon { get; set; }
-        public string Name { get; set; }
 
+        [Display(Name = "Icon", ResourceType = typeof(DisplayAttributeResources))]
+        public string Icon { get; set; }
+
+        [Display(Name = "DeviceName", ResourceType = typeof(DisplayAttributeResources))]
+        public string Name { get; set; }
         public virtual ICollection<LoginLog> LoginLogs { get; set; }
     }
 }

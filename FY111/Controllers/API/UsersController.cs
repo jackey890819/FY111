@@ -98,7 +98,7 @@ namespace FY111.Controllers.API
             if (_signInManager.IsSignedIn(User))
                 return BadRequest(new
                 {
-                    errors = "Login failed IsSignedIn"
+                    errors = "Login failed"
                 });
                 //return BadRequest(new { 
                 //    success = false,
