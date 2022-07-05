@@ -4,22 +4,29 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FY111.Models.Dto
 {
-    public class ClassDto
+    public class C
     {
         public int id { get; set; }
         public string code { get; set; }
         public string name { get; set; }
         public string content { get; set; }
         public string image { get; set; }
-        //public int? Duration { get; set; }
 
-        public ClassDto(Class @class)
+    }
+
+    public class ClassDto
+    {
+        public C @class { get; set; }
+        public ICollection<ClassUnitDto> units { get; set; }
+
+        public ClassDto(Class c)
         {
-            id = @class.Id;
-            code = @class.Code;
-            name = @class.Name;
-            content = @class.Content;
-            image = @class.Image;
+            @class = new C();
+            @class.id = c.Id;
+            @class.code = c.Code;
+            @class.name = c.Name;
+            @class.content = c.Content;
+            @class.image = c.Image;
         }
     }
 
