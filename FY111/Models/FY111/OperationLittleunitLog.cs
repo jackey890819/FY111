@@ -10,6 +10,7 @@ namespace FY111.Models.FY111
         public OperationLittleunitLog()
         {
             OperationCheckpoints = new HashSet<OperationCheckpoint>();
+            OperationOccdisasters = new HashSet<OperationOccdisaster>();
         }
 
         public int Id { get; set; }
@@ -21,7 +22,7 @@ namespace FY111.Models.FY111
         public DateTime? EndTime { get; set; }
 
         public virtual OperationUnitLog OperationLog { get; set; }
-        public virtual OperationOccdisaster OperationOccdisaster { get; set; }
         public virtual ICollection<OperationCheckpoint> OperationCheckpoints { get; set; }
+        public virtual ICollection<OperationOccdisaster> OperationOccdisasters { get; set; }
     }
 }

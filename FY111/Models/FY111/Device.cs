@@ -21,6 +21,7 @@ namespace FY111.Models.FY111
 
         [Display(Name = "DeviceName", ResourceType = typeof(DisplayAttributeResources))]
         public string Name { get; set; }
+
         public virtual ICollection<LoginLog> LoginLogs { get; set; }
     }
 }
