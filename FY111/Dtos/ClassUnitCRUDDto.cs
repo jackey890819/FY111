@@ -1,6 +1,6 @@
 ﻿namespace FY111.Dtos
 {
-    public class ClassUnitDto
+    public class ClassUnitCRUDDto
     {
         public int Id { get; set; }
         public int ClassId { get; set; }

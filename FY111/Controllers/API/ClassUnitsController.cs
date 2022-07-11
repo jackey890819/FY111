@@ -24,10 +24,10 @@ namespace FY111.Controllers.API
 
         // GET: api/ClassUnits
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClassUnitDto>>> GetClassUnits()
+        public async Task<ActionResult<IEnumerable<ClassUnitCRUDDto>>> GetClassUnits()
         {
             return await _context.ClassUnits
-                .Select(e => new ClassUnitDto
+                .Select(e => new ClassUnitCRUDDto
                 {
                     Id = e.Id,
                     ClassId = e.ClassId,
@@ -40,11 +40,11 @@ namespace FY111.Controllers.API
 
         // GET: api/ClassUnits/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ClassUnitDto>> GetClassUnit(int id)
+        public async Task<ActionResult<ClassUnitCRUDDto>> GetClassUnit(int id)
         {
             var classUnit = await _context.ClassUnits
                 .Where(e => e.Id == id)
-                .Select(e => new ClassUnitDto
+                .Select(e => new ClassUnitCRUDDto
                 {
                     Id = e.Id,
                     ClassId = e.ClassId,

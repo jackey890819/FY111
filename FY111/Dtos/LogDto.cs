@@ -1,4 +1,4 @@
-﻿namespace FY111.Models.Dto
+﻿namespace FY111.Dtos
 {
     public class AttendeeLogDto
     {

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using FY111.Areas.Identity.Data;
 using FY111.Models;
 using Microsoft.AspNetCore.Authorization;
-using FY111.Models.Dto;
+using FY111.Dtos;
 
 namespace FY111.Controllers
 {
