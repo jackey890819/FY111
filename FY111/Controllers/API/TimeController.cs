@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FY111.Controllers.API
 {
@@ -14,7 +16,6 @@ namespace FY111.Controllers.API
         private readonly FY111Context _context;
         private UserManager<FY111User> _userManager;
         private SignInManager<FY111User> _signInManager;
-        private DateTime startTime, endTime;
         public TimeController(
             FY111Context context,
             UserManager<FY111User> userManager,
@@ -27,18 +28,22 @@ namespace FY111.Controllers.API
         }
 
         [HttpPost("startTimer")]
-        public IActionResult TimerStart()
+        public async Task<IActionResult> TimerStartAsync()
         {
             if (!_signInManager.IsSignedIn(User)) return BadRequest(new
             {
                 errors = "Unauthorized"
             });
-            startTime = DateTime.Now;
+            Timer timer = new Timer();
+            timer.StartTime = DateTime.Now;
+            timer.MemberId = _userManager.GetUserId(User);
+            _context.Timers.Add(timer);
+            await _context.SaveChangesAsync();
             return Ok(new
             {
                 data = new
                 {
-                    StartDateTime = startTime.ToString("yyyy-MM-dd HH:mm:ss")
+                    StartDateTime = timer.StartTime.ToString("yyyy-MM-dd HH:mm:ss")
                 }
             });
         }
@@ -50,14 +55,15 @@ namespace FY111.Controllers.API
             {
                 errors = "Unauthorized"
             });
-            endTime = DateTime.Now;
+            Timer timer = _context.Timers.OrderBy(x => x.StartTime).LastOrDefault(x => x.MemberId == _userManager.GetUserId(User));
+            DateTime endTime = DateTime.Now;
             return Ok(new
             {
                 data = new
                 {
-                    StartDateTime = startTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                    StartDateTime = timer.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
                     EndDateTime = endTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    TestTimeLast = $"{endTime - startTime:hh\\:mm\\:ss}"
+                    TestTimeLast = $"{endTime - timer.StartTime:hh\\:mm\\:ss}"
                 }
             });
         }
