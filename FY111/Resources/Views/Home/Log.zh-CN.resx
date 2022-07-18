@@ -159,6 +159,9 @@
   <data name="登入時間分布" xml:space="preserve">
     <value>登入时间分布</value>
   </data>
+  <data name="詳細資料" xml:space="preserve">
+    <value>详细资料</value>
+  </data>
   <data name="進入課程次數" xml:space="preserve">
     <value>进入课程次数</value>
   </data>
