@@ -1,5 +1,6 @@
 ﻿using FY111.Areas.Identity.Data;
 using FY111.Models.FY111;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace FY111.Controllers
 {
+    [Authorize(Roles = "GroupUser")]
     public class SignUpManage : Controller
     {
         private readonly FY111Context _context;
