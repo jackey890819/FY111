@@ -123,7 +123,7 @@ namespace FY111.Controllers.API
                 #endregion JWT
 
                 var result = await _signInManager.PasswordSignInAsync(model.account, model.password, false, lockoutOnFailure: false);  // 登入
-                //await GenerateLoginLogAsync(user, (model.DeviceType!=0)?model.DeviceType:1);      // 存入Log data到資料庫
+                await GenerateLoginLogAsync(user, (model.DeviceType!=0) ? model.DeviceType : 1);      // 存入Log data到資料庫
                 //return await GetClass(user);        // 根據身分取得元宇宙列表
                 return Ok(new { token = "todo..." });
                 //return Ok(result);
@@ -141,15 +141,15 @@ namespace FY111.Controllers.API
             }
         }
 
-        //private async Task GenerateLoginLogAsync(FY111User user, int deviceType = 1)
-        //{
-        //    LoginLog log = new LoginLog();
-        //    log.MemberId = user.Id;
-        //    log.DeviceType = deviceType;
-        //    log.StartTime = DateTime.Now;
-        //    _context.LoginLogs.Add(log);
-        //    await _context.SaveChangesAsync();
-        //}
+        private async Task GenerateLoginLogAsync(FY111User user, int deviceType = 1)
+        {
+            LoginLog log = new LoginLog();
+            log.MemberId = user.Id;
+            log.DeviceType = deviceType;
+            log.StartTime = DateTime.Now;
+            _context.LoginLogs.Add(log);
+            await _context.SaveChangesAsync();
+        }
 
         //private async Task<IActionResult> GetClass(FY111User user)
         //{
@@ -195,12 +195,12 @@ namespace FY111.Controllers.API
                 return BadRequest(new{
                     errors = "Logout failed"
                 });
-                //return BadRequest(new { 
-                //    success = false,
-                //    message = "You haven't login system." 
-                //});
+            //return BadRequest(new { 
+            //    success = false,
+            //    message = "You haven't login system." 
+            //});
             // 使用者已登入，執行登出
-            //await AddLogoutLog();
+            await AddLogoutLog();
             await _signInManager.SignOutAsync();
             return Ok(new { message = "Logout successed." });
             //return Ok(new { 
@@ -209,13 +209,13 @@ namespace FY111.Controllers.API
             //});
 
         }
-        //private async Task AddLogoutLog()
-        //{
-        //    var user_id = _userManager.GetUserId(User);
-        //    LoginLog temp = _context.LoginLogs.FirstOrDefault(x => x.MemberId == user_id && x.EndTime == null); 
-        //    _context.Entry(temp).State = EntityState.Modified;
-        //    temp.EndTime = DateTime.Now;
-        //    await _context.SaveChangesAsync();
-        //}
+        private async Task AddLogoutLog()
+        {
+            var user_id = _userManager.GetUserId(User);
+            LoginLog temp = _context.LoginLogs.FirstOrDefault(x => x.MemberId == user_id && x.EndTime == null);
+            _context.Entry(temp).State = EntityState.Modified;
+            temp.EndTime = DateTime.Now;
+            await _context.SaveChangesAsync();
+        }
     }
 }

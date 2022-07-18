@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
+    [Authorize]
     public class DeviceManageController : Controller
     {
         private readonly FY111Context _context;

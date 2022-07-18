@@ -106,6 +106,11 @@ namespace FY111
             });
             #endregion Localization
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Home/AccessDenied";
+
+            });
             //services.AddCors();
             /*
             // JWT

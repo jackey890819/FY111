@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
@@ -20,6 +19,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace FY111.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -33,6 +33,7 @@ namespace FY111.Controllers
             _userManager = userManager;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             //if (User.IsInRole("NormalUser"))
@@ -63,13 +64,45 @@ namespace FY111.Controllers
         }
         public async Task<IActionResult> Log()
         {
-            return View(await _context.OperationUnitLogs.Where(x => x.MemberId == _userManager.GetUserId(User)).ToListAsync());
+            var model = new Dtos.LogsDto();
+            var userId = _userManager.GetUserId(User);
+            model.UnitLog = await _context.OperationUnitLogs.Where(x => x.MemberId == userId).ToListAsync();
+            for (int i = 0; i < model.UnitLog.Count; i++)
+            {
+                model.UnitLog[i].OperationLittleunitLogs = await _context.OperationLittleunitLogs.Where(x => x.OperationLogId == model.UnitLog[i].Id).ToListAsync();
+                for (int j=0; j < model.UnitLog[i].OperationLittleunitLogs.Count; j++)
+                {
+                    model.UnitLog[i].OperationLittleunitLogs.ElementAt(j).OperationCheckpoints = await _context.OperationCheckpoints
+                        .Where(x => x.OperationLittleunitLogId == model.UnitLog[i].OperationLittleunitLogs.ElementAt(j).Id).ToListAsync();
+                    model.UnitLog[i].OperationLittleunitLogs.ElementAt(j).OperationOccdisasters = await _context.OperationOccdisasters
+                        .Where(x => x.OperationLittleunitLogId == model.UnitLog[i].OperationLittleunitLogs.ElementAt(j).Id).ToListAsync();
+                }
+            }
+            model.@class = await _context.Classes.ToListAsync();
+            for(int i = 0; i < model.@class.Count; i++)
+            {
+                model.@class[i].ClassUnits = await _context.ClassUnits.Where(x => x.ClassId == model.@class[i].Id).ToListAsync();
+                model.@class[i].ClassLogs = await _context.ClassLogs
+                    .Where(x => x.ClassId == model.@class[i].Id && x.MemberId == userId).ToListAsync();
+                for(int j = 0; j < model.@class[i].ClassUnits.Count; j++)
+                {
+                    model.@class[i].ClassUnits.ElementAt(j).ClassLittleunits = await _context.ClassLittleunits
+                        .Where(x => x.ClassUnitId == model.@class[i].ClassUnits.ElementAt(j).Id).ToListAsync();
+                }
+            }
+            model.LoginLog = await _context.LoginLogs.Where(x => x.MemberId == userId).ToListAsync();
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
         [HttpPost]

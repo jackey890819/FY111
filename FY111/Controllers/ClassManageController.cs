@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
+    [Authorize(Roles = "Superadmin, MetaverseAdmin")]
     public class ClassManageController : Controller
     {
         private readonly FY111Context _context;

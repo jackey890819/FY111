@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class UserManageController : Controller
     {
         private UserManager<FY111User> _userManager;
@@ -21,7 +22,6 @@ namespace FY111.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Index(string sortOrder)
         {
             ViewData["RoleParm"] = String.IsNullOrEmpty(sortOrder) ? "role_desc" : "";
