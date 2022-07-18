@@ -137,12 +137,17 @@ namespace FY111.Controllers
 
         // 取得報名人員
         // GET: /api/attendedList/{教室代碼}/{受訓日期}
-        [HttpGet("attendedList/{classCode}/{date}")]
-        public async Task<IActionResult> GetAttendedList(string classCode, DateTime date)
+        [HttpGet("attendedList/{classCode}/{dateStr}")]
+        public async Task<IActionResult> GetAttendedList(string classCode, string dateStr)
         {
+            Debug.WriteLine(classCode + " " + dateStr);
             try
             {
-                int classId = (await _context.Classes.FirstOrDefaultAsync(x => x.Code == classCode)).Id;
+                DateTime date = DateTime.Parse(dateStr);
+                var targetClass = await _context.Classes.FirstOrDefaultAsync(x => x.Code == classCode);
+                if (targetClass == null)
+                    throw new Exception("找不到classCode");
+                int classId = targetClass.Id;
                 var signUpList = await _context.ClassSignups.Where(x => x.ClassId == classId).Select(x => x.MemberId).ToListAsync();
                 var attendees = await _context.ClassLogs.Where(x => x.ClassId == classId && DateTime.Compare(x.StartTime, date) >= 0).Select(x => x.MemberId).ToListAsync();
                 var logs = new List<AttendeeLogDto>();

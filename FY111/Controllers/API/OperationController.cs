@@ -308,7 +308,10 @@ namespace FY111.Controllers.API
             // 嘗試取得成績
             try
             {
-                int classId = (await _context.Classes.FirstOrDefaultAsync(x => x.Code == classCode)).Id;
+                var targetClass = await _context.Classes.FirstOrDefaultAsync(x => x.Code == classCode);
+                if (targetClass == null)
+                    throw new Exception("targetClass == null");
+                int classId = targetClass.Id;
                 List<ClassUnit> units = await _context.ClassUnits.Where(x => x.ClassId == classId).ToListAsync();
                 List<OperationResultDto_3> results = new List<OperationResultDto_3>();
                 for (int i = 0; i < units.Count; i++)
@@ -345,7 +348,12 @@ namespace FY111.Controllers.API
                     results.Add(result);
                 }
                 return Ok(new { data = results });
-            }
+            } 
+            //catch (System.NullReferenceException e) // debug 模式下還是會中斷
+            //{
+            //    Debug.WriteLine(e.Message);
+            //    return BadRequest(new { errors = "Get record failed null" });
+            //}
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
