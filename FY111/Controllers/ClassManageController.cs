@@ -79,6 +79,42 @@ namespace FY111.Controllers
             return View(classes);
         }
 
+        // GET: ClassManage/DetailsUnit/5
+        public async Task<IActionResult> DetailsUnit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var unit = await _context.ClassUnits
+                .FirstOrDefaultAsync(x => x.Id == id);
+            unit.ClassLittleunits = await _context.ClassLittleunits.Where(x => x.ClassUnitId == id).ToListAsync();
+            if (unit == null)
+            {
+                return NotFound();
+            }
+
+            return View(unit);
+        }
+
+        // GET: ClassManage/DetailsLittleUnit/5
+        public async Task<IActionResult> DetailsLittleUnit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var little = await _context.ClassLittleunits
+                .FirstOrDefaultAsync(x => x.Id == id);
+            //little.ClassLittleunits = await _context.ClassLittleunits.Where(x => x.ClassUnitId == id).ToListAsync();
+            if (little == null)
+            {
+                return NotFound();
+            }
+
+            return View(little);
+        }
+
         // GET: ClassManage/Create
         public IActionResult Create()
         {
@@ -99,6 +135,53 @@ namespace FY111.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(classes);
+        }
+
+        // GET: ClassManage/CreateUnit
+        public IActionResult CreateUnit(int ClassId, string ClassCode)
+        {
+            ViewData["ClassId"] = ClassId;
+            ViewData["ClassCode"] = ClassCode;
+            return View();
+        }
+
+        // POST: ClassManage/CreateUnit
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateUnit([Bind("Id,ClassId,Code,Name,Image")] ClassUnit unit)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(unit);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new { id = unit.ClassId });
+            }
+            return View(unit);
+        }
+
+        // GET: ClassManage/CreateLittleUnit
+        public IActionResult CreateLittleUnit(int ClassUnitId, string ClassUnitCode)
+        {
+            ViewData["ClassUnitId"] = ClassUnitId;
+            ViewData["ClassUnitCode"] = ClassUnitCode;
+            return View();
+        }
+        // POST: ClassManage/CreateLittleUnit
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateLittleUnit([Bind("Id,ClassUnitId,Code,Name,Image")] ClassLittleunit little)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(little);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(DetailsUnit), new { id = little.ClassUnitId });
+            }
+            return View(little);
         }
 
         // GET: ClassManage/Edit/5
@@ -163,6 +246,127 @@ namespace FY111.Controllers
             return View(@class);
         }
 
+        // GET: ClassManage/EditUnit/5
+        public async Task<IActionResult> EditUnit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var unit = await _context.ClassUnits.FirstOrDefaultAsync(x => x.Id == id);
+            if (unit == null)
+            {
+                return NotFound();
+            }
+            return View(unit);
+        }
+
+        // POST: ClassManage/EditUnit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUnit(int id, [Bind("Id,ClassId,Code,Name,Image")] ClassUnit unit)
+        {
+            if (id != unit.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string result = (await _context.ClassUnits.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Image;
+                    if (unit.Image == null)
+                    {
+                        unit.Image = result;
+                    }
+                    else
+                    {
+                        var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\ClassUnit\\");
+                        System.IO.File.Delete(dirPath + result);
+                    }
+                    _context.Update(unit);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ClassUnitExists(unit.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Details), new { id = unit.ClassId });
+            }
+            return View(unit);
+        }
+
+        // GET: ClassManage/EditLittleUnit/5
+        public async Task<IActionResult> EditLittleUnit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var little = await _context.ClassLittleunits.FirstOrDefaultAsync(x => x.Id == id);
+            if (little == null)
+            {
+                return NotFound();
+            }
+            return View(little);
+        }
+        // POST: ClassManage/EditLittleUnit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditLittleUnit(int id, [Bind("Id,ClassUnitId,Code,Name,Image")] ClassLittleunit little)
+        {
+            if (id != little.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string result = (await _context.ClassLittleunits.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Image;
+                    if (little.Image == null)
+                    {
+                        little.Image = result;
+                    }
+                    else
+                    {
+                        var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\ClassLittleUnit\\");
+                        System.IO.File.Delete(dirPath + result);
+                    }
+                    _context.Update(little);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ClassLittleUnitExists(little.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(DetailsUnit), new { id = little.ClassUnitId });
+            }
+            return View(little);
+        }
+
         // GET: ClassManage/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -181,7 +385,43 @@ namespace FY111.Controllers
             return View(classes);
         }
 
-        // POST: ClassManage/Delete/5
+        // GET: ClassManage/DeleteUnit/5
+        public async Task<IActionResult> DeleteUnit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var unit = await _context.ClassUnits
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (unit == null)
+            {
+                return NotFound();
+            }
+
+            return View(unit);
+        }
+
+        // GET: ClassManage/DeleteLittleUnit/5
+        public async Task<IActionResult> DeleteLittleUnit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var little = await _context.ClassLittleunits
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (little == null)
+            {
+                return NotFound();
+            }
+
+            return View(little);
+        }
+
+        // POST: ClassManage/DeleteConfirmed/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -195,9 +435,45 @@ namespace FY111.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // POST: ClassManage/DeleteUnitConfirmed/5
+        [HttpPost, ActionName("DeleteUnit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUnitConfirmed(int id)
+        {
+            var unit = await _context.ClassUnits.FirstOrDefaultAsync(m => m.Id == id);
+            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\ClassUnit\\");
+            var imageName = unit.Image;
+            System.IO.File.Delete(dirPath + imageName);
+            _context.ClassUnits.Remove(unit);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id = unit.ClassId });
+        }
+
+        // POST: ClassManage/DeleteLittleUnitConfirmed/5
+        [HttpPost, ActionName("DeleteLittleUnit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteLittleUnitConfirmed(int id)
+        {
+            var little = await _context.ClassLittleunits.FirstOrDefaultAsync(m => m.Id == id);
+            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\ClassLittleUnit\\");
+            var imageName = little.Image;
+            System.IO.File.Delete(dirPath + imageName);
+            _context.ClassLittleunits.Remove(little);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(DetailsUnit), new { id = little.ClassUnitId });
+        }
+
         private bool ClassExists(int id)
         {
             return _context.Classes.Any(e => e.Id == id);
+        }
+        private bool ClassUnitExists(int id)
+        {
+            return _context.ClassUnits.Any(e => e.Id == id);
+        }
+        private bool ClassLittleUnitExists(int id)
+        {
+            return _context.ClassLittleunits.Any(e => e.Id == id);
         }
     }
 }

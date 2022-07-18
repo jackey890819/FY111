@@ -1,0 +1,85 @@
+﻿@model FY111.Models.FY111.ClassUnit
+
+@{
+    ViewData["Title"] = @Localizer["Details"];
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>@Localizer["ClassUnit"]</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ClassId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClassId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Image, "ToImage", new { @belong = "ClassUnit" })
+        </dd>
+    </dl>
+    <div class="row justify-content-end">
+        <a asp-action="EditUnit" asp-route-id="@Model.Id" class="btn btn-primary">@Localizer["EditUnit"]</a>
+        <a asp-action="Details" asp-route-id="@(Model.ClassId)" class="btn btn-primary">@Localizer["Back to List"]</a>
+    </div>
+</div>
+
+<h4>@Localizer["ClassLittleunits"]</h4>
+<hr />
+
+<a asp-action="CreateLittleUnit" asp-route-ClassUnitId="@Model.Id" asp-route-ClassUnitCode="@Model.Code" class="btn btn-primary">@Localizer["Create New"]</a>
+
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassLittleunits.ElementAt(0).Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassLittleunits.ElementAt(0).Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassLittleunits.ElementAt(0).Image)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ClassLittleunits)
+        {
+            <tr class="">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td width="10%">
+                    @Html.DisplayFor(modelItem => item.Image, "ToImage", new { belong = "ClassLittleUnit" })
+                </td>
+                <td class="btn-group float-right">
+                    <a asp-action="EditLittleUnit" asp-route-id="@item.Id" class="btn btn-primary">@Localizer["Edit"]</a>
+                    <a asp-action="DetailsLittleUnit" asp-route-id="@item.Id" class="btn btn-primary">@Localizer["Details"]</a>
+                    <a asp-action="DeleteLittleUnit" asp-route-id="@item.Id" class="btn btn-danger">@Localizer["Delete"]</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

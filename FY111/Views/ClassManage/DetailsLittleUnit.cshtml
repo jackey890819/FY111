@@ -1,0 +1,42 @@
+﻿@model FY111.Models.FY111.ClassLittleunit
+
+@{
+    ViewData["Title"] = @Localizer["Details"];
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>@Localizer["ClassLittleunit"]</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ClassUnitId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClassUnitId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Image, "ToImage", new { @belong = "ClassLittleunit" })
+        </dd>
+    </dl>
+    <div class="row justify-content-end">
+        <a asp-action="EditLittleUnit" asp-route-id="@Model.Id" class="btn btn-primary">@Localizer["EditLittleUnit"]</a>
+        <a asp-action="DetailsUnit" asp-route-id="@(Model.ClassUnitId)" class="btn btn-primary">@Localizer["Back to List"]</a>
+    </div>
+</div>
