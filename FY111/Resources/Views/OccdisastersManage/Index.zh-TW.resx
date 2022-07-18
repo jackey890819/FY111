@@ -117,46 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="使用情況分析" xml:space="preserve">
-    <value>Usage analysis</value>
+  <data name="Back to Full List" xml:space="preserve">
+    <value>回到全部列表</value>
   </data>
-  <data name="元宇宙課程介紹" xml:space="preserve">
-    <value>Class Introduction</value>
+  <data name="Create New" xml:space="preserve">
+    <value>新增</value>
   </data>
-  <data name="元宇宙課程管理" xml:space="preserve">
-    <value>Class Management</value>
+  <data name="Delete" xml:space="preserve">
+    <value>刪除</value>
   </data>
-  <data name="帳戶管理" xml:space="preserve">
-    <value>Account management</value>
+  <data name="Details" xml:space="preserve">
+    <value>詳細資料</value>
   </data>
-  <data name="拜訪人數" xml:space="preserve">
-    <value>Visitors</value>
+  <data name="Edit" xml:space="preserve">
+    <value>編輯</value>
   </data>
-  <data name="用戶管理" xml:space="preserve">
-    <value>User Management</value>
+  <data name="Next" xml:space="preserve">
+    <value>下一頁</value>
   </data>
-  <data name="目前時間" xml:space="preserve">
-    <value>Current time</value>
+  <data name="Occdisaster Management" xml:space="preserve">
+    <value>職場災害管理</value>
   </data>
-  <data name="組織成員管理" xml:space="preserve">
-    <value>Organization member management</value>
+  <data name="Previous" xml:space="preserve">
+    <value>上一頁</value>
   </data>
-  <data name="組織課程管理" xml:space="preserve">
-    <value>Organization Course Management</value>
-  </data>
-  <data name="職場災害管理" xml:space="preserve">
-    <value>Occdisaster management</value>
-  </data>
-  <data name="裝置管理" xml:space="preserve">
-    <value>Device management</value>
-  </data>
-  <data name="課程單元檢查點管理" xml:space="preserve">
-    <value>UnitCkpt management</value>
-  </data>
-  <data name="軟體上傳" xml:space="preserve">
-    <value>Software upload</value>
-  </data>
-  <data name="軟體下載" xml:space="preserve">
-    <value>Software download</value>
+  <data name="Search" xml:space="preserve">
+    <value>搜尋</value>
   </data>
 </root>

@@ -144,8 +144,14 @@
   <data name="組織課程管理" xml:space="preserve">
     <value>组织课程管理</value>
   </data>
+  <data name="職場災害管理" xml:space="preserve">
+    <value>职场灾害管理</value>
+  </data>
   <data name="裝置管理" xml:space="preserve">
     <value>装置管理</value>
+  </data>
+  <data name="課程單元檢查點管理" xml:space="preserve">
+    <value>课程单元检查点管理</value>
   </data>
   <data name="軟體上傳" xml:space="preserve">
     <value>软体上传</value>
