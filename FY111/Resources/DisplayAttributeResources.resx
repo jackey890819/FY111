@@ -123,8 +123,14 @@
   <data name="CheckinEnabled" xml:space="preserve">
     <value>是否開啟報到</value>
   </data>
+  <data name="CkptId" xml:space="preserve">
+    <value>檢查點Id</value>
+  </data>
   <data name="ClassName" xml:space="preserve">
     <value>課程名稱</value>
+  </data>
+  <data name="ClassUnitId" xml:space="preserve">
+    <value>課程單元Id</value>
   </data>
   <data name="Code" xml:space="preserve">
     <value>代碼</value>
