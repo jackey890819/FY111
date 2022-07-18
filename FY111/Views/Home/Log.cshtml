@@ -16,7 +16,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Detail</h6>
+        <h6 class="m-0 font-weight-bold text-primary">@Localizer["詳細資料"]</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -26,23 +26,44 @@
                         <thead>
                             <tr role="row">
                                 <th>
-                                    @Html.DisplayNameFor(model => model.UnitLog[0].UnitCode)
+                                    @Html.DisplayNameFor(model => model.UnitLog[0].OperationLittleunitLogs.ElementAt(0).LittleunitCode)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.UnitLog[0].UnitCode)
+                                    @Html.DisplayNameFor(model => model.UnitLog[0].OperationLittleunitLogs.ElementAt(0).Pass)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UnitLog[0].OperationLittleunitLogs.ElementAt(0).Score)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UnitLog[0].OperationLittleunitLogs.ElementAt(0).StartTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UnitLog[0].OperationLittleunitLogs.ElementAt(0).EndTime)
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.UnitLog) {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.UnitCode)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Pass)
-                                    </td>
-                                </tr>
+                            @foreach (var unitlog in Model.UnitLog) {
+                                @foreach (var item in unitlog.OperationLittleunitLogs)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LittleunitCode)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Pass)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Score)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.StartTime)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EndTime)
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>

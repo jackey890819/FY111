@@ -1,0 +1,494 @@
+{
+	"info": {
+		"_postman_id": "6acc6ac8-faa5-497b-bb7d-aaf075ca62cc",
+		"name": "fy111",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20452813"
+	},
+	"item": [
+		{
+			"name": "UsersController",
+			"item": [
+				{
+					"name": "監控平台登入驗證",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account\": \"Nkust1234\",\r\n    \"password\": \"Nkust1234!\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/monitorPlatformLogin",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"monitorPlatformLogin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "監控平台登出",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44380/api/monitorPlatformLogout",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"monitorPlatformLogout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ClassController",
+			"item": [
+				{
+					"name": "取得所有課程資訊",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/class",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"class"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得出席人員",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/attendedList/HA/2022-07-05",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"attendedList",
+								"HA",
+								"2022-07-05"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "進入教室",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"classId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/enter",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"enter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "離開教室",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/leave",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"leave"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TimeController",
+			"item": [
+				{
+					"name": "開始計時",
+					"request": {
+						"auth": {
+							"type": "apikey"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "JID",
+								"value": "test",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44380/api/startTimer",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"startTimer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "結束計時",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/endTimer",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"endTimer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ClassSignupController",
+			"item": [
+				{
+					"name": "報名課程",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ClassId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/classsignup",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"classsignup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取消報名",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/classsignup/6",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"classsignup",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OperationController",
+			"item": [
+				{
+					"name": "更新操作紀錄",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"unit_code\": \"HA_S\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/operationRecord",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"operationRecord"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "紀錄使用者操作階段",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"unit_code\": \"HA_S\",\r\n    \"little_unit\": [\r\n        {\r\n            \"code\": \"HA_S_00\",\r\n            \"CheckPoint\": [\r\n                {\r\n                    \"CKPT_id\": \"CKPT_01\",\r\n                    \"PointType\": 1\r\n                },\r\n                {\r\n                    \"CKPT_id\": \"CKPT_02\",\r\n                    \"PointType\": 0\r\n                },\r\n                {\r\n                    \"CKPT_id\": \"CKPT_03\",\r\n                    \"PointType\": 0\r\n                },\r\n                {\r\n                    \"CKPT_id\": \"CKPT_04\",\r\n                    \"PointType\": 1\r\n                },\r\n                {\r\n                    \"CKPT_id\": \"CKPT_05\",\r\n                    \"PointType\": 1\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"code\": \"HA_S_01\",\r\n            \"CheckPoint\": [\r\n                {\r\n                    \"CKPT_id\": \"CKPT_11\",\r\n                    \"PointType\": 0\r\n                },\r\n                {\r\n                    \"CKPT_id\": \"CKPT_12\",\r\n                    \"PointType\": 1\r\n                },\r\n                {\r\n                    \"CKPT_id\": \"CKPT_13\",\r\n                    \"PointType\": 0\r\n                },\r\n                {\r\n                    \"CKPT_id\": \"CKPT_14\",\r\n                    \"PointType\": -1\r\n                },\r\n                {\r\n                    \"CKPT_id\": \"CKPT_15\",\r\n                    \"PointType\": 1\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/operationCheckpoint",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"operationCheckpoint"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得使用者操作階段",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/operationCheckpoint/HA_S",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"operationCheckpoint",
+								"HA_S"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "上傳職災資訊",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"unit_code\": \"HA_S\",\r\n    \"little_unit\": [\r\n        {\r\n            \"code\": \"HA_S_00\",\r\n            \"OccDisaster\": [\"DD_002\", \"DD_001\"]\r\n        },\r\n        {\r\n            \"code\": \"HA_S_01\",\r\n            \"OccDisaster\": [\"DD_003\", \"DD_004\"]\r\n        }\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/operationDisaster",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"operationDisaster"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "上傳學習成績",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"unit_code\": \"HA_S\",\r\n    \"little_unit\": [\r\n        {\r\n            \"code\": \"HA_S_00\",\r\n            \"ScoreData\": {\r\n                \"score\": 80,\r\n                \"pass\": \"true\",\r\n                \"StartDateTime\": \"2022-07-05 14:00:00\",\r\n                \"EndDateTime\": \"2022-07-05 15:30:00\",\r\n                \"TestTimeLast\": \"01:30:00\"\r\n            }\r\n        },\r\n        {\r\n            \"code\": \"HA_S_01\",\r\n            \"ScoreData\": {\r\n                \"score\": 20,\r\n                \"pass\": \"false\",\r\n                \"StartDateTime\": \"2022-07-05 16:00:00\",\r\n                \"EndDateTime\": \"2022-07-05 17:30:00\",\r\n                \"TestTimeLast\": \"01:30:00\"\r\n            }\r\n        }\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44380/api/operationResult",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"operationResult"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得職災資訊",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/operationDisaster/HA_S",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"operationDisaster",
+								"HA_S"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得當下受測成績",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/operationResult/HA_S",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"operationResult",
+								"HA_S"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得上次受測成績",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/lastScore/HA",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"lastScore",
+								"HA"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

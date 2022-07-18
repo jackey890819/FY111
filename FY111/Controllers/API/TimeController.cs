@@ -54,21 +54,24 @@ namespace FY111.Controllers.API
         }
 
         [HttpPost("endTimer")]
-        public IActionResult TimerEnd()
+        public async Task<IActionResult> TimerEndAsync()
         {
             if (!_signInManager.IsSignedIn(User)) 
                 return Unauthorized( new { errors = "Unauthorized" });
             try
             {
                 Timer timer = _context.Timers.OrderBy(x => x.StartTime).LastOrDefault(x => x.MemberId == _userManager.GetUserId(User));
+                DateTime startTime = timer.StartTime;
                 DateTime endTime = DateTime.Now;
+                _context.Timers.Remove(timer);
+                await _context.SaveChangesAsync();
                 return Ok(new
                 {
                     data = new
                     {
-                        StartDateTime = timer.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                        StartDateTime = startTime.ToString("yyyy-MM-dd HH:mm:ss"),
                         EndDateTime = endTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                        TestTimeLast = $"{endTime - timer.StartTime:hh\\:mm\\:ss}"
+                        TestTimeLast = $"{endTime - startTime:hh\\:mm\\:ss}"
                     }
                 });
             } catch (Exception e)
