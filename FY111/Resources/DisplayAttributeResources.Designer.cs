@@ -88,6 +88,15 @@ namespace FY111.Resources {
         }
         
         /// <summary>
+        ///   查詢類似 子子課程名稱 的當地語系化字串。
+        /// </summary>
+        public static string ClassLittleUnitName {
+            get {
+                return ResourceManager.GetString("ClassLittleUnitName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 課程名稱 的當地語系化字串。
         /// </summary>
         public static string ClassName {
@@ -102,6 +111,15 @@ namespace FY111.Resources {
         public static string ClassUnitId {
             get {
                 return ResourceManager.GetString("ClassUnitId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 子課程名稱 的當地語系化字串。
+        /// </summary>
+        public static string ClassUnitName {
+            get {
+                return ResourceManager.GetString("ClassUnitName", resourceCulture);
             }
         }
         

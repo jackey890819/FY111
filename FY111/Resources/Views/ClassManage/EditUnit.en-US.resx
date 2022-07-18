@@ -117,85 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Avatar" xml:space="preserve">
-    <value>头像</value>
+  <data name="Back to List" xml:space="preserve">
+    <value>Back to List</value>
   </data>
-  <data name="CheckinEnabled" xml:space="preserve">
-    <value>是否开启报到</value>
+  <data name="ClassUnit" xml:space="preserve">
+    <value>ClassUnit</value>
   </data>
-  <data name="CkptId" xml:space="preserve">
-    <value>检查点Id</value>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
   </data>
-  <data name="ClassLittleUnitName" xml:space="preserve">
-    <value>子子课程名称</value>
-  </data>
-  <data name="ClassName" xml:space="preserve">
-    <value>课程名称</value>
-  </data>
-  <data name="ClassUnitId" xml:space="preserve">
-    <value>课程单元Id</value>
-  </data>
-  <data name="ClassUnitName" xml:space="preserve">
-    <value>子课程名称</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>代码</value>
-  </data>
-  <data name="Content" xml:space="preserve">
-    <value>內容</value>
-  </data>
-  <data name="CurrentPassword" xml:space="preserve">
-    <value>目前密码</value>
-  </data>
-  <data name="DeviceName" xml:space="preserve">
-    <value>装置名称</value>
-  </data>
-  <data name="Duration" xml:space="preserve">
-    <value>课程时长</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="Icon" xml:space="preserve">
-    <value>图标</value>
-  </data>
-  <data name="Image" xml:space="preserve">
-    <value>图片</value>
-  </data>
-  <data name="isSignedUp" xml:space="preserve">
-    <value>是否报名</value>
-  </data>
-  <data name="NewEmail" xml:space="preserve">
-    <value>新的Email</value>
-  </data>
-  <data name="NewPassword" xml:space="preserve">
-    <value>新密码</value>
-  </data>
-  <data name="NewPasswordConfirm" xml:space="preserve">
-    <value>确认新密码</value>
-  </data>
-  <data name="Organization" xml:space="preserve">
-    <value>所属组织</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>密码</value>
-  </data>
-  <data name="PasswordConfirm" xml:space="preserve">
-    <value>确认密码</value>
-  </data>
-  <data name="PhoneNumber" xml:space="preserve">
-    <value>电话号码</value>
-  </data>
-  <data name="Remember" xml:space="preserve">
-    <value>记得我?</value>
-  </data>
-  <data name="Role" xml:space="preserve">
-    <value>角色</value>
-  </data>
-  <data name="SignupEnabled" xml:space="preserve">
-    <value>是否开启报名</value>
-  </data>
-  <data name="UserName" xml:space="preserve">
-    <value>使用者名称</value>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
 </root>
