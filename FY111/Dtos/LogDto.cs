@@ -1,4 +1,7 @@
-﻿namespace FY111.Dtos
+﻿using FY111.Models.FY111;
+using System.Collections.Generic;
+
+namespace FY111.Dtos
 {
     public class AttendeeLogDto
     {
@@ -11,5 +14,12 @@
             this.name = name;
             this.checkin = checkin;
         }
+    }
+
+    public class LogsDto
+    {
+        public List<OperationUnitLog> UnitLog { get; set; }
+        public List<Class> @class { get; set; }
+        public List<LoginLog> LoginLog { get; set; } 
     }
 }

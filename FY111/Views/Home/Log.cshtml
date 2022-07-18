@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FY111.Models.FY111.OperationUnitLog>
+﻿@model FY111.Dtos.LogsDto
 
 @{
     ViewData["Title"] = "Log";
@@ -6,11 +6,11 @@
 
 
 <div class="row">
-    <div class="col-xl-8 col-lg-7">
-        <div id="Population" style="width:100%;height:350px;" :lazy='true'></div>
-    </div>
     <div class="col-xl-4 col-lg-5">
-        <div id="Device" style="width:100%;height:350px;" :lazy='true'></div>
+        <div id="ClassCount" style="width:100%;height:350px;" :lazy='true'></div>
+    </div>
+    <div class="col-xl-8 col-lg-7">
+        <div id="LoginLog" style="width:100%;height:350px;" :lazy='true'></div>
     </div>
 </div>
 
@@ -26,22 +26,16 @@
                         <thead>
                             <tr role="row">
                                 <th>
-                                    @Html.DisplayNameFor(model => model.MemberId)
+                                    @Html.DisplayNameFor(model => model.UnitLog[0].UnitCode)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.UnitCode)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Pass)
+                                    @Html.DisplayNameFor(model => model.UnitLog[0].UnitCode)
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model) {
+                            @foreach (var item in Model.UnitLog) {
                                 <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.MemberId)
-                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.UnitCode)
                                     </td>
@@ -59,30 +53,91 @@
 </div>
 
 @section scripts {
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js">
+const { type } = require("jquery");
+</script>
 
     <script type="text/javascript">
-        var myChart1 = echarts.init(document.getElementById('Population'));
+        var myChart1 = echarts.init(document.getElementById('ClassCount'));
 
         var option1 = {
+            @{
+                var classNames = Model.@class.Select(x => x.Name).ToList();
+                }
+            @{
+                var classLogCount = new List<int>(new int[Model.@class.Count]);
+                for(int i = 0; i < classLogCount.Count; i++){
+                    classLogCount[i] = Model.@class[i].ClassLogs.Count();
+                }
+            }
             title: {
-                text: 'Population Chart',
+                text: '@Localizer["進入課程次數"]',
                 textStyle: {
                     color: '#4E73DF'
                 }
             },
-            tooltip: {},
-            xAxis: {
-                data: ['工廠', '手術', '會議', '教室']
+            tooltip: {
+                trigger: 'item'
             },
-            yAxis: {},
+            /*legend: {
+                top: '5%',
+                left: 'center'
+            },
+            series: [{
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#fff',
+                    //borderWidth: 2
+                },
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data:[
+                    @*for(int i = 0; i < classLogCount.Count; i++){
+                        @Html.Raw($"{{value: {Json.Serialize(classLogCount[i])}, name: {Json.Serialize(classNames[i])}}},")
+                    }*@
+                ]
+            }]*/
+            xAxis: {
+                data: @Html.Raw(Json.Serialize(classNames)), // ['工廠', '手術', '會議', '教室']
+                axisLabel : {
+                    interval : 0,
+                    formatter : function(params, index){
+                        if (index % 2 != 0) {
+                            return '\n\n' + params;
+                        }
+                        else {
+                            return params;
+                        }
+                    }
+                }
+            },
+            yAxis: {
+                interval: 1
+            },
             series: [
                 {
-                    name: 'Population',
+                    name: '@Localizer["次數"]',
                     type: 'bar',
-                    barWidth: '35%',
+                    colorBy: 'data',
                     data: [
-                        {
+                        @for(int i = 0; i < classLogCount.Count; i++){
+                            @Html.Raw($"{{value: {Json.Serialize(classLogCount[i])}}},")
+                        }
+                        /*{
                             value: 13,
                             itemStyle: {
                                 color: '#FF6384'
@@ -105,16 +160,44 @@
                             itemStyle: {
                                 color: '#9B69BA'
                             }
-                        },
+                        },*/
                     ]
                 }
             ]
         };
 
-        var myChart2 = echarts.init(document.getElementById('Device'));
+        var myChart2 = echarts.init(document.getElementById('LoginLog'));
 
         var option2 = {
             title: {
+                text: '@Localizer["登入時間分布"]',
+                textStyle: {
+                    color: '#4E73DF'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: ['@Localizer["1月"]', '@Localizer["2月"]', '@Localizer["3月"]', '@Localizer["4月"]', '@Localizer["5月"]', '@Localizer["6月"]'
+                , '@Localizer["7月"]', '@Localizer["8月"]', '@Localizer["9月"]', '@Localizer["10月"]', '@Localizer["11月"]', '@Localizer["12月"]']
+            },
+            yAxis: {
+                type: 'value',
+                interval: 1
+            },
+            series: [
+                {
+                    @{
+                        var loginLogValues = new List<int>(new int[12]);
+                        for(int i = 1; i <= 12; i++){
+                            loginLogValues[i-1] = Model.LoginLog.Where(x => x.StartTime.Month == i).Count();
+                        }
+                    }
+                    data: @Html.Raw(Json.Serialize(loginLogValues)),
+                    type: 'line',
+                    smooth: true
+                }
+            ]
+            /*title: {
                 text: 'Device Chart',
                 textStyle: {
                     color: '#4E73DF'
@@ -159,7 +242,7 @@
                         { value: 3, name: 'VR' }
                     ]
                 }
-            ]
+            ]*/
         };
 
         myChart1.setOption(option1);
