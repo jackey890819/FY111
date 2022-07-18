@@ -62,8 +62,8 @@ namespace FY111.Dtos
         public string dd_content { get; set; }
         public OccdisasterDto(Occdisaster occdisaster)
         {
-            dd_code = occdisaster.Code;
-            dd_content = occdisaster.Content;
+            dd_code = occdisaster != null ? occdisaster.Code : "";
+            dd_content = occdisaster != null ? occdisaster.Content : "";
         }
     }
 
