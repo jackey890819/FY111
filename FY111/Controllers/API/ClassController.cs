@@ -11,6 +11,7 @@ using FY111.Areas.Identity.Data;
 using FY111.Models;
 using Microsoft.AspNetCore.Authorization;
 using FY111.Dtos;
+using System.Diagnostics;
 
 namespace FY111.Controllers
 {
@@ -33,98 +34,135 @@ namespace FY111.Controllers
             _signInManager = signInManager;
         }
 
+
+        // 取得所有課程資訊
+        // GET: /api/class
         [HttpGet("class")]
         public async Task<IActionResult> GetClass()
         {
-            var @class = await _context.Classes.Select(x => new ClassDto(x)).ToListAsync();
-            for (int i = 0; i < @class.Count; i++)
+            try
             {
-                @class[i].units = await _context.ClassUnits.Where(x => x.ClassId == @class[i].@class.id).Select(x => new ClassUnitDto(x)).ToListAsync();
-                for (int j=0; j<@class[i].units.Count; j++)
+                var @class = await _context.Classes.Select(x => new ClassDto(x)).ToListAsync();
+                for (int i = 0; i < @class.Count; i++)
                 {
-                    @class[i].units.ElementAt(j).unit.littleUnits =
-                        await _context.ClassLittleunits.Where(x => x.ClassUnitId == @class[i].units.ElementAt(j).unit.id)
-                        .Select(x => new ClassLittleUnitDto(x)).ToListAsync();
+                    @class[i].units = await _context.ClassUnits.Where(x => x.ClassId == @class[i].@class.id).Select(x => new ClassUnitDto(x)).ToListAsync();
+                    for (int j = 0; j < @class[i].units.Count; j++)
+                    {
+                        @class[i].units.ElementAt(j).unit.littleUnits =
+                            await _context.ClassLittleunits.Where(x => x.ClassUnitId == @class[i].units.ElementAt(j).unit.id)
+                            .Select(x => new ClassLittleUnitDto(x)).ToListAsync();
+                    }
                 }
-            }
-            return Ok(new
+                return Ok(new
+                {
+                    data = @class
+                });
+            } catch (Exception e)
             {
-                data = @class
-            });
+                Debug.WriteLine(e.Message);
+                return BadRequest(new { errors = "Get class information failed" });
+            }
         }
+
 
         [HttpPost("Enter")]
         public async Task<ActionResult<ClassLog>> EnterClass(ClassLog classLog)
         {
             if (!_signInManager.IsSignedIn(User))
-                return BadRequest(new
+                return Unauthorized(new
                 {
                     success = false,
                     message = "You are not logged in yet."
                 });
-            var user = await _userManager.GetUserAsync(User);
-            var user_id = user.Id;
-            //var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            classLog.MemberId = user_id;
-            classLog.StartTime = DateTime.Now;
-            _context.ClassLogs.Add(classLog);
-            await _context.SaveChangesAsync();
-
-            return Ok(new
+            try
             {
-                success = true,
-                message = "Create Log Successfully"
-            });
+                var user = await _userManager.GetUserAsync(User);
+                var user_id = user.Id;
+                //var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                classLog.MemberId = user_id;
+                classLog.StartTime = DateTime.Now;
+                _context.ClassLogs.Add(classLog);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Create Log Successfully"
+                });
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return BadRequest(new { errors = "Enter failed" });
+            }
         }
+
 
         [HttpPatch("Leave")]
         public async Task<ActionResult<ClassLog>> LeaveClass()
         {
             if (!_signInManager.IsSignedIn(User))
-                return BadRequest(new
+                return Unauthorized(new
                 {
                     success = false,
                     message = "You are not logged in yet."
                 });
-            var user = await _userManager.GetUserAsync(User);
-            var user_id = user.Id;
-            //var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ClassLog classLog = _context.ClassLogs.FirstOrDefault(x => x.MemberId == user_id && x.EndTime == null);
-            if (classLog == null)
-                return BadRequest(new
-                {
-                    success = false,
-                    message = "You haven't entered."
-                });
-            _context.Entry(classLog).State = EntityState.Modified;
-            classLog.EndTime = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return Ok(new
+            try
             {
-                success = true,
-                message = "Modify Log Successfully"
-            });
+                var user = await _userManager.GetUserAsync(User);
+                var user_id = user.Id;
+                //var user_id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                ClassLog classLog = _context.ClassLogs.FirstOrDefault(x => x.MemberId == user_id && x.EndTime == null);
+                if (classLog == null)
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "You haven't entered."
+                    });
+                _context.Entry(classLog).State = EntityState.Modified;
+                classLog.EndTime = DateTime.Now;
+                await _context.SaveChangesAsync();
+                return Ok(new
+                {
+                    success = true,
+                    message = "Modify Log Successfully"
+                });
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return BadRequest(new { errors = "Leave failed" });
+            }
+            
         }
 
+
+        // 取得報名人員
+        // GET: /api/attendedList/{教室代碼}/{受訓日期}
         [HttpGet("attendedList/{classCode}/{date}")]
         public async Task<IActionResult> GetAttendedList(string classCode, DateTime date)
         {
-            int classId = (await _context.Classes.FirstOrDefaultAsync(x => x.Code == classCode)).Id;
-            var signUpList = await _context.ClassSignups.Where(x => x.ClassId == classId).Select(x => x.MemberId).ToListAsync();
-            var attendees = await _context.ClassLogs.Where(x => x.ClassId == classId && DateTime.Compare(x.StartTime, date) >= 0).Select(x => x.MemberId).ToListAsync();
-            var logs = new List<AttendeeLogDto>();
-            for (int i = 0; i < signUpList.Count; i++)
+            try
             {
-                bool checkin = false;
-                string name = (await _userManager.FindByIdAsync(signUpList[i])).UserName;
-                if (attendees.Contains(signUpList[i])) checkin = true;
-                var log = new AttendeeLogDto(signUpList[i], name, checkin);
-                logs.Add(log);
+                int classId = (await _context.Classes.FirstOrDefaultAsync(x => x.Code == classCode)).Id;
+                var signUpList = await _context.ClassSignups.Where(x => x.ClassId == classId).Select(x => x.MemberId).ToListAsync();
+                var attendees = await _context.ClassLogs.Where(x => x.ClassId == classId && DateTime.Compare(x.StartTime, date) >= 0).Select(x => x.MemberId).ToListAsync();
+                var logs = new List<AttendeeLogDto>();
+                for (int i = 0; i < signUpList.Count; i++)
+                {
+                    bool checkin = false;
+                    string name = (await _userManager.FindByIdAsync(signUpList[i])).UserName;
+                    if (attendees.Contains(signUpList[i])) checkin = true;
+                    var log = new AttendeeLogDto(signUpList[i], name, checkin);
+                    logs.Add(log);
+                }
+                return Ok(new
+                {
+                    data = logs
+                });
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return BadRequest(new { errors = "Get attended list failed" });
             }
-            return Ok(new
-            {
-                data = logs
-            });
         }
 
         // GET: api/Class/{id}
@@ -412,8 +450,8 @@ namespace FY111.Controllers
         //}
 
         private bool ClassExists(int id)
-    {
-        return _context.Classes.Any(e => e.Id == id);
-    }
+        {
+            return _context.Classes.Any(e => e.Id == id);
+        }
 }
 }

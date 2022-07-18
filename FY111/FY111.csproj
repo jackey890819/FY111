@@ -1622,8 +1622,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Test\" />
-  </ItemGroup>
-
 </Project>
