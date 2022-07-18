@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,42 +31,51 @@ namespace FY111.Controllers.API
         [HttpPost("startTimer")]
         public async Task<IActionResult> TimerStartAsync()
         {
-            if (!_signInManager.IsSignedIn(User)) return BadRequest(new
+            if (!_signInManager.IsSignedIn(User)) return Unauthorized(new { errors = "Unauthorized" });
+            try
             {
-                errors = "Unauthorized"
-            });
-            Timer timer = new Timer();
-            timer.StartTime = DateTime.Now;
-            timer.MemberId = _userManager.GetUserId(User);
-            _context.Timers.Add(timer);
-            await _context.SaveChangesAsync();
-            return Ok(new
-            {
-                data = new
+                Timer timer = new Timer();
+                timer.StartTime = DateTime.Now;
+                timer.MemberId = _userManager.GetUserId(User);
+                _context.Timers.Add(timer);
+                await _context.SaveChangesAsync();
+                return Ok(new
                 {
-                    StartDateTime = timer.StartTime.ToString("yyyy-MM-dd HH:mm:ss")
-                }
-            });
+                    data = new
+                    {
+                        StartDateTime = timer.StartTime.ToString("yyyy-MM-dd HH:mm:ss")
+                    }
+                });
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost("endTimer")]
         public IActionResult TimerEnd()
         {
-            if (!_signInManager.IsSignedIn(User)) return BadRequest(new
+            if (!_signInManager.IsSignedIn(User)) 
+                return Unauthorized( new { errors = "Unauthorized" });
+            try
             {
-                errors = "Unauthorized"
-            });
-            Timer timer = _context.Timers.OrderBy(x => x.StartTime).LastOrDefault(x => x.MemberId == _userManager.GetUserId(User));
-            DateTime endTime = DateTime.Now;
-            return Ok(new
-            {
-                data = new
+                Timer timer = _context.Timers.OrderBy(x => x.StartTime).LastOrDefault(x => x.MemberId == _userManager.GetUserId(User));
+                DateTime endTime = DateTime.Now;
+                return Ok(new
                 {
-                    StartDateTime = timer.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    EndDateTime = endTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                    TestTimeLast = $"{endTime - timer.StartTime:hh\\:mm\\:ss}"
-                }
-            });
+                    data = new
+                    {
+                        StartDateTime = timer.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                        EndDateTime = endTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                        TestTimeLast = $"{endTime - timer.StartTime:hh\\:mm\\:ss}"
+                    }
+                });
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return BadRequest(e.Message);
+            }
         }
     }
 }
