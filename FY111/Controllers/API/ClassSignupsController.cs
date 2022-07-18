@@ -72,9 +72,10 @@ namespace FY111.Controllers.API
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult<ClassSignup>> PostClassSignup(ClassSignup classSignup)
         {
+            if (!_signInManager.IsSignedIn(User))
+                return Unauthorized();
             // 使用者檢查
             if (User.IsInRole("NormalUser"))
             {
@@ -109,9 +110,12 @@ namespace FY111.Controllers.API
 
         // DELETE: api/ClassSignups/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ClassSignup>> DeleteClassSignup(string id)
+        public async Task<ActionResult<ClassSignup>> DeleteClassSignup(int id)
         {
-            var classSignup = await _context.ClassSignups.FindAsync(id);
+            if (!_signInManager.IsSignedIn(User))
+                return Unauthorized();
+            var userId = _userManager.GetUserId(User);
+            var classSignup = await _context.ClassSignups.Where(e => e.ClassId == id && e.MemberId == userId).SingleOrDefaultAsync();
             if (classSignup == null)
             {
                 return NotFound();
