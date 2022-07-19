@@ -225,7 +225,7 @@ namespace FY111.Controllers
                     {
                         var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\Class\\");
                         var imageName = (await _context.Classes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Image;
-                        System.IO.File.Delete(dirPath+imageName);
+                        //System.IO.File.Delete(dirPath+imageName);
                     }
                     _context.Update(@class);
                     await _context.SaveChangesAsync();
@@ -286,7 +286,7 @@ namespace FY111.Controllers
                     else
                     {
                         var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\ClassUnit\\");
-                        System.IO.File.Delete(dirPath + result);
+                        //System.IO.File.Delete(dirPath + result);
                     }
                     _context.Update(unit);
                     await _context.SaveChangesAsync();
@@ -346,7 +346,7 @@ namespace FY111.Controllers
                     else
                     {
                         var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\ClassLittleUnit\\");
-                        System.IO.File.Delete(dirPath + result);
+                        //System.IO.File.Delete(dirPath + result);
                     }
                     _context.Update(little);
                     await _context.SaveChangesAsync();
