@@ -23,6 +23,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model[0].Id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model[0].Code)
             </th>
             <th>
@@ -40,7 +43,7 @@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["SignUpParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model[0].SignupEnabled)</a>
             </th>
-            <th> 
+            <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["CheckinParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model[0].CheckinEnabled)</a>
             </th>
             <th>
@@ -53,6 +56,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Code)
                 </td>
