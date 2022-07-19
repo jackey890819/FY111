@@ -65,7 +65,7 @@ namespace FY111.Controllers
                     break;
             }
             int pageSize = 3;
-            return View(await PaginatedList<Class>.CreateAsync(classes, pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Class>.CreateAsync(classes.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: ClassManage/Details/5
