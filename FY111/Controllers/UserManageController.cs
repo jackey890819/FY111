@@ -22,11 +22,27 @@ namespace FY111.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["RoleParm"] = String.IsNullOrEmpty(sortOrder) ? "role_desc" : "";
             ViewData["OrganizationParm"] = sortOrder == "organization" ? "organization_desc" : "organization";
-            var Users = await _userManager.Users.ToListAsync();
+            ViewData["CurrentSort"] = sortOrder;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+            List<FY111User> Users;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                Users = await _userManager.Users.Where(x => x.UserName.Contains(searchString)).ToListAsync();
+            }
+            else Users = await _userManager.Users.ToListAsync();
+
             List<ManageModel> manageModel = new List<ManageModel>();
             for (int i = 0; i < Users.Count; i++)
             {
@@ -54,8 +70,8 @@ namespace FY111.Controllers
                     manageModel = manageModel.OrderBy(x => x.Role).ToList();
                     break;
             }
-
-            return View(manageModel);
+            int pageSize = 5;
+            return View(await PaginatedList<ManageModel>.CreateAsync(manageModel, pageNumber ?? 1, pageSize));
         }
 
         public async Task<IActionResult> Details(string? id)
