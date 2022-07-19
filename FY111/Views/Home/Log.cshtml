@@ -26,6 +26,9 @@
                         <thead>
                             <tr role="row">
                                 <th>
+                                    @Html.DisplayNameFor(model => model.@class[0].ClassUnits.ElementAt(0).ClassLittleunits.ElementAt(0).Name)
+                                </th>
+                                <th>
                                     @Html.DisplayNameFor(model => model.UnitLog[0].OperationLittleunitLogs.ElementAt(0).LittleunitCode)
                                 </th>
                                 <th>
@@ -48,10 +51,15 @@
                                 {
                                     <tr>
                                         <td>
+                                            @(Model.@class.FirstOrDefault(x => item.LittleunitCode.StartsWith(x.Code)).ClassUnits
+                                            .FirstOrDefault(x => item.LittleunitCode.StartsWith(x.Code)).ClassLittleunits
+                                            .FirstOrDefault(x => item.LittleunitCode.StartsWith(x.Code)).Name)
+                                        </td>
+                                        <td>
                                             @Html.DisplayFor(modelItem => item.LittleunitCode)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Pass)
+                                            @Html.DisplayFor(modelItem => item.Pass, "ToBool")
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Score)
@@ -75,8 +83,8 @@
 
 @section scripts {
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js">
-const { type } = require("jquery");
-</script>
+        const { type } = require("jquery");
+    </script>
 
     <script type="text/javascript">
         var myChart1 = echarts.init(document.getElementById('ClassCount'));

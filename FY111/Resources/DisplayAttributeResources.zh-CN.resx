@@ -126,17 +126,11 @@
   <data name="CkptId" xml:space="preserve">
     <value>检查点Id</value>
   </data>
-  <data name="ClassLittleUnitName" xml:space="preserve">
-    <value>子子课程名称</value>
-  </data>
   <data name="ClassName" xml:space="preserve">
     <value>课程名称</value>
   </data>
   <data name="ClassUnitId" xml:space="preserve">
     <value>课程单元Id</value>
-  </data>
-  <data name="ClassUnitName" xml:space="preserve">
-    <value>子课程名称</value>
   </data>
   <data name="Code" xml:space="preserve">
     <value>代码</value>
@@ -156,6 +150,9 @@
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>结束时间</value>
+  </data>
   <data name="Icon" xml:space="preserve">
     <value>图标</value>
   </data>
@@ -164,6 +161,9 @@
   </data>
   <data name="isSignedUp" xml:space="preserve">
     <value>是否报名</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>名称</value>
   </data>
   <data name="NewEmail" xml:space="preserve">
     <value>新的Email</value>
@@ -176,6 +176,9 @@
   </data>
   <data name="Organization" xml:space="preserve">
     <value>所属组织</value>
+  </data>
+  <data name="Pass" xml:space="preserve">
+    <value>通过</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>密码</value>
@@ -192,8 +195,14 @@
   <data name="Role" xml:space="preserve">
     <value>角色</value>
   </data>
+  <data name="Score" xml:space="preserve">
+    <value>分数</value>
+  </data>
   <data name="SignupEnabled" xml:space="preserve">
     <value>是否开启报名</value>
+  </data>
+  <data name="StartTime" xml:space="preserve">
+    <value>开始时间</value>
   </data>
   <data name="UserName" xml:space="preserve">
     <value>使用者名称</value>
