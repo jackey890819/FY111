@@ -36,12 +36,19 @@ namespace FY111.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
-            var classes = _context.Classes.Select(x=>x);
+            IQueryable<Class> classes;
             if (!String.IsNullOrEmpty(searchString))
             {
-                classes = classes.Where(s => s.Name.Contains(searchString)
-                                       || s.Content.Contains(searchString));
+                classes = _context.Classes.Where(s => s.Name.Contains(searchString)
+                                       || s.Content.Contains(searchString)).Select(x => x);
             }
+            else classes = _context.Classes.Select(x => x);
+
+            foreach(Class c in classes.ToList())
+            {
+                c.ClassUnits = await _context.ClassUnits.Where(x => x.ClassId == c.Id).ToListAsync();
+            }
+
             switch (sortOrder)
             {
                 case "signup_desc":
