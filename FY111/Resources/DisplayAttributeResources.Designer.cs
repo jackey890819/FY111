@@ -19,7 +19,7 @@ namespace FY111.Resources {
     // 類別透過 ResGen 或 Visual Studio 這類工具。
     // 若要加入或移除成員，請編輯您的 .ResX 檔，然後重新執行 ResGen
     // (利用 /str 選項)，或重建您的 VS 專案。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class DisplayAttributeResources {
@@ -88,15 +88,6 @@ namespace FY111.Resources {
         }
         
         /// <summary>
-        ///   查詢類似 子子課程名稱 的當地語系化字串。
-        /// </summary>
-        public static string ClassLittleUnitName {
-            get {
-                return ResourceManager.GetString("ClassLittleUnitName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查詢類似 課程名稱 的當地語系化字串。
         /// </summary>
         public static string ClassName {
@@ -111,15 +102,6 @@ namespace FY111.Resources {
         public static string ClassUnitId {
             get {
                 return ResourceManager.GetString("ClassUnitId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查詢類似 子課程名稱 的當地語系化字串。
-        /// </summary>
-        public static string ClassUnitName {
-            get {
-                return ResourceManager.GetString("ClassUnitName", resourceCulture);
             }
         }
         
@@ -178,6 +160,15 @@ namespace FY111.Resources {
         }
         
         /// <summary>
+        ///   查詢類似 結束時間 的當地語系化字串。
+        /// </summary>
+        public static string EndTime {
+            get {
+                return ResourceManager.GetString("EndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 圖標 的當地語系化字串。
         /// </summary>
         public static string Icon {
@@ -201,6 +192,15 @@ namespace FY111.Resources {
         public static string isSignedUp {
             get {
                 return ResourceManager.GetString("isSignedUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 名稱 的當地語系化字串。
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
@@ -237,6 +237,15 @@ namespace FY111.Resources {
         public static string Organization {
             get {
                 return ResourceManager.GetString("Organization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 通過 的當地語系化字串。
+        /// </summary>
+        public static string Pass {
+            get {
+                return ResourceManager.GetString("Pass", resourceCulture);
             }
         }
         
@@ -286,11 +295,29 @@ namespace FY111.Resources {
         }
         
         /// <summary>
+        ///   查詢類似 分數 的當地語系化字串。
+        /// </summary>
+        public static string Score {
+            get {
+                return ResourceManager.GetString("Score", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 是否開啟報名 的當地語系化字串。
         /// </summary>
         public static string SignupEnabled {
             get {
                 return ResourceManager.GetString("SignupEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 開始時間 的當地語系化字串。
+        /// </summary>
+        public static string StartTime {
+            get {
+                return ResourceManager.GetString("StartTime", resourceCulture);
             }
         }
         

@@ -1600,14 +1600,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DisplayAttributeResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\DisplayAttributeResources.zh-CN.resx">
-      <LastGenOutput>DisplayAttributeResources - 複製.zh-TW.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\DisplayAttributeResources.en-US.resx">
-      <LastGenOutput>DisplayAttributeResources - 複製.zh-TW.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\ErrorMessageResources.en-US.resx">
       <LastGenOutput>ErrorMessageResources - 複製.zh-TW.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
