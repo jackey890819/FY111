@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     public class DeviceManageController : Controller
     {
         private readonly FY111Context _context;
