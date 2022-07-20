@@ -1614,4 +1614,9 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\image\ClassUnit\" />
+    <Folder Include="wwwroot\image\Class\" />
+  </ItemGroup>
+
 </Project>
