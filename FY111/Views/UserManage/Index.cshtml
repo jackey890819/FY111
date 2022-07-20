@@ -1,31 +1,39 @@
-﻿@model IEnumerable<FY111.Models.FY111User.ManageModel>
+﻿@model PaginatedList<FY111.Models.FY111User.ManageModel>
 
 @{
     ViewData["Title"] = @Localizer["User Management"];
 }
-
-<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <h1 class="col-sm-6">@ViewData["Title"]</h1>
+    <form asp-action="Index" method="get" class="ml-auto col-sm-6">
+        <div class="form-actions no-color row">
+            <input type="text" id="search" class="form-control col-sm-7" placeholder="@(Localizer["Search"]).." name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="@(Localizer["Search"])" class="btn btn-default form-inline col-sm-2" />
+            <a asp-action="Index" class="btn btn-default col-sm-3">@Localizer["Back to Full List"]</a>
+        </div>
+    </form>
+</div>
 
 <table class="table table-hover table-responsive">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model[0].Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                @Html.DisplayNameFor(model => model[0].UserName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Avatar)
+                @Html.DisplayNameFor(model => model[0].Avatar)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Html.DisplayNameFor(model => model[0].Email)
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["OrganizationParm"]">@Html.DisplayNameFor(model => model.Organization)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["OrganizationParm"]">@Html.DisplayNameFor(model => model[0].Organization)</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoleParm"]">@Html.DisplayNameFor(model => model.Role)</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["RoleParm"]">@Html.DisplayNameFor(model => model[0].Role)</a>
             </th>
             <th></th>
         </tr>
@@ -60,3 +68,23 @@
     }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    @Localizer["Previous"]
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    @Localizer["Next"]
+</a>
