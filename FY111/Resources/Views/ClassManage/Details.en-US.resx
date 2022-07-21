@@ -123,6 +123,12 @@
   <data name="Class" xml:space="preserve">
     <value>Class</value>
   </data>
+  <data name="ClassUnits" xml:space="preserve">
+    <value>ClassUnits</value>
+  </data>
+  <data name="Create New" xml:space="preserve">
+    <value>Create New</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
