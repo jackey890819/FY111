@@ -117,20 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="XR模擬訓練課程介紹" xml:space="preserve">
+    <value>XR Course Introduction</value>
+  </data>
   <data name="使用情況分析" xml:space="preserve">
     <value>Usage analysis</value>
-  </data>
-  <data name="元宇宙課程介紹" xml:space="preserve">
-    <value>Class Introduction</value>
-  </data>
-  <data name="元宇宙課程管理" xml:space="preserve">
-    <value>Class Management</value>
   </data>
   <data name="帳戶管理" xml:space="preserve">
     <value>Account management</value>
   </data>
   <data name="拜訪人數" xml:space="preserve">
     <value>Visitors</value>
+  </data>
+  <data name="教室管理" xml:space="preserve">
+    <value>Class Management</value>
   </data>
   <data name="用戶管理" xml:space="preserve">
     <value>User Management</value>

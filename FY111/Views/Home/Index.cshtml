@@ -20,15 +20,23 @@
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script>
 <script type="text/javascript" src="~/lib/slick/slick.min.js"></script>
 <script type="text/javascript">
-    $('.autoplay').slick({
-        dots: true,
-        infinite: true,
+    $('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        asNavFor: '.slider-nav'
+    });
+    $('.slider-nav').slick({
         slidesToShow: 3,
         slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 3000,
-        speed: 300,
+        asNavFor: '.slider-for',
+        dots: true,
+        infinite: true,
         centerMode: true,
+        focusOnSelect: true,
+        autoplay: true,
+        autoplaySpeed: 5000,
         variableWidth: true
     });
 
@@ -51,7 +59,7 @@
                         left: 'center',
                         top: 'center',
                         style: {
-                            text: '@Localizer["元宇宙課程介紹"]',
+                            text: '@Localizer["XR模擬訓練課程介紹"]',
                             fontSize: fontSize(100),
                             fontWeight: 'bold',
                             lineDash: [0, 200],
@@ -101,7 +109,7 @@
     });
     var app = {};
     setOption(myChart);
-    
+
     window.addEventListener('resize',function(){
         setOption(myChart);
         myChart.resize({animation: {
@@ -115,17 +123,42 @@
     <img src="~/image/test_img.jpg" class="img" width="200px" height="200" />
     <br />*@
 <div id="title" style="width:100%;min-height:350px;" :lazy='true'></div>
-<div class="autoplay">
-    @for (int i = 0; i < Model.Count(); i++)
-    {
-        var item = Model.ElementAt(i);
-        if (item.Image != null)
+<div class="row">
+    <div class="slider-for col">
+        @for (int i = 0; i < Model.Count(); i++)
         {
-            <div class="text-center">
-                <img src="~/image/Class/@item.Image" class="img mr-3 ml-3" height="200px" />
-            </div>
+            var item = Model.ElementAt(i);
+            if (item.Image != null)
+            {
+                <div class="mb-5">
+                    <h3>課程介紹 - @item.Name</h3>
+                    <hr />
+                    @if (item.Content == null)
+                    {
+                        <p>尚無介紹</p>
+                    }
+                    else
+                    {
+                        <p>@item.Content</p>
+                    }
+                </div>
+            }
         }
-    }
+    </div>
+
+    <div class="slider-nav mt-a col-12">
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            var item = Model.ElementAt(i);
+            if (item.Image != null)
+            {
+                <div class="text-center">
+                    <img src="~/image/Class/@item.Image" class="img mr-3 ml-3" height="200px" />
+                </div>
+            }
+        }
+    </div>
 </div>
+
 
 
