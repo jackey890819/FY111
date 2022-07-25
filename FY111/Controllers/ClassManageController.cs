@@ -39,15 +39,10 @@ namespace FY111.Controllers
             IQueryable<Class> classes;
             if (!String.IsNullOrEmpty(searchString))
             {
-                classes = _context.Classes.Where(s => s.Name.Contains(searchString)
+                classes = _context.Classes.Include(x => x.ClassUnits).Where(s => s.Name.Contains(searchString)
                                        || s.Content.Contains(searchString)).Select(x => x);
             }
-            else classes = _context.Classes.Select(x => x);
-
-            foreach(Class c in classes.ToList())
-            {
-                c.ClassUnits = await _context.ClassUnits.Where(x => x.ClassId == c.Id).ToListAsync();
-            }
+            else classes = _context.Classes.Include(x => x.ClassUnits).Select(x => x);
 
             switch (sortOrder)
             {
