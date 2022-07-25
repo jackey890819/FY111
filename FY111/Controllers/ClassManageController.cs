@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
-    [Authorize(Roles = "SuperAdmin, MetaverseAdmin")]
+    [Authorize(Roles = "SuperAdmin, ClassAdmin")]
     public class ClassManageController : Controller
     {
         private readonly FY111Context _context;

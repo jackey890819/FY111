@@ -415,7 +415,7 @@ namespace FY111.Controllers
         //}
 
         //[HttpGet("signup_enabled")]
-        //[Authorize(Roles = "NormalUser, GroupUser, MetaverseAdmin, SuperAdmin")]
+        //[Authorize(Roles = "NormalUser, GroupUser, ClassAdmin, SuperAdmin")]
         //public async Task<ActionResult<IEnumerable<Object>>> ListAvailable() //ListAvailable_Model model
         //{
         //    // 確認使用者的權限類型
@@ -444,7 +444,7 @@ namespace FY111.Controllers
         //            selected_metaverse
         //        };
         //    }
-        //    else if (User.IsInRole("MetaverseAdmin") || User.IsInRole("SuperAdmin"))
+        //    else if (User.IsInRole("ClassAdmin") || User.IsInRole("SuperAdmin"))
         //    {
         //        // 管理員：列出所有的元宇宙
         //        var metaverseList = await _context.Metaverses.ToListAsync();
