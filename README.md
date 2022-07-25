@@ -31,7 +31,7 @@
     Id|Name|NormalizedName|ConcurrencyStamp
     --|----|--------------|----------------
     1|SuperAdmin|SUPERADMIN|NULL
-    2|MetaverseAdmin|METAVERSEADMIN|NULL
+    2|ClassAdmin|CLASSADMIN|NULL
     3|GroupUser|GROUPUSER|NULL
     4|NormalUser|NORMALUSER|NULL
 
