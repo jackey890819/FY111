@@ -29,7 +29,7 @@ namespace FY111.Controllers.API
             if (memberId != "" && classId != -1)
             {
                 result = await _context.ClassCheckins
-                    .Where(e => e.MemberId == memberId && e.ClassId == classId)
+                    .Where(e => e.MemberId == memberId && e.TrainingId == classId)
                     .ToListAsync();
             } else if (memberId != "")
             {
@@ -39,7 +39,7 @@ namespace FY111.Controllers.API
             } else if (classId != 1)
             {
                 result = await _context.ClassCheckins
-                    .Where(e => e.ClassId == classId)
+                    .Where(e => e.TrainingId == classId)
                     .ToListAsync();
             } else
             {
@@ -64,7 +64,7 @@ namespace FY111.Controllers.API
         {
             // 檢查重複報到
             var exist = await _context.ClassCheckins
-                .Where(e => e.MemberId == classCheckin.MemberId && e.ClassId == classCheckin.ClassId)
+                .Where(e => e.MemberId == classCheckin.MemberId && e.TrainingId == classCheckin.TrainingId)
                 .AnyAsync();
             if (exist)
                 return BadRequest("已報到。");

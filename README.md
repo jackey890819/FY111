@@ -18,26 +18,26 @@
 
 ## 產生 ASP.NET User 資料表
 
-1. 先自行創建一個名為"FY111User"的資料庫
+1. 使用SQL資料夾中的fy111user.sql
 
-2. 到套件管理器控制台打以下指令
+2. 使用者帳密、權限、關係詳情
 
-    1. `Add-Migration "InitialCreate" -Context "FY111UserDbContext"`
+    依序為帳號、密碼、使用者權限
 
-    2. `Update-Database -c "FY111UserDbContext"`
+    User01  User01@ SuperAdmin
 
-3. 在 **aspnetroles** 資料表中加上以下資料
+    User02  User02@ ClassAdmin
 
-    Id|Name|NormalizedName|ConcurrencyStamp
-    --|----|--------------|----------------
-    1|SuperAdmin|SUPERADMIN|NULL
-    2|ClassAdmin|CLASSADMIN|NULL
-    3|GroupUser|GROUPUSER|NULL
-    4|NormalUser|NORMALUSER|NULL
+    User03  User03@ GroupUser
 
-4. 使用register API 或是網頁產生 User
+    User04  User04@ NormalUser
 
-5. 進到資料庫裡更改權限
+    User05  User05@ NormalUser
+
+    User06  User06@ NormalUser
+
+    User05和User06為Group FY111的成員
+
 
 ## 
 ## 部屬 ASP .NET Core 至 IIS (區網測試用)

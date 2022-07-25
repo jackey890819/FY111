@@ -148,7 +148,7 @@ namespace FY111.Controllers
                 if (targetClass == null)
                     throw new Exception("找不到classCode");
                 int classId = targetClass.Id;
-                var signUpList = await _context.ClassSignups.Where(x => x.ClassId == classId).Select(x => x.MemberId).ToListAsync();
+                var signUpList = await _context.ClassSignups.Where(x => x.TrainingId == classId).Select(x => x.MemberId).ToListAsync();
                 var attendees = await _context.ClassLogs.Where(x => x.ClassId == classId && DateTime.Compare(x.StartTime, date) >= 0).Select(x => x.MemberId).ToListAsync();
                 var logs = new List<AttendeeLogDto>();
                 for (int i = 0; i < signUpList.Count; i++)

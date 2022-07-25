@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
-    [Authorize(Roles = "SuperAdmin, GroupUser")]
+    
     public class UserManageController : Controller
     {
         private UserManager<FY111User> _userManager;
@@ -21,7 +21,7 @@ namespace FY111.Controllers
         {
             _userManager = userManager;
         }
-
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["RoleParm"] = String.IsNullOrEmpty(sortOrder) ? "role_desc" : "";
@@ -73,7 +73,7 @@ namespace FY111.Controllers
             int pageSize = 5;
             return View(await PaginatedList<ManageModel>.CreateAsync(manageModel, pageNumber ?? 1, pageSize));
         }
-
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
@@ -95,7 +95,7 @@ namespace FY111.Controllers
             model.Role = (await _userManager.GetRolesAsync(user))[0];
             return View(model);
         }
-
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
@@ -120,6 +120,7 @@ namespace FY111.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Edit(string id, ManageModel model)
         {
             if (id != model.Id)
@@ -141,7 +142,7 @@ namespace FY111.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "SuperAdmin, GroupUser")]
         public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
@@ -166,13 +167,14 @@ namespace FY111.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin, GroupUser")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             var result = await _userManager.DeleteAsync(user);
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "SuperAdmin, GroupUser")]
         public async Task<IActionResult> Organization()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -195,7 +197,7 @@ namespace FY111.Controllers
             ViewData["Organization"] = user.Organization;
             return View(manageModel);
         }
-
+        [Authorize(Roles = "SuperAdmin, GroupUser")]
         public IActionResult Create()
         {
             return View();
@@ -203,6 +205,7 @@ namespace FY111.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin, GroupUser")]
         public async Task<IActionResult> Create(RegisterModel model)
         {
             if (ModelState.IsValid)

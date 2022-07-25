@@ -39,7 +39,7 @@ namespace FY111.Controllers.API
             if (memberId !="" && classId != -1)
             {
                 result = await _context.ClassSignups
-                    .Where(e => e.MemberId == memberId && e.ClassId == classId)
+                    .Where(e => e.MemberId == memberId && e.TrainingId == classId)
                     .ToListAsync();
             } else if (memberId != "")
             {
@@ -49,7 +49,7 @@ namespace FY111.Controllers.API
             }else if (classId != -1)
             {
                 result = await _context.ClassSignups
-                    .Where(e => e.ClassId == classId)
+                    .Where(e => e.TrainingId == classId)
                     .ToListAsync();
             }
             else
@@ -115,7 +115,7 @@ namespace FY111.Controllers.API
             if (!_signInManager.IsSignedIn(User))
                 return Unauthorized();
             var userId = _userManager.GetUserId(User);
-            var classSignup = await _context.ClassSignups.Where(e => e.ClassId == id && e.MemberId == userId).SingleOrDefaultAsync();
+            var classSignup = await _context.ClassSignups.Where(e => e.TrainingId == id && e.MemberId == userId).SingleOrDefaultAsync();
             if (classSignup == null)
             {
                 return NotFound();
