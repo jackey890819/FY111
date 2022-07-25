@@ -126,11 +126,17 @@
   <data name="CkptId" xml:space="preserve">
     <value>CkptId</value>
   </data>
+  <data name="ClassLittleUnitName" xml:space="preserve">
+    <value>ClassLittleUnitName</value>
+  </data>
   <data name="ClassName" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="ClassUnitId" xml:space="preserve">
     <value>ClassUnitId</value>
+  </data>
+  <data name="ClassUnitName" xml:space="preserve">
+    <value>ClassUnitName</value>
   </data>
   <data name="Code" xml:space="preserve">
     <value>Code</value>

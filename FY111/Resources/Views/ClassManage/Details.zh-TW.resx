@@ -123,6 +123,12 @@
   <data name="Class" xml:space="preserve">
     <value>課程</value>
   </data>
+  <data name="ClassUnits" xml:space="preserve">
+    <value>子課程</value>
+  </data>
+  <data name="Create New" xml:space="preserve">
+    <value>新增</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>詳細資料</value>
   </data>
