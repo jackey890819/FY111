@@ -23,8 +23,10 @@ namespace FY111.Models.FY111
         public virtual DbSet<ClassLog> ClassLogs { get; set; }
         public virtual DbSet<ClassSignup> ClassSignups { get; set; }
         public virtual DbSet<ClassUnit> ClassUnits { get; set; }
+        public virtual DbSet<ClassUnitApp> ClassUnitApps { get; set; }
         public virtual DbSet<ClassUnitCkpt> ClassUnitCkpts { get; set; }
         public virtual DbSet<Device> Devices { get; set; }
+        public virtual DbSet<LoginApp> LoginApps { get; set; }
         public virtual DbSet<LoginLog> LoginLogs { get; set; }
         public virtual DbSet<Occdisaster> Occdisasters { get; set; }
         public virtual DbSet<OperationCheckpoint> OperationCheckpoints { get; set; }
@@ -213,6 +215,35 @@ namespace FY111.Models.FY111
                     .HasConstraintName("fk_class_unit_class1");
             });
 
+            modelBuilder.Entity<ClassUnitApp>(entity =>
+            {
+                entity.ToTable("class_unit_app");
+
+                entity.HasIndex(e => e.ClassUnitId, "fk_table1_Class_unit1_idx");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Application)
+                    .HasMaxLength(45)
+                    .HasColumnName("application");
+
+                entity.Property(e => e.ClassUnitId).HasColumnName("Class_unit_id");
+
+                entity.Property(e => e.Content)
+                    .HasMaxLength(45)
+                    .HasColumnName("content");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(45)
+                    .HasColumnName("name");
+
+                entity.HasOne(d => d.ClassUnit)
+                    .WithMany(p => p.ClassUnitApps)
+                    .HasForeignKey(d => d.ClassUnitId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_table1_Class_unit1");
+            });
+
             modelBuilder.Entity<ClassUnitCkpt>(entity =>
             {
                 entity.HasKey(e => new { e.ClassUnitId, e.CkptId })
@@ -249,6 +280,25 @@ namespace FY111.Models.FY111
 
                 entity.Property(e => e.Name)
                     .IsRequired()
+                    .HasMaxLength(45)
+                    .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<LoginApp>(entity =>
+            {
+                entity.ToTable("login_app");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Application)
+                    .HasMaxLength(45)
+                    .HasColumnName("application");
+
+                entity.Property(e => e.Content)
+                    .HasMaxLength(45)
+                    .HasColumnName("content");
+
+                entity.Property(e => e.Name)
                     .HasMaxLength(45)
                     .HasColumnName("name");
             });
@@ -397,6 +447,8 @@ namespace FY111.Models.FY111
                     .HasColumnName("Member_id");
 
                 entity.Property(e => e.StartTime).HasColumnName("start_time");
+
+                entity.Property(e => e.EndTime).HasColumnName("end_time");
             });
 
             OnModelCreatingPartial(modelBuilder);

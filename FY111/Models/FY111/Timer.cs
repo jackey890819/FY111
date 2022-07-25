@@ -9,5 +9,6 @@ namespace FY111.Models.FY111
     {
         public string MemberId { get; set; }
         public DateTime StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
     }
 }
