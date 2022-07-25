@@ -36,7 +36,7 @@ namespace FY111.Controllers
                 model.Image = c.Image;
                 model.Content = c.Content;
                 model.Duration = c.Duration;
-                bool result = _context.ClassSignups.Where(x => x.ClassId == c.Id).Select(x => x.MemberId).Contains(user.Id);
+                bool result = _context.ClassSignups.Where(x => x.TrainingId == c.Id).Select(x => x.MemberId).Contains(user.Id);
                 model.isSignedUp = result;
                 manageModel.Add(model);
             }
@@ -68,11 +68,11 @@ namespace FY111.Controllers
                 {
                     foreach (string id in organization_id)
                     {
-                        var result = _context.ClassSignups.FirstOrDefault(x => x.ClassId == model.Id && x.MemberId == id);
+                        var result = _context.ClassSignups.FirstOrDefault(x => x.TrainingId == model.Id && x.MemberId == id);
                         if (result == null)
                         {
                             ClassSignup classSignup = new ClassSignup();
-                            classSignup.ClassId = model.Id;
+                            classSignup.TrainingId = model.Id;
                             classSignup.MemberId = id;
                             add.Add(classSignup);
                         }
@@ -82,7 +82,7 @@ namespace FY111.Controllers
                 {
                     foreach (string id in organization_id)
                     {
-                        var result = _context.ClassSignups.FirstOrDefault(x => x.ClassId == model.Id && x.MemberId == id);
+                        var result = _context.ClassSignups.FirstOrDefault(x => x.TrainingId == model.Id && x.MemberId == id);
                         if(result != null) remove.Add(result);
                     }
                 }
