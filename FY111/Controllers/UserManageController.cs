@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin, GroupUser")]
     public class UserManageController : Controller
     {
         private UserManager<FY111User> _userManager;
