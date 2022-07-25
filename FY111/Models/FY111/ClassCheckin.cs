@@ -8,9 +8,9 @@ namespace FY111.Models.FY111
     public partial class ClassCheckin
     {
         public string MemberId { get; set; }
-        public int TrainingId { get; set; }
+        public int ClassId { get; set; }
         public DateTime? Time { get; set; }
 
-        public virtual training Training { get; set; }
+        public virtual Class Class { get; set; }
     }
 }
