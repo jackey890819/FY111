@@ -86,7 +86,7 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<ClassCheckin>(entity =>
             {
-                entity.HasKey(e => e.MemberId)
+                entity.HasKey(e => new { e.MemberId, e.TrainingId })
                     .HasName("PRIMARY");
 
                 entity.ToTable("class_checkin");
@@ -97,11 +97,11 @@ namespace FY111.Models.FY111
                     .HasMaxLength(256)
                     .HasColumnName("Member_id");
 
+                entity.Property(e => e.TrainingId).HasColumnName("training_id");
+
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.TrainingId).HasColumnName("training_id");
 
                 entity.HasOne(d => d.Training)
                     .WithMany(p => p.ClassCheckins)
@@ -167,7 +167,7 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<ClassSignup>(entity =>
             {
-                entity.HasKey(e => e.MemberId)
+                entity.HasKey(e => new { e.MemberId, e.TrainingId })
                     .HasName("PRIMARY");
 
                 entity.ToTable("class_signup");
