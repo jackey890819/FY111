@@ -23,23 +23,23 @@ namespace FY111.Controllers.API
         // GET: api/ClassCheckins
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClassCheckin>>> GetClassCheckins(
-            [FromQuery]String memberId="", [FromQuery] int classId=-1)
+            [FromQuery]String memberId="", [FromQuery] int trainingId = -1)
         {
             List<ClassCheckin> result;
-            if (memberId != "" && classId != -1)
+            if (memberId != "" && trainingId != -1)
             {
                 result = await _context.ClassCheckins
-                    .Where(e => e.MemberId == memberId && e.TrainingId == classId)
+                    .Where(e => e.MemberId == memberId && e.TrainingId == trainingId)
                     .ToListAsync();
             } else if (memberId != "")
             {
                 result = await _context.ClassCheckins
                     .Where(e => e.MemberId == memberId)
                     .ToListAsync();
-            } else if (classId != 1)
+            } else if (trainingId != 1)
             {
                 result = await _context.ClassCheckins
-                    .Where(e => e.TrainingId == classId)
+                    .Where(e => e.TrainingId == trainingId)
                     .ToListAsync();
             } else
             {
