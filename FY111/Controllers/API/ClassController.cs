@@ -135,35 +135,126 @@ namespace FY111.Controllers
         }
 
 
-        // 取得報名人員
-        // GET: /api/attendedList/{教室代碼}/{受訓日期}
-        [HttpGet("attendedList/{classCode}/{dateStr}")]
-        public async Task<IActionResult> GetAttendedList(string classCode, string dateStr)
+        //// 取得報名人員 v1
+        //// GET: /api/attendedList/{教室代碼}/{受訓日期}
+        //[HttpGet("attendedList/{classCode}/{dateStr}")]
+        //public async Task<IActionResult> GetAttendedList(string classCode, string dateStr)
+        //{
+        //    Debug.WriteLine(classCode + " " + dateStr);
+        //    try
+        //    {
+        //        DateTime date = DateTime.Parse(dateStr);
+        //        var targetClass = await _context.Classes.FirstOrDefaultAsync(x => x.Code == classCode);
+        //        if (targetClass == null)
+        //            throw new Exception("找不到classCode");
+        //        int classId = targetClass.Id;
+        //        var signUpList = await _context.ClassSignups.Where(x => x.TrainingId == classId).Select(x => x.MemberId).ToListAsync();
+        //        var attendees = await _context.ClassLogs.Where(x => x.ClassId == classId && DateTime.Compare(x.StartTime, date) >= 0).Select(x => x.MemberId).ToListAsync();
+        //        var logs = new List<AttendeeLogDto>();
+        //        for (int i = 0; i < signUpList.Count; i++)
+        //        {
+        //            bool checkin = false;
+        //            string name = (await _userManager.FindByIdAsync(signUpList[i])).UserName;
+        //            if (attendees.Contains(signUpList[i])) checkin = true;
+        //            var log = new AttendeeLogDto(signUpList[i], name, checkin);
+        //            logs.Add(log);
+        //        }
+        //        return Ok(new
+        //        {
+        //            data = logs
+        //        });
+        //    } catch (Exception e)
+        //    {
+        //        Debug.WriteLine(e.Message);
+        //        return BadRequest(new { errors = "Get attended list failed" });
+        //    }
+        //}
+
+        // 取得報名人員 v2
+        // GET: /api/attendedList/{受訓日期}
+        [HttpGet("attendedList/{dateStr}")]
+        public async Task<IActionResult> GetAttendedList(string dateStr="")
         {
-            Debug.WriteLine(classCode + " " + dateStr);
+            Debug.WriteLine($"GET:\t/api/attendedList/{dateStr}");
             try
             {
-                DateTime date = DateTime.Parse(dateStr);
-                var targetClass = await _context.Classes.FirstOrDefaultAsync(x => x.Code == classCode);
-                if (targetClass == null)
-                    throw new Exception("找不到classCode");
-                int classId = targetClass.Id;
-                var signUpList = await _context.ClassSignups.Where(x => x.TrainingId == classId).Select(x => x.MemberId).ToListAsync();
-                var attendees = await _context.ClassLogs.Where(x => x.ClassId == classId && DateTime.Compare(x.StartTime, date) >= 0).Select(x => x.MemberId).ToListAsync();
-                var logs = new List<AttendeeLogDto>();
-                for (int i = 0; i < signUpList.Count; i++)
+                DateTime date;
+                if (dateStr == "")
                 {
-                    bool checkin = false;
-                    string name = (await _userManager.FindByIdAsync(signUpList[i])).UserName;
-                    if (attendees.Contains(signUpList[i])) checkin = true;
-                    var log = new AttendeeLogDto(signUpList[i], name, checkin);
-                    logs.Add(log);
+                    date = date = DateTime.Today;
                 }
+                else
+                {
+                    date = DateTime.Parse(dateStr);
+                }
+                // 查詢符合條件的training
+                var targets = await _context.training
+                    .Where(e => e.Date >= date.Date && e.StartTime >= date.TimeOfDay)
+                    .ToListAsync();
+                // 查無符合項目
+                if (targets.Count == 0)
+                    return Ok(new { data = "" });
+                List<List<Object>> listOfApplyUsers = new List<List<Object>>(); // 放每個training的applyUsers
+                // 針對每一個training抓applyUsers
+                foreach (var training in targets)
+                {
+                    List<Object> applyUsers = new List<Object>();
+                    // 報名該training的成員清單
+                    var signupedMembers = await _context.ClassSignups
+                        .Where(e => e.TrainingId == training.Id)
+                        .Select(e => e.MemberId)
+                        .ToListAsync();
+                    // 沒有人報名該training時
+                    if (signupedMembers.Count == 0)
+                    {
+                        listOfApplyUsers.Add(applyUsers);
+                        continue;
+                    }
+                    // 處理每一個User的check in 
+                    foreach (var memberId in signupedMembers)
+                    {
+                        Object o = new
+                        {
+                            id = memberId,
+                            name = (await _userManager.FindByIdAsync(memberId)).UserName,
+                            check_in = await _context.ClassCheckins
+                                .Where(e => e.MemberId == memberId && e.TrainingId == training.Id)
+                                .AnyAsync(),
+                            class_code = await _context.Classes
+                                .Where(e => e.Id == training.Id)
+                                .Select(e => e.Code)
+                                .SingleOrDefaultAsync()
+                        };
+                        applyUsers.Add(o);
+                    }
+                    listOfApplyUsers.Add(applyUsers);
+                }
+                // 處理結果的List，照格式化處理
+                List<Object> result = new List<Object>();
+                for (int i=0; i<targets.Count(); i++)
+                {
+                    result.Add( new
+                    {
+                        training_id = targets[i].Id,
+                        training_name = targets[i].Name,
+                        training_date = ((DateTime)targets[i].Date).ToString("yyyy-MM-dd"),
+                        start_time = targets[i].StartTime.ToString(),
+                        end_time = targets[i].EndTime.ToString(),
+                        applyUsers = listOfApplyUsers[i]
+                    });
+                }
+                // 回傳
                 return Ok(new
                 {
-                    data = logs
+                    data = result,
                 });
-            } catch (Exception e)
+            }
+            catch (FormatException e)   // 傳入日期時間有誤
+            {
+                Debug.WriteLine(e.Message);
+                return BadRequest(new { errors = "Get attended list failed \n格式錯誤" });
+            }
+            catch (Exception e)         // 其他未預期之例外
             {
                 Debug.WriteLine(e.Message);
                 return BadRequest(new { errors = "Get attended list failed" });
