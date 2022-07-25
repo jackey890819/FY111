@@ -23,23 +23,23 @@ namespace FY111.Controllers.API
         // GET: api/ClassCheckins
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClassCheckin>>> GetClassCheckins(
-            [FromQuery]String memberId="", [FromQuery] int classId=-1)
+            [FromQuery]String memberId="", [FromQuery] int trainingId = -1)
         {
             List<ClassCheckin> result;
-            if (memberId != "" && classId != -1)
+            if (memberId != "" && trainingId != -1)
             {
                 result = await _context.ClassCheckins
-                    .Where(e => e.MemberId == memberId && e.ClassId == classId)
+                    .Where(e => e.MemberId == memberId && e.TrainingId == trainingId)
                     .ToListAsync();
             } else if (memberId != "")
             {
                 result = await _context.ClassCheckins
                     .Where(e => e.MemberId == memberId)
                     .ToListAsync();
-            } else if (classId != 1)
+            } else if (trainingId != 1)
             {
                 result = await _context.ClassCheckins
-                    .Where(e => e.ClassId == classId)
+                    .Where(e => e.TrainingId == trainingId)
                     .ToListAsync();
             } else
             {
@@ -64,7 +64,7 @@ namespace FY111.Controllers.API
         {
             // 檢查重複報到
             var exist = await _context.ClassCheckins
-                .Where(e => e.MemberId == classCheckin.MemberId && e.ClassId == classCheckin.ClassId)
+                .Where(e => e.MemberId == classCheckin.MemberId && e.TrainingId == classCheckin.TrainingId)
                 .AnyAsync();
             if (exist)
                 return BadRequest("已報到。");
