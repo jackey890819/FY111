@@ -40,8 +40,8 @@ namespace FY111.Controllers
             //    ViewData["UserRole"] = "NormalUser";
             //else if (User.IsInRole("GroupUser"))
             //    ViewData["UserRole"] = "GroupUser";
-            //else if (User.IsInRole("MetaverseAdmin"))
-            //    ViewData["UserRole"] = "MetaverseAdmin";
+            //else if (User.IsInRole("ClassAdmin"))
+            //    ViewData["UserRole"] = "ClassAdmin";
             //else if (User.IsInRole("SuperAdmin"))
             //    ViewData["UserRole"] = "SuperAdmin";
             //else

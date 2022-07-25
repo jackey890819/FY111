@@ -34,6 +34,7 @@ namespace FY111.Models.FY111
         public virtual DbSet<OperationOccdisaster> OperationOccdisasters { get; set; }
         public virtual DbSet<OperationUnitLog> OperationUnitLogs { get; set; }
         public virtual DbSet<Timer> Timers { get; set; }
+        public virtual DbSet<training> training { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -85,28 +86,28 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<ClassCheckin>(entity =>
             {
-                entity.HasKey(e => new { e.MemberId, e.ClassId })
+                entity.HasKey(e => e.MemberId)
                     .HasName("PRIMARY");
 
                 entity.ToTable("class_checkin");
 
-                entity.HasIndex(e => e.ClassId, "fk_Metaverse_has_Member_Metaverse1_idx");
+                entity.HasIndex(e => e.TrainingId, "fk_class_checkin_training1_idx");
 
                 entity.Property(e => e.MemberId)
                     .HasMaxLength(256)
                     .HasColumnName("Member_id");
 
-                entity.Property(e => e.ClassId).HasColumnName("Class_id");
-
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.HasOne(d => d.Class)
+                entity.Property(e => e.TrainingId).HasColumnName("training_id");
+
+                entity.HasOne(d => d.Training)
                     .WithMany(p => p.ClassCheckins)
-                    .HasForeignKey(d => d.ClassId)
+                    .HasForeignKey(d => d.TrainingId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Metaverse_has_Member_Metaverse1");
+                    .HasConstraintName("fk_class_checkin_training1");
             });
 
             modelBuilder.Entity<ClassLittleunit>(entity =>
@@ -166,24 +167,24 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<ClassSignup>(entity =>
             {
-                entity.HasKey(e => new { e.MemberId, e.ClassId })
+                entity.HasKey(e => e.MemberId)
                     .HasName("PRIMARY");
 
                 entity.ToTable("class_signup");
 
-                entity.HasIndex(e => e.ClassId, "fk_Metaverse_has_Member_Metaverse2_idx");
+                entity.HasIndex(e => e.TrainingId, "fk_class_signup_training1_idx");
 
                 entity.Property(e => e.MemberId)
                     .HasMaxLength(256)
                     .HasColumnName("Member_id");
 
-                entity.Property(e => e.ClassId).HasColumnName("Class_id");
+                entity.Property(e => e.TrainingId).HasColumnName("training_id");
 
-                entity.HasOne(d => d.Class)
+                entity.HasOne(d => d.Training)
                     .WithMany(p => p.ClassSignups)
-                    .HasForeignKey(d => d.ClassId)
+                    .HasForeignKey(d => d.TrainingId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Metaverse_has_Member_Metaverse2");
+                    .HasConstraintName("fk_class_signup_training1");
             });
 
             modelBuilder.Entity<ClassUnit>(entity =>
@@ -449,6 +450,33 @@ namespace FY111.Models.FY111
                 entity.Property(e => e.StartTime).HasColumnName("start_time");
 
                 entity.Property(e => e.EndTime).HasColumnName("end_time");
+            });
+
+            modelBuilder.Entity<training>(entity =>
+            {
+                entity.HasIndex(e => e.ClassId, "fk_training_Class1_idx");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.ClassId).HasColumnName("Class_id");
+
+                entity.Property(e => e.Date)
+                    .HasColumnType("date")
+                    .HasColumnName("date");
+
+                entity.Property(e => e.EndTime).HasColumnName("end_time");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(45)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.StartTime).HasColumnName("start_time");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.training)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_training_Class1");
             });
 
             OnModelCreatingPartial(modelBuilder);

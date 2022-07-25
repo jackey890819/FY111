@@ -146,7 +146,7 @@ namespace FY111.Controllers.API
         //                selected_list = selected_class,
         //                none_selected_list = @class
         //            });
-        //        case "MetaverseAdmin":
+        //        case "ClassAdmin":
         //        case "SuperAdmin":
         //            var all_class = await _context.Classes.ToListAsync();
         //            return Ok(new
