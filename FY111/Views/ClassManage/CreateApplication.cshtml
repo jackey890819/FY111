@@ -1,4 +1,4 @@
-﻿@model FY111.Models.FY111.ClassLittleunit
+﻿@model FY111.Models.FY111.ClassUnitApp
 
 @{
     ViewData["Title"] = @Localizer["Create"];
@@ -6,27 +6,27 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<h4>@Localizer["ClassLittleunit"]</h4>
+<h4>@Localizer["ClassUnitApp"]</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateLittleUnit">
+        <form asp-action="CreateApplication">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ClassUnitId" value="@(ViewData["ClassUnitId"])" />
             <div class="form-group">
-                <label asp-for="Code" class="control-label"></label>
-                <input asp-for="Code" class="form-control" value="@(ViewData["ClassUnitCode"])_" />
-                <span asp-validation-for="Code" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                @Html.EditorFor(model => model.Image, "FileUploader", new { @belong = "image/ClassLittleunit" })
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <label asp-for="Content"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Application" class="control-label"></label>
+                @Html.EditorFor(model => model.Application, "FileUploader", new { @belong = "Application/" })
+                <span asp-validation-for="Application" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="@(Localizer["Create"])" class="btn btn-primary" />

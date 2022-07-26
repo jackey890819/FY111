@@ -1,0 +1,40 @@
+﻿@model FY111.Models.FY111.ClassUnitApp
+
+@{
+    ViewData["Title"] = @Localizer["Delete"];
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>@Localizer["Are you sure you want to delete this?"]</h3>
+<div>
+    <h4>@Localizer["ClassUnitApp"]</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Application)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Application)
+        </dd>
+
+    </dl>
+
+    <form asp-action="DeleteApplication">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="@(Localizer[" Delete"])" class="btn btn-danger" />
+        <a asp-action="DetailsUnit" asp-route-id="@(Model.ClassUnitId)" class="btn btn-primary">@Localizer["Back to List"]</a>
+    </form>
+</div>

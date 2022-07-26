@@ -39,15 +39,10 @@ namespace FY111.Controllers
             IQueryable<Class> classes;
             if (!String.IsNullOrEmpty(searchString))
             {
-                classes = _context.Classes.Where(s => s.Name.Contains(searchString)
+                classes = _context.Classes.Include(x => x.ClassUnits).Where(s => s.Name.Contains(searchString)
                                        || s.Content.Contains(searchString)).Select(x => x);
             }
-            else classes = _context.Classes.Select(x => x);
-
-            foreach(Class c in classes.ToList())
-            {
-                c.ClassUnits = await _context.ClassUnits.Where(x => x.ClassId == c.Id).ToListAsync();
-            }
+            else classes = _context.Classes.Include(x => x.ClassUnits).Select(x => x);
 
             switch (sortOrder)
             {
@@ -93,9 +88,8 @@ namespace FY111.Controllers
             {
                 return NotFound();
             }
-            var unit = await _context.ClassUnits
+            var unit = await _context.ClassUnits.Include(x => x.ClassLittleunits).Include(x => x.ClassUnitApps)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            unit.ClassLittleunits = await _context.ClassLittleunits.Where(x => x.ClassUnitId == id).ToListAsync();
             if (unit == null)
             {
                 return NotFound();
@@ -120,6 +114,21 @@ namespace FY111.Controllers
             }
 
             return View(little);
+        }
+        public async Task<IActionResult> DetailsApplication(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var app = await _context.ClassUnitApps.FirstOrDefaultAsync(x => x.Id == id);
+            //little.ClassLittleunits = await _context.ClassLittleunits.Where(x => x.ClassUnitId == id).ToListAsync();
+            if (app == null)
+            {
+                return NotFound();
+            }
+
+            return View(app);
         }
 
         // GET: ClassManage/Create
@@ -175,6 +184,7 @@ namespace FY111.Controllers
             ViewData["ClassUnitCode"] = ClassUnitCode;
             return View();
         }
+
         // POST: ClassManage/CreateLittleUnit
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -189,6 +199,25 @@ namespace FY111.Controllers
                 return RedirectToAction(nameof(DetailsUnit), new { id = little.ClassUnitId });
             }
             return View(little);
+        }
+
+        public IActionResult CreateApplication(int ClassUnitId)
+        {
+            ViewData["ClassUnitId"] = ClassUnitId;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateApplication([Bind("Id,ClassUnitId,Name,Content,Application")] ClassUnitApp app)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(app);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(DetailsUnit), new { id = app.ClassUnitId });
+            }
+            return View(app);
         }
 
         // GET: ClassManage/Edit/5
@@ -328,6 +357,7 @@ namespace FY111.Controllers
             }
             return View(little);
         }
+
         // POST: ClassManage/EditLittleUnit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -371,6 +401,63 @@ namespace FY111.Controllers
                 return RedirectToAction(nameof(DetailsUnit), new { id = little.ClassUnitId });
             }
             return View(little);
+        }
+
+        public async Task<IActionResult> EditApplication(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var app = await _context.ClassUnitApps.FirstOrDefaultAsync(x => x.Id == id);
+            if (app == null)
+            {
+                return NotFound();
+            }
+            return View(app);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditApplication(int id, [Bind("Id,ClassUnitId,Name,Content,Application")] ClassUnitApp app)
+        {
+            if (id != app.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string result = (await _context.ClassUnitApps.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Application;
+                    if (app.Application == null)
+                    {
+                        app.Application = result;
+                    }
+                    else if (result != null && app.Application != result)
+                    {
+                        var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Application\\");
+                        System.IO.File.Delete(dirPath + result);
+                    }
+                    _context.Update(app);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ClassLittleUnitExists(app.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(DetailsUnit), new { id = app.ClassUnitId });
+            }
+            return View(app);
         }
 
         // GET: ClassManage/Delete/5
@@ -427,6 +514,23 @@ namespace FY111.Controllers
             return View(little);
         }
 
+        public async Task<IActionResult> DeleteApplication(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var app = await _context.ClassUnitApps
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (app == null)
+            {
+                return NotFound();
+            }
+
+            return View(app);
+        }
+
         // POST: ClassManage/DeleteConfirmed/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -467,6 +571,22 @@ namespace FY111.Controllers
             _context.ClassLittleunits.Remove(little);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(DetailsUnit), new { id = little.ClassUnitId });
+        }
+
+        [HttpPost, ActionName("DeleteApplication")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteApplicationConfirmed(int id)
+        {
+            var app = await _context.ClassUnitApps.FirstOrDefaultAsync(m => m.Id == id);
+            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Application\\");
+            var appPath = app.Application;
+            if (appPath != null)
+            {
+                System.IO.File.Delete(dirPath + appPath);
+            }
+            _context.ClassUnitApps.Remove(app);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(DetailsUnit), new { id = app.ClassUnitId });
         }
 
         private bool ClassExists(int id)
