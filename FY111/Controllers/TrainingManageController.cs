@@ -22,6 +22,7 @@ namespace FY111.Controllers
         public async Task<IActionResult> Index()
         {
             var fY111Context = _context.training.Include(t => t.Class);
+            //var fY111Context = _context.training.Where(t => DateTime.Compare((DateTime)t.Date, DateTime.Now) > 0).Include(t => t.Class);
             return View(await fY111Context.ToListAsync());
         }
 

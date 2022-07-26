@@ -147,6 +147,9 @@
   <data name="CurrentPassword" xml:space="preserve">
     <value>Current password</value>
   </data>
+  <data name="date" xml:space="preserve">
+    <value>date</value>
+  </data>
   <data name="DeviceName" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="Score" xml:space="preserve">
     <value>Score</value>
+  </data>
+  <data name="SessionName" xml:space="preserve">
+    <value>SessionName</value>
   </data>
   <data name="SignupEnabled" xml:space="preserve">
     <value>SignupEnabled</value>

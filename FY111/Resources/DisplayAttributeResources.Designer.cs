@@ -151,6 +151,15 @@ namespace FY111.Resources {
         }
         
         /// <summary>
+        ///   查詢類似 日期 的當地語系化字串。
+        /// </summary>
+        public static string date {
+            get {
+                return ResourceManager.GetString("date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 裝置名稱 的當地語系化字串。
         /// </summary>
         public static string DeviceName {
@@ -318,6 +327,15 @@ namespace FY111.Resources {
         public static string Score {
             get {
                 return ResourceManager.GetString("Score", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 場次名稱 的當地語系化字串。
+        /// </summary>
+        public static string SessionName {
+            get {
+                return ResourceManager.GetString("SessionName", resourceCulture);
             }
         }
         

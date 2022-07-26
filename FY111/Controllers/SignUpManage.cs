@@ -25,18 +25,21 @@ namespace FY111.Controllers
         public async Task<IActionResult> OrganizationSignUp(string sortOrder)
         {
             ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
-            var classes = await _context.Classes.Where(x => x.SignupEnabled == 1).ToListAsync();
+            //var classes = await _context.Classes.Where(x => x.SignupEnabled == 1).ToListAsync();
+            var timecompare = await _context.training.Where(t => DateTime.Compare((DateTime)t.Date, DateTime.Now) > 0).Include(t => t.Class).ToListAsync();
             FY111User user = await _userManager.GetUserAsync(User);
             List<SignUpManageModel> manageModel = new List<SignUpManageModel>();
-            foreach (var c in classes)
+            foreach (var c in timecompare)
             {
                 SignUpManageModel model = new SignUpManageModel();
                 model.Id = c.Id;
                 model.Name = c.Name;
-                model.Image = c.Image;
-                model.Content = c.Content;
-                model.Duration = c.Duration;
-                bool result = _context.ClassSignups.Where(x => x.TrainingId == c.Id).Select(x => x.MemberId).Contains(user.Id);
+                string classname = _context.Classes.Where(x => x.Id == c.ClassId).OrderBy(x => x.Name).ToString();
+                model.ClassId = c.Class.Name;
+                model.date = c.Date;
+                model.StartTime = c.StartTime;
+                model.EndTime = c.EndTime;
+                bool result = _context.ClassSignups.Where(x => x.TrainingId == c.ClassId).Select(x => x.MemberId).Contains(user.Id);
                 model.isSignedUp = result;
                 manageModel.Add(model);
             }
