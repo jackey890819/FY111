@@ -121,13 +121,16 @@
     <value>返回列表</value>
   </data>
   <data name="Class" xml:space="preserve">
-    <value>课程</value>
+    <value>教室</value>
   </data>
   <data name="ClassUnits" xml:space="preserve">
-    <value>子课程</value>
+    <value>课程管理</value>
   </data>
   <data name="Create New" xml:space="preserve">
     <value>新增</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>详细资料</value>
