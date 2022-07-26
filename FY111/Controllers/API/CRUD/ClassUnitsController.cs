@@ -9,7 +9,7 @@ using FY111.Models.FY111;
 using Microsoft.AspNetCore.Authorization;
 using FY111.Dtos;
 
-namespace FY111.Controllers.API
+namespace FY111.Controllers.API.CRUD
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -78,7 +78,7 @@ namespace FY111.Controllers.API
             // 檢察同課程中是否有重複的代號
             if (classUnitOrigin.Code != classUnit.Code)
             {
-                var check = _context.ClassUnits.Where(c => c.ClassId == classUnit.ClassId && c.Code == classUnit.Code && c.Code!=classUnitOrigin.Code).Any();
+                var check = _context.ClassUnits.Where(c => c.ClassId == classUnit.ClassId && c.Code == classUnit.Code && c.Code != classUnitOrigin.Code).Any();
                 if (check)
                     return BadRequest("新單元代號重複。");
             }
@@ -123,11 +123,12 @@ namespace FY111.Controllers.API
             try
             {
                 var checkClassId = await _context.Classes
-                    .Where(e => e.Id==classUnit.ClassId)
+                    .Where(e => e.Id == classUnit.ClassId)
                     .AnyAsync();
                 if (!checkClassId)
                     return BadRequest("無對應的課程。");
-            } catch
+            }
+            catch
             {
                 return BadRequest("檢查過程中發生資料庫錯誤。");
             }

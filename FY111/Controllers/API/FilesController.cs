@@ -15,12 +15,12 @@ namespace FY111.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImagesController : ControllerBase
+    public class FilesController : ControllerBase
     {
         private SignInManager<FY111User> _signInManager;
         private readonly IWebHostEnvironment _env;
 
-        public ImagesController(
+        public FilesController(
             SignInManager<FY111User> signInManager, IWebHostEnvironment hostingEnv)
         {
             _signInManager = signInManager;
@@ -35,20 +35,40 @@ namespace FY111.Controllers.API
                 foreach (IFormFile source in files)
                 {
                     var fileName = source.FileName;
-                    var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\" + data["dirPath"]);
+                    var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + data["dirPath"]);
                     var filePath = Path.Combine(dirPath, fileName);
                     if (!Directory.Exists(dirPath))
                     {
                         Directory.CreateDirectory(dirPath);
                     }
-
-                    using var image = Image.Load(source.OpenReadStream());
-                    image.Mutate(x => x.Resize(0, 480));
-                    image.Save(filePath);
+                    if (fileName.EndsWith(".exe"))
+                    {
+                        using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await source.CopyToAsync(fileStream);
+                        }
+                    }
+                    else
+                    {
+                        using var image = Image.Load(source.OpenReadStream());
+                        image.Mutate(x => x.Resize(0, 480));
+                        image.Save(filePath);
+                    }
                     return Ok(new { success = true });
                 }
             }
-            return BadRequest(new { success = false }); 
+            return BadRequest(new { success = false });
+        }
+
+        public FileResult DownloadFile(string Name)
+
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + Name.Replace("/", "\\\\"));
+
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            return File(bytes, "application/octet-stream", Name.Substring(Name.IndexOf('/')+1));
+
         }
 
     }

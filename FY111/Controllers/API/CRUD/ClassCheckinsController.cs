@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
 
-namespace FY111.Controllers.API
+namespace FY111.Controllers.API.CRUD
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -23,7 +23,7 @@ namespace FY111.Controllers.API
         // GET: api/ClassCheckins
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClassCheckin>>> GetClassCheckins(
-            [FromQuery]String memberId="", [FromQuery] int trainingId = -1)
+            [FromQuery] string memberId = "", [FromQuery] int trainingId = -1)
         {
             List<ClassCheckin> result;
             if (memberId != "" && trainingId != -1)
@@ -31,17 +31,20 @@ namespace FY111.Controllers.API
                 result = await _context.ClassCheckins
                     .Where(e => e.MemberId == memberId && e.TrainingId == trainingId)
                     .ToListAsync();
-            } else if (memberId != "")
+            }
+            else if (memberId != "")
             {
                 result = await _context.ClassCheckins
                     .Where(e => e.MemberId == memberId)
                     .ToListAsync();
-            } else if (trainingId != 1)
+            }
+            else if (trainingId != 1)
             {
                 result = await _context.ClassCheckins
                     .Where(e => e.TrainingId == trainingId)
                     .ToListAsync();
-            } else
+            }
+            else
             {
                 result = await _context.ClassCheckins
                     .Take(10)

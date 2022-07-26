@@ -38,6 +38,12 @@
 
     User05和User06為Group FY111的成員
 
+## 
+## 利用Postman測試WebAPI
+將PostmanTest中的collection匯入後進行測試。
+
+依據不同的使用者登入驗證部分權限功能。
+
 
 ## 
 ## 部屬 ASP .NET Core 至 IIS (區網測試用)
