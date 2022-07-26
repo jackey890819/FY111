@@ -60,5 +60,16 @@ namespace FY111.Controllers.API
             return BadRequest(new { success = false });
         }
 
+        public FileResult DownloadFile(string Name)
+
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\" + Name.Replace("/", "\\\\"));
+
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+
+            return File(bytes, "application/octet-stream", Name.Substring(Name.IndexOf('/')+1));
+
+        }
+
     }
 }
