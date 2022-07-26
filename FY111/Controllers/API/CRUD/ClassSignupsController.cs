@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using FY111.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 
-namespace FY111.Controllers.API
+namespace FY111.Controllers.API.CRUD
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,7 +21,7 @@ namespace FY111.Controllers.API
         private SignInManager<FY111User> _signInManager;
 
         public ClassSignupsController(
-            FY111Context context, 
+            FY111Context context,
             UserManager<FY111User> userManager,
             SignInManager<FY111User> signInManager)
         {
@@ -33,20 +33,22 @@ namespace FY111.Controllers.API
         // GET: api/ClassSignups/5
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClassSignup>>> GetClassSignup
-            ([FromQuery]String memberId="", [FromQuery]int trainingId = -1)
+            ([FromQuery] string memberId = "", [FromQuery] int trainingId = -1)
         {
             List<ClassSignup> result;
-            if (memberId !="" && trainingId != -1)
+            if (memberId != "" && trainingId != -1)
             {
                 result = await _context.ClassSignups
                     .Where(e => e.MemberId == memberId && e.TrainingId == trainingId)
                     .ToListAsync();
-            } else if (memberId != "")
+            }
+            else if (memberId != "")
             {
                 result = await _context.ClassSignups
                     .Where(e => e.MemberId == memberId)
                     .ToListAsync();
-            }else if (trainingId != -1)
+            }
+            else if (trainingId != -1)
             {
                 result = await _context.ClassSignups
                     .Where(e => e.TrainingId == trainingId)

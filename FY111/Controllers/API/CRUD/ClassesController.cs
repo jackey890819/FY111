@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Authorization;
 using FY111.Dtos;
 
-namespace FY111.Controllers.API
+namespace FY111.Controllers.API.CRUD
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -47,7 +47,7 @@ namespace FY111.Controllers.API
         [HttpGet("{id}")]
         public async Task<ActionResult<ClassCRUDDto>> GetClass(int id)
         {
-            ClassCRUDDto classDto =  await _context.Classes
+            ClassCRUDDto classDto = await _context.Classes
                 .Where(c => c.Id == id)
                 .Select(c => new ClassCRUDDto
                 {

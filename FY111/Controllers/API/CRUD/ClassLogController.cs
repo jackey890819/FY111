@@ -12,7 +12,7 @@ using FY111.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
-namespace FY111.Controllers
+namespace FY111.Controllers.API.CRUD
 {
     [Route("api/[controller]")]
     [ApiController]

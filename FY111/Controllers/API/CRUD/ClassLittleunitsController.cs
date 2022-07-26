@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
 using FY111.Dtos;
 
-namespace FY111.Controllers.API
+namespace FY111.Controllers.API.CRUD
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,7 +25,7 @@ namespace FY111.Controllers.API
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClassLittleunit>>> GetClassLittleunits()
         {
-            var list =  await _context.ClassLittleunits.ToListAsync();
+            var list = await _context.ClassLittleunits.ToListAsync();
             return Ok(classLittleunitToDto(list));
         }
 
@@ -51,7 +51,7 @@ namespace FY111.Controllers.API
         {
             if (id != classLittleunit.Id)
                 return BadRequest("Id 為PK，不可變更。");
-            
+
             ClassLittleunit origin = await _context.ClassLittleunits.FindAsync(id);
             if (origin.ClassUnitId != classLittleunit.ClassUnitId)
                 return BadRequest("與原課程父單元代號不符合，請重新嘗試或改用刪除並重建。");

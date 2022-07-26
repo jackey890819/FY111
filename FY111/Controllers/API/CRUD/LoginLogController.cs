@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
 using System.Diagnostics;
 
-namespace FY111.Controllers
+namespace FY111.Controllers.API.CRUD
 {
     [Route("api/[controller]")]
     [ApiController]

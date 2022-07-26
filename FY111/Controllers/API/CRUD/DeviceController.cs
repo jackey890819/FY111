@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using FY111.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 
-namespace FY111.Controllers
+namespace FY111.Controllers.API.CRUD
 {
     [Route("api/[controller]")]
     [ApiController]
