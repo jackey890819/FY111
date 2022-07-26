@@ -3,9 +3,9 @@
     string dirPath = ViewData["belong"] + "/";
 }
 <div class="mb-3">
-    @if (@Model != null)
+    @if (@Model != null && !@Model.EndsWith(".exe"))
     {
-        <img src="~/image/@(dirPath + Model)" class="img-thumbnail image" style="display:block" />
+        <img src="~/@(dirPath + Model)" class="img-thumbnail image" style="display:block" />
     }
     else
     {
@@ -20,10 +20,10 @@
         }
         else
         {
-            <span>@Localizer["尚未上傳圖片"]</span>
+            <span>@Localizer["尚未上傳檔案"]</span>
         }
     </label>
-    <input asp-for="@Model" onchange="fileChange();" value="@Model"  class="custom-file-input" type="file" accept="image/*" />
+    <input asp-for="@Model" onchange="fileChange();" value="@Model"  class="custom-file-input" type="file" />
     <span class="text-danger"></span>
 </div>
 
@@ -31,7 +31,7 @@
     function fileChange(){
         var files = $('input[type="file"]').get(0).files;
         var fileName = files[0].name;
-        var dirpath = '@ViewData["belong"]'+"\\";
+        var dirpath = '@(ViewData["belong"].ToString().Replace("/","\\\\"))'+"\\";
         if (window.FormData !== undefined) {
             var formData = new FormData();
             formData.append("dirPath", dirpath);
@@ -40,14 +40,18 @@
             }
             $.ajax({
                 type: 'POST',
-                url: "/api/Images",
+                url: "/api/Files",
                 data: formData,
                 processData: false,
                 contentType: false
             }).done(function(data){
                 if(data.message === undefined){
+                    if(fileName.endsWith('.exe')){
+                    }
+                    else{
+                        $('.image').prop('src', '/' + "@dirPath" + fileName).prop('style', 'display:block;');
+                    }
                     $('input[type="file"]').siblings(".custom-file-label").addClass("selected").html(fileName);
-                    $('.image').prop('src', '/image/' + "@dirPath" + fileName).prop('style', 'display:block;');
                     $('input[type="file"]').prop('value', fileName);
                 }
                 else{

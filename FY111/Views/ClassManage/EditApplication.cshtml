@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Application" class="control-label"></label>
-                <input asp-for="Application" class="form-control" />
+                @Html.EditorFor(model => model.Application, "FileUploader", new { @belong = "Application/" })
                 <span asp-validation-for="Application" class="text-danger"></span>
             </div>
             <div class="form-group">

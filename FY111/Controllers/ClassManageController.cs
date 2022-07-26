@@ -578,7 +578,7 @@ namespace FY111.Controllers
         public async Task<IActionResult> DeleteApplicationConfirmed(int id)
         {
             var app = await _context.ClassUnitApps.FirstOrDefaultAsync(m => m.Id == id);
-            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\ClassLittleUnit\\");
+            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Application\\");
             var appPath = app.Application;
             if (appPath != null)
             {
