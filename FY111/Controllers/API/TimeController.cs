@@ -49,7 +49,7 @@ namespace FY111.Controllers.API
             } catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                return BadRequest(e.Message);
+                return BadRequest(new { errors = "start timer failed"});
             }
         }
 
@@ -77,7 +77,7 @@ namespace FY111.Controllers.API
             } catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                return BadRequest(e.Message);
+                return BadRequest(new { errors = "end timer failed" });
             }
         }
     }
