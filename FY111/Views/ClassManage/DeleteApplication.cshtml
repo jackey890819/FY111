@@ -27,7 +27,7 @@
             @Html.DisplayNameFor(model => model.Application)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Application)
+            @Html.DisplayFor(model => model.Application, "ToFile", new { belong = "Application" })
         </dd>
 
     </dl>

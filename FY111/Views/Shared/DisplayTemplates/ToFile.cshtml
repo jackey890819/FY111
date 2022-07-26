@@ -1,0 +1,8 @@
+﻿@model string
+@{string dirPath = ViewData["belong"] + "/";}
+@if(@Model != null){
+    @Html.ActionLink(Model, "DownloadFile", "Files", new { Name = dirPath + Model })
+}
+else{
+    <p>@Localizer["尚未上傳檔案"]</p>
+}
