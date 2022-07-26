@@ -34,12 +34,11 @@ namespace FY111.Controllers
                 SignUpManageModel model = new SignUpManageModel();
                 model.Id = c.Id;
                 model.Name = c.Name;
-                string classname = _context.Classes.Where(x => x.Id == c.ClassId).OrderBy(x => x.Name).ToString();
                 model.ClassId = c.Class.Name;
                 model.date = c.Date;
                 model.StartTime = c.StartTime;
                 model.EndTime = c.EndTime;
-                bool result = _context.ClassSignups.Where(x => x.TrainingId == c.ClassId).Select(x => x.MemberId).Contains(user.Id);
+                bool result = _context.ClassSignups.Where(x => x.TrainingId == c.Id).Select(x => x.MemberId).Contains(user.Id);
                 model.isSignedUp = result;
                 manageModel.Add(model);
             }
