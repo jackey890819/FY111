@@ -31,7 +31,7 @@
 
     <form asp-action="DeleteUnit">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="@(Localizer[" Delete"])" class="btn btn-danger" />
+        <input type="submit" value="@(Localizer["Delete"])" class="btn btn-danger" />
         <a asp-action="Details" asp-route-id="@(Model.ClassId)" class="btn btn-primary">@Localizer["Back to List"]</a>
     </form>
 </div>

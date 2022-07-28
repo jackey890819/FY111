@@ -120,8 +120,8 @@
   <data name="Back to List" xml:space="preserve">
     <value>Back to List</value>
   </data>
-  <data name="ClassLittleUnit" xml:space="preserve">
-    <value>ClassUnit</value>
+  <data name="ClassLittleunit" xml:space="preserve">
+    <value>Unit</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
