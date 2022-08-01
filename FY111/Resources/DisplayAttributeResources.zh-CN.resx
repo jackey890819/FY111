@@ -130,16 +130,16 @@
     <value>检查点Id</value>
   </data>
   <data name="ClassLittleUnitName" xml:space="preserve">
-    <value>子子课程名称</value>
+    <value>单元名称</value>
   </data>
   <data name="ClassName" xml:space="preserve">
-    <value>课程名称</value>
+    <value>教室名称</value>
   </data>
   <data name="ClassUnitId" xml:space="preserve">
-    <value>课程单元Id</value>
+    <value>教室单元Id</value>
   </data>
   <data name="ClassUnitName" xml:space="preserve">
-    <value>子课程名称</value>
+    <value>课程名称</value>
   </data>
   <data name="Code" xml:space="preserve">
     <value>代码</value>

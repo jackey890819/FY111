@@ -121,10 +121,10 @@
     <value>Back to List</value>
   </data>
   <data name="ClassLittleunits" xml:space="preserve">
-    <value>ClassLittleunits</value>
+    <value>Units management</value>
   </data>
   <data name="ClassUnit" xml:space="preserve">
-    <value>ClassUnit</value>
+    <value>Course</value>
   </data>
   <data name="ClassUnitApp" xml:space="preserve">
     <value>ClassUnitApp</value>
@@ -142,6 +142,6 @@
     <value>Edit</value>
   </data>
   <data name="EditUnit" xml:space="preserve">
-    <value>EditUnit</value>
+    <value>Edit Course</value>
   </data>
 </root>

@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="XR模擬訓練課程介紹" xml:space="preserve">
-    <value>XR模拟训练课程介绍</value>
-  </data>
   <data name="使用情況分析" xml:space="preserve">
     <value>使用情况分析</value>
   </data>
@@ -128,6 +125,9 @@
   </data>
   <data name="拜訪人數" xml:space="preserve">
     <value>拜访人数</value>
+  </data>
+  <data name="教室及課程管理" xml:space="preserve">
+    <value>教室及课程管理</value>
   </data>
   <data name="教室管理" xml:space="preserve">
     <value>教室管理</value>
@@ -144,8 +144,8 @@
   <data name="組織課程管理" xml:space="preserve">
     <value>组织课程管理</value>
   </data>
-  <data name="職場災害管理" xml:space="preserve">
-    <value>职场灾害管理</value>
+  <data name="職場災害代碼管理" xml:space="preserve">
+    <value>职场灾害代码管理</value>
   </data>
   <data name="裝置管理" xml:space="preserve">
     <value>装置管理</value>
@@ -158,5 +158,8 @@
   </data>
   <data name="軟體下載" xml:space="preserve">
     <value>软体下载</value>
+  </data>
+  <data name="首頁" xml:space="preserve">
+    <value>首页</value>
   </data>
 </root>

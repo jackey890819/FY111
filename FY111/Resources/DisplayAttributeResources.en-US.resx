@@ -130,16 +130,16 @@
     <value>CkptId</value>
   </data>
   <data name="ClassLittleUnitName" xml:space="preserve">
-    <value>ClassLittleUnitName</value>
+    <value>UnitName</value>
   </data>
   <data name="ClassName" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="ClassUnitId" xml:space="preserve">
-    <value>ClassUnitId</value>
+    <value>CourseId</value>
   </data>
   <data name="ClassUnitName" xml:space="preserve">
-    <value>ClassUnitName</value>
+    <value>CourseName</value>
   </data>
   <data name="Code" xml:space="preserve">
     <value>Code</value>

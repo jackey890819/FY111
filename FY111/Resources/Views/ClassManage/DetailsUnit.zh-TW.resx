@@ -121,10 +121,10 @@
     <value>返回列表</value>
   </data>
   <data name="ClassLittleunits" xml:space="preserve">
-    <value>子子課程</value>
+    <value>單元管理</value>
   </data>
   <data name="ClassUnit" xml:space="preserve">
-    <value>子課程</value>
+    <value>課程</value>
   </data>
   <data name="ClassUnitApp" xml:space="preserve">
     <value>課程應用程式</value>
@@ -142,6 +142,6 @@
     <value>編輯</value>
   </data>
   <data name="EditUnit" xml:space="preserve">
-    <value>編輯子課程</value>
+    <value>編輯課程</value>
   </data>
 </root>
