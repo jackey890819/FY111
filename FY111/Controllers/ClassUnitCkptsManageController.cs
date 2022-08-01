@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin, ClassAdmin")]
     public class ClassUnitCkptsManageController : Controller
     {
         private readonly FY111Context _context;

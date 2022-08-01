@@ -117,52 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="使用情況分析" xml:space="preserve">
-    <value>使用情况分析</value>
+  <data name="Back to List" xml:space="preserve">
+    <value>返回列表</value>
   </data>
-  <data name="帳戶管理" xml:space="preserve">
-    <value>帐户管理</value>
+  <data name="Details" xml:space="preserve">
+    <value>詳細資料</value>
   </data>
-  <data name="拜訪人數" xml:space="preserve">
-    <value>拜访人数</value>
+  <data name="Edit" xml:space="preserve">
+    <value>編輯</value>
   </data>
-  <data name="教室及課程管理" xml:space="preserve">
-    <value>教室及课程管理</value>
+  <data name="Save" xml:space="preserve">
+    <value>儲存</value>
   </data>
-  <data name="教室管理" xml:space="preserve">
-    <value>教室管理</value>
-  </data>
-  <data name="用戶管理" xml:space="preserve">
-    <value>用户管理</value>
-  </data>
-  <data name="目前時間" xml:space="preserve">
-    <value>目前时间</value>
-  </data>
-  <data name="組織成員管理" xml:space="preserve">
-    <value>组织成员管理</value>
-  </data>
-  <data name="組織課程管理" xml:space="preserve">
-    <value>组织课程管理</value>
-  </data>
-  <data name="職場災害代碼管理" xml:space="preserve">
-    <value>职场灾害代码管理</value>
-  </data>
-  <data name="裝置管理" xml:space="preserve">
-    <value>装置管理</value>
-  </data>
-  <data name="訓練課程管理" xml:space="preserve">
-    <value>训练课程管理</value>
-  </data>
-  <data name="課程單元檢查點管理" xml:space="preserve">
-    <value>课程单元检查点管理</value>
-  </data>
-  <data name="軟體上傳" xml:space="preserve">
-    <value>软体上传</value>
-  </data>
-  <data name="軟體下載" xml:space="preserve">
-    <value>软体下载</value>
-  </data>
-  <data name="首頁" xml:space="preserve">
-    <value>首页</value>
+  <data name="Training" xml:space="preserve">
+    <value>訓練課程</value>
   </data>
 </root>

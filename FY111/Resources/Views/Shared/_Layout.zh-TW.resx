@@ -150,6 +150,9 @@
   <data name="裝置管理" xml:space="preserve">
     <value>裝置管理</value>
   </data>
+  <data name="訓練課程管理" xml:space="preserve">
+    <value>訓練課程管理</value>
+  </data>
   <data name="課程單元檢查點管理" xml:space="preserve">
     <value>課程單元檢查點管理</value>
   </data>

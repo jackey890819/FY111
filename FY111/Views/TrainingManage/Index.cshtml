@@ -1,59 +1,87 @@
-﻿@model IEnumerable<FY111.Models.FY111.training>
+﻿@model PaginatedList<FY111.Models.FY111.training>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = @Localizer["Training Management"];
 }
 
-<h1>Index</h1>
-<h1>@ViewData["Time"]</h1>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<div class="row">
+    <h1 class="col-sm-6">@ViewData["Title"]</h1>
+    <form asp-action="Index" method="get" class="ml-auto col-sm-6">
+        <div class="form-actions no-color row">
+            <input type="text" id="search" class="form-control col-sm-7" placeholder="@(Localizer["Search"]).." name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="@(Localizer["Search"])" class="btn btn-default form-inline col-sm-2" />
+            <a asp-action="Index" class="btn btn-default col-sm-3">@Localizer["Back to Full List"]</a>
+        </div>
+    </form>
+    <div class="col-sm-2">
+        <a asp-action="Create" class="btn btn-primary">@Localizer["Create New"]</a>
+    </div>
+</div>
+<table class="table table-hover table-responsive">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @Html.DisplayNameFor(model => model[0].Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartTime)
+                @Html.DisplayNameFor(model => model[0].StartTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndTime)
+                @Html.DisplayNameFor(model => model[0].EndTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Class)
+                @Html.DisplayNameFor(model => model[0].ClassId)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Class.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Class.Name)
+                </td>
+                <td class="btn-group float-right">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">@Localizer["Edit"]</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">@Localizer["Details"]</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">@Localizer["Delete"]</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    @Localizer["Previous"]
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    @Localizer["Next"]
+</a>

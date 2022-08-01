@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FY111.Resources;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -14,10 +16,15 @@ namespace FY111.Models.FY111
         }
 
         public int Id { get; set; }
+        [Display(Name = "ClassName", ResourceType = typeof(DisplayAttributeResources))]
         public int ClassId { get; set; }
+        [Display(Name = "SessionName", ResourceType = typeof(DisplayAttributeResources))]
         public string Name { get; set; }
+        [Display(Name = "date", ResourceType = typeof(DisplayAttributeResources))]
         public DateTime? Date { get; set; }
+        [Display(Name = "StartTime", ResourceType = typeof(DisplayAttributeResources))]
         public TimeSpan? StartTime { get; set; }
+        [Display(Name = "EndTime", ResourceType = typeof(DisplayAttributeResources))]
         public TimeSpan? EndTime { get; set; }
 
         public virtual Class Class { get; set; }
