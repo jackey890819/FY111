@@ -25,6 +25,10 @@ namespace FY111.Controllers
         {
             return View(await context.LoginApps.ToListAsync());
         }
+        public async Task<IActionResult> ClassDownload()
+        {
+            return View(await context.ClassUnitApps.ToListAsync());
+        }
         [HttpPost]
         public async Task<IActionResult> UploadFile(List<IFormFile> files, string content)
         {

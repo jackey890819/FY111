@@ -89,7 +89,7 @@
                             </a>
                         </li>
                     }
-                    
+
                     <!-- Divider -->
                     <hr class="sidebar-divider my-0">
 
@@ -109,6 +109,12 @@
                         <a class="nav-link" asp-controller="UploadManage" asp-action="Download">
                             <i class="fa fa-download fa-fw" aria-hidden="true"></i>
                             <span>@Localizer["軟體下載"]</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-controller="UploadManage" asp-action="ClassDownload">
+                            <i class="fa fa-download fa-fw" aria-hidden="true"></i>
+                            <span>@Localizer["課程軟體下載"]</span>
                         </a>
                     </li>
                 }
