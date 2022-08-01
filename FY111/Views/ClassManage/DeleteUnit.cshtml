@@ -26,6 +26,11 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Image)
         </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Image, "ToImage", new { @belong = "ClassUnit" })
+        </dd>
+        <dd class="col-sm-8">
+        </dd>
 
     </dl>
 
