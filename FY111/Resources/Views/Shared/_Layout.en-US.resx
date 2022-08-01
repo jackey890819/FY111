@@ -145,13 +145,16 @@
     <value>Organization Course Management</value>
   </data>
   <data name="職場災害代碼管理" xml:space="preserve">
-    <value>Occdisaster id management</value>
+    <value>Occdisaster id Management</value>
   </data>
   <data name="裝置管理" xml:space="preserve">
     <value>Device management</value>
   </data>
+  <data name="訓練課程管理" xml:space="preserve">
+    <value>Training Management</value>
+  </data>
   <data name="課程單元檢查點管理" xml:space="preserve">
-    <value>UnitCkpt management</value>
+    <value>UnitCkpt Management</value>
   </data>
   <data name="軟體上傳" xml:space="preserve">
     <value>Software upload</value>
