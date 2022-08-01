@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
 
 namespace FY111.Controllers
 {
@@ -98,10 +99,15 @@ namespace FY111.Controllers
             {
                 try
                 {
+                    string result = (await _context.Devices.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Icon;
                     if (device.Icon == null)
                     {
-                        string result = (await _context.Devices.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)).Icon;
                         device.Icon = result;
+                    }
+                    else if (result != null && device.Icon != result)
+                    {
+                        var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\Device\\");s
+                        System.IO.File.Delete(dirPath + result);
                     }
                     _context.Update(device);
                     await _context.SaveChangesAsync();
@@ -132,6 +138,12 @@ namespace FY111.Controllers
 
             var device = await _context.Devices
                 .FirstOrDefaultAsync(m => m.Id == id);
+            string result = device.Icon;
+            if (device.Icon != null)
+            {
+                var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\Device\\");
+                System.IO.File.Delete(dirPath + result);
+            }
             if (device == null)
             {
                 return NotFound();
