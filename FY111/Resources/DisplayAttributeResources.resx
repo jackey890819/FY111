@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Application" xml:space="preserve">
+    <value>應用程式</value>
+  </data>
   <data name="Avatar" xml:space="preserve">
     <value>頭像</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="CurrentPassword" xml:space="preserve">
     <value>目前密碼</value>
+  </data>
+  <data name="date" xml:space="preserve">
+    <value>日期</value>
   </data>
   <data name="DeviceName" xml:space="preserve">
     <value>裝置名稱</value>
@@ -203,6 +209,9 @@
   </data>
   <data name="Score" xml:space="preserve">
     <value>分數</value>
+  </data>
+  <data name="SessionName" xml:space="preserve">
+    <value>場次名稱</value>
   </data>
   <data name="SignupEnabled" xml:space="preserve">
     <value>是否開啟報名</value>

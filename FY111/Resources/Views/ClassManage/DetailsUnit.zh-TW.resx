@@ -126,6 +126,9 @@
   <data name="ClassUnit" xml:space="preserve">
     <value>子課程</value>
   </data>
+  <data name="ClassUnitApp" xml:space="preserve">
+    <value>課程應用程式</value>
+  </data>
   <data name="Create New" xml:space="preserve">
     <value>新增</value>
   </data>
