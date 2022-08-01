@@ -223,7 +223,8 @@
                     }
                     data: @Html.Raw(Json.Serialize(loginLogValues)),
                     type: 'line',
-                    smooth: true
+                    smooth: true,
+                    smoothMonotone: 'x'
                 }
             ]
             /*title: {
