@@ -9,8 +9,8 @@
 
 <form method="post" enctype="multipart/form-data">
     <input type="file" name="files" multiple required />
-    <input type="text" autocomplete="off" placeholder="檔案註解" name="Content" />
-    <button class="btn btn-success" type="submit" asp-controller="UploadManage" asp-action="UploadFile">@Localizer["UploadManage"]</button>
+    <input type="text" autocomplete="off" placeholder=@Localizer["Content"] name="Content" />
+    <button class="btn btn-success" type="submit" asp-controller="UploadManage" asp-action="UploadFile">@Localizer["Upload"]</button>
 </form>
 
 <table class="table table-striped">
@@ -47,7 +47,7 @@
                     @Html.DisplayFor(modelItem => item.Content)
                 </td>
                 <td>
-                    <a type="button" class="btn btn-danger" asp-controller="UploadManage" asp-action="DeleteFile" asp-route-id="@item.Id">Delete</a>
+                    <a type="button" class="btn btn-danger" asp-controller="UploadManage" asp-action="DeleteFile" asp-route-id="@item.Id">@Localizer["Delete"]</a>
                 </td>
             </tr>
         }
