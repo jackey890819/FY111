@@ -106,7 +106,7 @@ namespace FY111.Controllers
                     }
                     else if (result != null && device.Icon != result)
                     {
-                        var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\Device\\");s
+                        var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\Device\\");
                         System.IO.File.Delete(dirPath + result);
                     }
                     _context.Update(device);
