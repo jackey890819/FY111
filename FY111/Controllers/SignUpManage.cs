@@ -112,9 +112,16 @@ namespace FY111.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> PersonalSignUp(List<OrganizationSignUpModel> models)
+        public async Task<ActionResult> PersonalSignUp(int id, DateTime date)
         {
-            return RedirectToAction(nameof(OrganizationSignUp));
+            training t = await _context.training.FindAsync(id);
+            ClassSignup signup = new ClassSignup();
+            signup.TrainingId = id;
+            signup.MemberId = _userManager.GetUserId(User);
+            signup.Date = date;
+            _context.Add(signup);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(PersonalSignUp));
         }
     }
 }
