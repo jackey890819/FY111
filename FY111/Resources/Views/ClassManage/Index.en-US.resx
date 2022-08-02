@@ -123,6 +123,9 @@
   <data name="Class Management" xml:space="preserve">
     <value>Classroom Management</value>
   </data>
+  <data name="Class Units" xml:space="preserve">
+    <value>Class Units</value>
+  </data>
   <data name="Create New" xml:space="preserve">
     <value>Create New</value>
   </data>
