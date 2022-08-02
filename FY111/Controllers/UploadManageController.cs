@@ -39,8 +39,8 @@ namespace FY111.Controllers
                 var filePath = Path.Combine(dirPath, fileName);
                 var extension = Path.GetExtension(file.FileName);
                 var application = Path.GetFileName(file.FileName);
-                //if (!System.IO.File.Exists(filePath))
-                if (!System.IO.File.Exists(filePath) && extension == ".exe")
+                if (!System.IO.File.Exists(filePath))
+                //if (!System.IO.File.Exists(filePath) && extension == ".exe")
                 {
                     if (!Directory.Exists(dirPath))
                     {

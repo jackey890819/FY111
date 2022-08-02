@@ -123,6 +123,9 @@
   <data name="Class Management" xml:space="preserve">
     <value>教室管理</value>
   </data>
+  <data name="Class Units" xml:space="preserve">
+    <value>子單元數量</value>
+  </data>
   <data name="Create New" xml:space="preserve">
     <value>新增</value>
   </data>

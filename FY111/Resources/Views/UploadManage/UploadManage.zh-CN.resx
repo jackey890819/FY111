@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Content" xml:space="preserve">
-    <value>档案叙述</value>
+    <value>文件內容</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>删除</value>

@@ -1,0 +1,101 @@
+﻿@model IEnumerable<FY111.Models.FY111.training>
+
+@{
+    ViewData["Title"] = @Localizer["個人課程管理"];
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="PersonalSignUp">
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Class.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <input type="text" value=@Model.ElementAt(i).Id name="models[@i.ToString()].Id" hidden />
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).Class.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).StartTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).EndTime)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input type="submit" value="@(Localizer["Save"])" class="btn btn-primary" />
+</form>
+
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassSignups.ElementAt(0).Date)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            @foreach (var item in Model.ElementAt(i).ClassSignups)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+<script>
+    $('input[type="submit"]').click(function(){
+        $('input[type="checkbox"]').each(function(){
+            $(this).val(this.checked);
+        });
+    });
+</script>
+
+}
