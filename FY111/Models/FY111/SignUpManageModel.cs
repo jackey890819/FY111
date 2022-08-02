@@ -16,6 +16,7 @@ namespace FY111.Models.FY111
         [Display(Name = "ClassName", ResourceType = typeof(DisplayAttributeResources))]
         public string ClassId { get; set; }
         [Display(Name = "StartDate", ResourceType = typeof(DisplayAttributeResources))]
+        [DataType(DataType.Date)]
         public DateTime? date { get; set; }
         [Display(Name = "StartTime", ResourceType = typeof(DisplayAttributeResources))]
         public TimeSpan? StartTime { get; set; }
