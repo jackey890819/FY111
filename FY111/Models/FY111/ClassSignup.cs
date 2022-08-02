@@ -9,6 +9,7 @@ namespace FY111.Models.FY111
     {
         public string MemberId { get; set; }
         public int TrainingId { get; set; }
+        public DateTime Date { get; set; }
 
         public virtual training Training { get; set; }
     }

@@ -26,7 +26,7 @@ namespace FY111.Controllers
         {
             ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
             //var classes = await _context.Classes.Where(x => x.SignupEnabled == 1).ToListAsync();
-            var timecompare = await _context.training.Where(t => DateTime.Compare((DateTime)t.Date, DateTime.Now) > 0).Include(t => t.Class).ToListAsync();
+            var timecompare = await _context.training.Where(t => DateTime.Compare((DateTime)t.StartDate, DateTime.Now) > 0).Include(t => t.Class).ToListAsync();
             FY111User user = await _userManager.GetUserAsync(User);
             List<SignUpManageModel> manageModel = new List<SignUpManageModel>();
             foreach (var c in timecompare)
@@ -35,7 +35,7 @@ namespace FY111.Controllers
                 model.Id = c.Id;
                 model.Name = c.Name;
                 model.ClassId = c.Class.Name;
-                model.date = c.Date;
+                model.date = c.StartDate;
                 model.StartTime = c.StartTime;
                 model.EndTime = c.EndTime;
                 bool result = _context.ClassSignups.Where(x => x.TrainingId == c.Id).Select(x => x.MemberId).Contains(user.Id);

@@ -189,7 +189,7 @@ namespace FY111.Controllers
                 }
                 // 查詢符合條件的training
                 var targets = await _context.training
-                    .Where(e => e.Date >= date.Date && e.StartTime >= date.TimeOfDay)
+                    .Where(e => e.StartDate >= date.Date && e.StartTime >= date.TimeOfDay)
                     .ToListAsync();
                 // 查無符合項目
                 if (targets.Count == 0)
@@ -237,7 +237,7 @@ namespace FY111.Controllers
                     {
                         training_id = targets[i].Id,
                         training_name = targets[i].Name,
-                        training_date = ((DateTime)targets[i].Date).ToString("yyyy-MM-dd"),
+                        training_date = ((DateTime)targets[i].StartDate).ToString("yyyy-MM-dd"),
                         start_time = targets[i].StartTime.ToString(),
                         end_time = targets[i].EndTime.ToString(),
                         applyUsers = listOfApplyUsers[i]
