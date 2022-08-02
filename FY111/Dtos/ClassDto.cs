@@ -50,8 +50,6 @@ namespace FY111.Dtos
             Image = @class.Image;
             Content = @class.Content;
             Duration = @class.Duration;
-            SignupEnabled = @class.SignupEnabled;
-            CheckinEnabled = @class.CheckinEnabled;
         }
     }
 

@@ -74,6 +74,7 @@ namespace FY111.Controllers
             return View(await PaginatedList<ManageModel>.CreateAsync(manageModel, pageNumber ?? 1, pageSize));
         }
         [Authorize(Roles = "SuperAdmin")]
+
         public async Task<IActionResult> Details(string? id)
         {
             if (id == null)

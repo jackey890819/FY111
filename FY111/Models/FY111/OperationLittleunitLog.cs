@@ -27,6 +27,7 @@ namespace FY111.Models.FY111
         public DateTime? StartTime { get; set; }
         [Display(Name = "EndTime", ResourceType = typeof(DisplayAttributeResources))]
         public DateTime? EndTime { get; set; }
+
         public virtual OperationUnitLog OperationLog { get; set; }
         public virtual ICollection<OperationCheckpoint> OperationCheckpoints { get; set; }
         public virtual ICollection<OperationOccdisaster> OperationOccdisasters { get; set; }

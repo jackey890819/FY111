@@ -24,7 +24,16 @@
                 @Html.DisplayNameFor(model => model[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model[0].Date)
+                @Html.DisplayNameFor(model => model[0].SignupEnabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].CheckinEnabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].EndDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model[0].StartTime)
@@ -45,7 +54,16 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Date)
+                    @Html.DisplayFor(modelItem => item.SignupEnabled)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckinEnabled)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartTime)
