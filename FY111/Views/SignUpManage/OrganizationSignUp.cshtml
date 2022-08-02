@@ -14,10 +14,13 @@
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ClassId)
+                    @Html.DisplayNameFor(model => model.Class.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.date)
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.StartTime)
@@ -41,7 +44,10 @@
                     @Html.DisplayFor(modelItem => Model.ElementAt(i).ClassId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).date)
+                    @Html.DisplayFor(modelItem => Model.ElementAt(i).StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.ElementAt(i).EndDate)
                 </td>
                 @*<td width="10%">
             @Html.DisplayFor(modelItem => Model.ElementAt(i).Image, "ToImage", new{ @belong = "Class"})
