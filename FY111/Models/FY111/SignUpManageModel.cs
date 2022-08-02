@@ -17,12 +17,17 @@ namespace FY111.Models.FY111
         public string ClassId { get; set; }
         [Display(Name = "StartDate", ResourceType = typeof(DisplayAttributeResources))]
         [DataType(DataType.Date)]
-        public DateTime? date { get; set; }
+        public DateTime? StartDate { get; set; }
+        [Display(Name = "EndDate", ResourceType = typeof(DisplayAttributeResources))]
+        [DataType(DataType.Date)]
+        public DateTime? EndDate { get; set; }
         [Display(Name = "StartTime", ResourceType = typeof(DisplayAttributeResources))]
         public TimeSpan? StartTime { get; set; }
         [Display(Name = "EndTime", ResourceType = typeof(DisplayAttributeResources))]
         public TimeSpan? EndTime { get; set; }
-
+        //[Display(Name = "Date", ResourceType = typeof(DisplayAttributeResources))]
+        [DataType(DataType.Date)]
+        public DateTime? date { get; set; }
         public virtual Class Class { get; set; }
     }
 }
