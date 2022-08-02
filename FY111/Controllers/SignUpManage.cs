@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FY111.Controllers
 {
-    [Authorize(Roles = "GroupUser")]
+    [Authorize]
     public class SignUpManage : Controller
     {
         private readonly FY111Context _context;
@@ -22,6 +22,8 @@ namespace FY111.Controllers
             _context = context;
             _userManager = userManager;
         }
+
+        [Authorize(Roles = "GroupUser")]
         public async Task<IActionResult> OrganizationSignUp(string sortOrder)
         {
             ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
@@ -56,6 +58,7 @@ namespace FY111.Controllers
             return View(manageModel);
         }
 
+        [Authorize(Roles = "GroupUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> OrganizationSignUp(List<OrganizationSignUpModel> models)
@@ -92,6 +95,25 @@ namespace FY111.Controllers
             _context.ClassSignups.AddRange(add);
             _context.ClassSignups.RemoveRange(remove);
             _context.SaveChanges();
+            return RedirectToAction(nameof(OrganizationSignUp));
+        }
+
+        public async Task<IActionResult> PersonalSignUp(string sortOrder)
+        {
+            FY111User user = await _userManager.GetUserAsync(User);
+            var trainings = await _context.training.Where(t => DateTime.Compare((DateTime)t.StartDate, DateTime.Now) < 0 && DateTime.Compare((DateTime)t.EndDate, DateTime.Now) > 0)
+                .Include(t => t.ClassSignups).Include(t => t.Class).ToListAsync();
+            //foreach (var training in trainings)
+            //{
+            //    training.ClassSignups = await _context.ClassSignups.Where(x => x.TrainingId == training.Id && x.MemberId == user.Id).ToListAsync();
+            //}
+            return View(trainings);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PersonalSignUp(List<OrganizationSignUpModel> models)
+        {
             return RedirectToAction(nameof(OrganizationSignUp));
         }
     }

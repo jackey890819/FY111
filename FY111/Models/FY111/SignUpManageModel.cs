@@ -15,7 +15,7 @@ namespace FY111.Models.FY111
         public bool isSignedUp { get; set; }
         [Display(Name = "ClassName", ResourceType = typeof(DisplayAttributeResources))]
         public string ClassId { get; set; }
-        [Display(Name = "date", ResourceType = typeof(DisplayAttributeResources))]
+        [Display(Name = "StartDate", ResourceType = typeof(DisplayAttributeResources))]
         public DateTime? date { get; set; }
         [Display(Name = "StartTime", ResourceType = typeof(DisplayAttributeResources))]
         public TimeSpan? StartTime { get; set; }
