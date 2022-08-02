@@ -25,8 +25,10 @@ namespace FY111.Models.FY111
         [Display(Name = "CheckinEnabled", ResourceType = typeof(DisplayAttributeResources))]
         public byte CheckinEnabled { get; set; }
         [Display(Name = "StartDate", ResourceType = typeof(DisplayAttributeResources))]
+        [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
         [Display(Name = "EndDate", ResourceType = typeof(DisplayAttributeResources))]
+        [DataType(DataType.Date)]
         public DateTime? EndDate { get; set; }
         [Display(Name = "StartTime", ResourceType = typeof(DisplayAttributeResources))]
         public TimeSpan? StartTime { get; set; }
