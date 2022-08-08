@@ -53,10 +53,6 @@ namespace FY111.Models.FY111
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CheckinEnabled)
-                    .HasColumnType("tinyint")
-                    .HasColumnName("checkin_enabled");
-
                 entity.Property(e => e.Code)
                     .HasMaxLength(45)
                     .HasColumnName("code");
@@ -78,10 +74,6 @@ namespace FY111.Models.FY111
                     .IsRequired()
                     .HasMaxLength(45)
                     .HasColumnName("name");
-
-                entity.Property(e => e.SignupEnabled)
-                    .HasColumnType("tinyint")
-                    .HasColumnName("signup_enabled");
             });
 
             modelBuilder.Entity<ClassCheckin>(entity =>
@@ -167,7 +159,7 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<ClassSignup>(entity =>
             {
-                entity.HasKey(e => new { e.MemberId, e.TrainingId })
+                entity.HasKey(e => new { e.MemberId, e.TrainingId, e.Date })
                     .HasName("PRIMARY");
 
                 entity.ToTable("class_signup");
@@ -179,6 +171,10 @@ namespace FY111.Models.FY111
                     .HasColumnName("Member_id");
 
                 entity.Property(e => e.TrainingId).HasColumnName("training_id");
+
+                entity.Property(e => e.Date)
+                    .HasColumnType("date")
+                    .HasColumnName("date");
 
                 entity.HasOne(d => d.Training)
                     .WithMany(p => p.ClassSignups)
@@ -458,17 +454,31 @@ namespace FY111.Models.FY111
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.CheckinEnabled)
+                    .HasColumnType("tinyint")
+                    .HasColumnName("checkin_enabled")
+                    .HasDefaultValueSql("'1'");
+
                 entity.Property(e => e.ClassId).HasColumnName("Class_id");
 
-                entity.Property(e => e.Date)
+                entity.Property(e => e.EndDate)
                     .HasColumnType("date")
-                    .HasColumnName("date");
+                    .HasColumnName("end_date");
 
                 entity.Property(e => e.EndTime).HasColumnName("end_time");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(45)
                     .HasColumnName("name");
+
+                entity.Property(e => e.SignupEnabled)
+                    .HasColumnType("tinyint")
+                    .HasColumnName("signup_enabled")
+                    .HasDefaultValueSql("'1'");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnType("date")
+                    .HasColumnName("start_date");
 
                 entity.Property(e => e.StartTime).HasColumnName("start_time");
 

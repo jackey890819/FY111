@@ -32,13 +32,6 @@ namespace FY111.Models.FY111
 
         [Display(Name = "Content", ResourceType = typeof(DisplayAttributeResources))]
         public string Content { get; set; }
-
-        [Display(Name = "SignupEnabled", ResourceType = typeof(DisplayAttributeResources))]
-        public byte SignupEnabled { get; set; }
-
-        [Display(Name = "CheckinEnabled", ResourceType = typeof(DisplayAttributeResources))]
-        public byte CheckinEnabled { get; set; }
-
         [Display(Name = "Duration", ResourceType = typeof(DisplayAttributeResources))]
         public int? Duration { get; set; }
 

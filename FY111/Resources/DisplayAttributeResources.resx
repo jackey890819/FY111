@@ -150,7 +150,7 @@
   <data name="CurrentPassword" xml:space="preserve">
     <value>目前密碼</value>
   </data>
-  <data name="date" xml:space="preserve">
+  <data name="Date" xml:space="preserve">
     <value>日期</value>
   </data>
   <data name="DeviceName" xml:space="preserve">
@@ -161,6 +161,9 @@
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>截止日期</value>
   </data>
   <data name="EndTime" xml:space="preserve">
     <value>結束時間</value>
@@ -215,6 +218,9 @@
   </data>
   <data name="SignupEnabled" xml:space="preserve">
     <value>是否開啟報名</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>起始日期</value>
   </data>
   <data name="StartTime" xml:space="preserve">
     <value>開始時間</value>

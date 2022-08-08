@@ -22,6 +22,8 @@
           rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="~/Content/sb-admin-2.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/djibe/clockpicker@1d03466e3b5eebc9e7e1dc4afa47ff0d265e2f16/dist/bootstrap4-clockpicker.min.css">
     @RenderSection("Head", required: false)
 </head>
 <body id="page-top" onload="start()">
@@ -51,8 +53,7 @@
                 </a>
             </li>
 
-            @if (SignInManager.IsSignedIn(User))
-            {
+            @if (SignInManager.IsSignedIn(User)) {
                 <!-- Divider -->
                 <hr class="sidebar-divider my-0">
 
@@ -63,10 +64,8 @@
                         <span>@Localizer["帳戶管理"]</span>
                     </a>
                 </li>
-                @if (User.IsInRole("NormalUser") || User.IsInRole("GroupUser"))
-                {
-                    @if (User.IsInRole("GroupUser"))
-                    {
+                @if (User.IsInRole("NormalUser") || User.IsInRole("GroupUser")) {
+                    @if (User.IsInRole("GroupUser")) {
                         <!-- Divider -->
                         <hr class="sidebar-divider my-0">
 
@@ -89,7 +88,19 @@
                             </a>
                         </li>
                     }
+                    @if (User.IsInRole("NormalUser"))
+                    {
+                        <!-- Divider -->
+                        <hr class="sidebar-divider my-0">
 
+                        <!-- Nav Item - Dashboard -->
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-controller="SignupManage" asp-action="PersonalSignup">
+                                <i class="fa fa-school fa-fw" aria-hidden="true"></i>
+                                <span>@Localizer["個人課程管理"]</span>
+                            </a>
+                        </li>
+                    }
                     <!-- Divider -->
                     <hr class="sidebar-divider my-0">
 
@@ -118,8 +129,7 @@
                         </a>
                     </li>
                 }
-                else if (User.IsInRole("ClassAdmin"))
-                {
+                else if (User.IsInRole("ClassAdmin")) {
                     <!-- Divider -->
                     <hr class="sidebar-divider my-0">
                     <!-- Nav Item - Dashboard -->
@@ -129,9 +139,26 @@
                             <span>@Localizer["教室及課程管理"]</span>
                         </a>
                     </li>
+                    <!-- Divider -->
+                    <hr class="sidebar-divider my-0">
+                    <!-- Nav Item - Dashboard -->
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-controller="ClassUnitCkptsManage" asp-action="Index">
+                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                            <span>@Localizer["課程單元檢查點管理"]</span>
+                        </a>
+                    </li>
+                    <!-- Divider -->
+                    <hr class="sidebar-divider my-0">
+                    <!-- Nav Item - Dashboard -->
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-controller="TrainingManage" asp-action="Index">
+                            <i class="fa fa-tools" aria-hidden="true"></i>
+                            <span>@Localizer["訓練課程管理"]</span>
+                        </a>
+                    </li>
                 }
-                else if (User.IsInRole("SuperAdmin"))
-                {
+                else if (User.IsInRole("SuperAdmin")) {
                     <!-- Divider -->
                     <hr class="sidebar-divider my-0">
                     <!-- Nav Item - Dashboard -->
@@ -184,6 +211,15 @@
                         <a class="nav-link" asp-controller="ClassUnitCkptsManage" asp-action="Index">
                             <i class="fa fa-check-circle" aria-hidden="true"></i>
                             <span>@Localizer["課程單元檢查點管理"]</span>
+                        </a>
+                    </li>
+                    <!-- Divider -->
+                    <hr class="sidebar-divider my-0">
+                    <!-- Nav Item - Dashboard -->
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-controller="TrainingManage" asp-action="Index">
+                            <i class="fa fa-tools" aria-hidden="true"></i>
+                            <span>@Localizer["訓練課程管理"]</span>
                         </a>
                     </li>
                 }

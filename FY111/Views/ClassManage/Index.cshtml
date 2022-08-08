@@ -41,12 +41,6 @@
                 @Html.DisplayNameFor(model => model[0].Content)
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["SignUpParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model[0].SignupEnabled)</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["CheckinParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">@Html.DisplayNameFor(model => model[0].CheckinEnabled)</a>
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model[0].Duration)
             </th>
             <th>
@@ -76,12 +70,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Content, "SubString")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SignupEnabled, "ToBool")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CheckinEnabled, "ToBool")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Duration)

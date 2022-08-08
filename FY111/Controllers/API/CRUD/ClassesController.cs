@@ -36,8 +36,6 @@ namespace FY111.Controllers.API.CRUD
                     Ip = c.Ip,
                     Image = c.Image,
                     Content = c.Content,
-                    SignupEnabled = c.SignupEnabled,
-                    CheckinEnabled = c.CheckinEnabled,
                     Duration = c.Duration
                 })
                 .ToListAsync();
@@ -57,8 +55,6 @@ namespace FY111.Controllers.API.CRUD
                     Ip = c.Ip,
                     Image = c.Image,
                     Content = c.Content,
-                    SignupEnabled = c.SignupEnabled,
-                    CheckinEnabled = c.CheckinEnabled,
                     Duration = c.Duration
 
                 }).SingleOrDefaultAsync();

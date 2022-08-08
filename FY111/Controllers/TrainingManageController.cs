@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FY111.Models.FY111;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FY111.Controllers
 {
+    [Authorize(Roles = "SuperAdmin, ClassAdmin")]
     public class TrainingManageController : Controller
     {
         private readonly FY111Context _context;
@@ -19,11 +21,41 @@ namespace FY111.Controllers
         }
 
         // GET: TrainingManage
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            var fY111Context = _context.training.Include(t => t.Class);
+            ViewData["CurrentSort"] = sortOrder;
+            if (searchString != null) {
+                pageNumber = 1;
+            }
+            else {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            var trainings = _context.training.Include(t => t.Class).Select(x => x);
+            if (!String.IsNullOrEmpty(searchString)) {
+                trainings = trainings.Where(s => s.Name.Contains(searchString)
+                                       || s.Class.Name.Contains(searchString));
+            }
+            
+            //switch (sortOrder) {
+            //    case "signup_desc":
+            //        classes = classes.OrderByDescending(x => x.SignupEnabled);
+            //        break;
+            //    case "checkin":
+            //        classes = classes.OrderBy(x => x.CheckinEnabled);
+            //        break;
+            //    case "checkin_desc":
+            //        classes = classes.OrderByDescending(x => x.CheckinEnabled);
+            //        break;
+            //    default:
+            //        classes = classes.OrderBy(x => x.SignupEnabled);
+            //        break;
+            //}
+            int pageSize = 3;
+            
             //var fY111Context = _context.training.Where(t => DateTime.Compare((DateTime)t.Date, DateTime.Now) > 0).Include(t => t.Class);
-            return View(await fY111Context.ToListAsync());
+            return View(await PaginatedList<training>.CreateAsync(trainings.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: TrainingManage/Details/5

@@ -44,21 +44,21 @@ namespace FY111.Controllers
             }
             else classes = _context.Classes.Include(x => x.ClassUnits).Select(x => x);
 
-            switch (sortOrder)
-            {
-                case "signup_desc":
-                    classes = classes.OrderByDescending(x => x.SignupEnabled);
-                    break;
-                case "checkin":
-                    classes = classes.OrderBy(x => x.CheckinEnabled);
-                    break;
-                case "checkin_desc":
-                    classes = classes.OrderByDescending(x => x.CheckinEnabled);
-                    break;
-                default:
-                    classes = classes.OrderBy(x => x.SignupEnabled);
-                    break;
-            }
+            //switch (sortOrder)
+            //{
+            //    case "signup_desc":
+            //        classes = classes.OrderByDescending(x => x.SignupEnabled);
+            //        break;
+            //    case "checkin":
+            //        classes = classes.OrderBy(x => x.CheckinEnabled);
+            //        break;
+            //    case "checkin_desc":
+            //        classes = classes.OrderByDescending(x => x.CheckinEnabled);
+            //        break;
+            //    default:
+            //        classes = classes.OrderBy(x => x.SignupEnabled);
+            //        break;
+            //}
             int pageSize = 3;
             return View(await PaginatedList<Class>.CreateAsync(classes.AsNoTracking(), pageNumber ?? 1, pageSize));
         }

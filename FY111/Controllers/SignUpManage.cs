@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FY111.Controllers
 {
-    [Authorize(Roles = "GroupUser")]
+    [Authorize]
     public class SignUpManage : Controller
     {
         private readonly FY111Context _context;
@@ -22,11 +22,13 @@ namespace FY111.Controllers
             _context = context;
             _userManager = userManager;
         }
+
+        [Authorize(Roles = "GroupUser")]
         public async Task<IActionResult> OrganizationSignUp(string sortOrder)
         {
             ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
             //var classes = await _context.Classes.Where(x => x.SignupEnabled == 1).ToListAsync();
-            var timecompare = await _context.training.Where(t => DateTime.Compare((DateTime)t.Date, DateTime.Now) > 0).Include(t => t.Class).ToListAsync();
+            var timecompare = await _context.training.Where(t => DateTime.Compare((DateTime)t.StartDate, DateTime.Now) > 0).Include(t => t.Class).ToListAsync();
             FY111User user = await _userManager.GetUserAsync(User);
             List<SignUpManageModel> manageModel = new List<SignUpManageModel>();
             foreach (var c in timecompare)
@@ -35,7 +37,7 @@ namespace FY111.Controllers
                 model.Id = c.Id;
                 model.Name = c.Name;
                 model.ClassId = c.Class.Name;
-                model.date = c.Date;
+                model.date = c.StartDate;
                 model.StartTime = c.StartTime;
                 model.EndTime = c.EndTime;
                 bool result = _context.ClassSignups.Where(x => x.TrainingId == c.Id).Select(x => x.MemberId).Contains(user.Id);
@@ -56,6 +58,7 @@ namespace FY111.Controllers
             return View(manageModel);
         }
 
+        [Authorize(Roles = "GroupUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> OrganizationSignUp(List<OrganizationSignUpModel> models)
@@ -93,6 +96,47 @@ namespace FY111.Controllers
             _context.ClassSignups.RemoveRange(remove);
             _context.SaveChanges();
             return RedirectToAction(nameof(OrganizationSignUp));
+        }
+
+        public async Task<IActionResult> PersonalSignUp(string sortOrder)
+        {
+            FY111User user = await _userManager.GetUserAsync(User);
+            var trainings = await _context.training.Where(t => DateTime.Compare((DateTime)t.StartDate, DateTime.Now) < 0 && DateTime.Compare((DateTime)t.EndDate, DateTime.Now) > 0)
+                .Include(t => t.ClassSignups).Include(t => t.Class).ToListAsync();
+            //foreach (var training in trainings)
+            //{
+            //    training.ClassSignups = await _context.ClassSignups.Where(x => x.TrainingId == training.Id && x.MemberId == user.Id).ToListAsync();
+            //}
+            return View(trainings);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PersonalSignUp(int id, DateTime date)
+        {
+            string user_id = _userManager.GetUserId(User);
+            if (_context.ClassSignups.Any(x => x.MemberId == user_id && x.TrainingId == id && x.Date == date))
+            {
+                return RedirectToAction(nameof(PersonalSignUp));
+            }
+            ClassSignup signup = new ClassSignup();
+            signup.TrainingId = id;
+            signup.MemberId = user_id;
+            signup.Date = date;
+            _context.Add(signup);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(PersonalSignUp));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeletePersonalSignUp(int id, DateTime date)
+        {
+            string user_id = _userManager.GetUserId(User);
+            ClassSignup s = await _context.ClassSignups.FirstOrDefaultAsync(x => x.MemberId == user_id && x.TrainingId == id && x.Date == date);
+            _context.Remove(s);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(PersonalSignUp));
         }
     }
 }
