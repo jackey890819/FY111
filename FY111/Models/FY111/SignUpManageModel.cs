@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using FY111.Resources;
 
@@ -6,6 +7,11 @@ namespace FY111.Models.FY111
 {
     public class SignUpManageModel
     {
+        public SignUpManageModel()
+        {
+            ClassSignups = new HashSet<ClassSignup>();
+            Trainings = new HashSet<training>();
+        }
         public int Id { get; set; }
         [Display(Name = "Code", ResourceType = typeof(DisplayAttributeResources))]
         public string Code { get; set; }
@@ -29,5 +35,7 @@ namespace FY111.Models.FY111
         [DataType(DataType.Date)]
         public DateTime? date { get; set; }
         public virtual Class Class { get; set; }
+        public virtual ICollection<ClassSignup> ClassSignups { get; set; }
+        public virtual ICollection<training> Trainings { get; set; }
     }
 }

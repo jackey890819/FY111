@@ -47,57 +47,41 @@ namespace FY111.Controllers
                 model.isSignedUp = result;
                 manageModel.Add(model);
             }
-            switch (sortOrder)
-            {
-                case "signup_desc":
-                    manageModel = manageModel.OrderByDescending(x => x.isSignedUp).ToList();
-                    break;
-                default:
-                    manageModel = manageModel.OrderBy(x => x.isSignedUp).ToList();
-                    break;
-            }
+            //switch (sortOrder) {
+            //    case "signup_desc":
+            //        manageModel = manageModel.OrderByDescending(x => x.isSignedUp).ToList();
+            //        break;
+            //    default:
+            //        manageModel = manageModel.OrderBy(x => x.isSignedUp).ToList();
+            //        break;
+            //}
 
-            ViewData["Organization"] = user.Organization;
+            //ViewData["Organization"] = user.Organization;
             return View(manageModel);
         }
 
         [Authorize(Roles = "GroupUser")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> OrganizationSignUp(List<OrganizationSignUpModel> models)
+        public async Task<ActionResult> OrganizationSignUp(int id, DateTime date)
         {
             List<ClassSignup> add = new List<ClassSignup>();
-            List<ClassSignup> remove = new List<ClassSignup>();
             FY111User organization_admin = await _userManager.GetUserAsync(User);
             List<string> organization_id = await _userManager.Users.Where(x => x.Organization == organization_admin.Organization).Select(x => x.Id).ToListAsync();
-            foreach (OrganizationSignUpModel model in models)
-            {
-                if (model.IsSignedUp)
-                {
-                    foreach (string id in organization_id)
-                    {
-                        var result = _context.ClassSignups.FirstOrDefault(x => x.TrainingId == model.Id && x.MemberId == id);
-                        if (result == null)
-                        {
-                            ClassSignup classSignup = new ClassSignup();
-                            classSignup.TrainingId = model.Id;
-                            classSignup.MemberId = id;
-                            add.Add(classSignup);
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (string id in organization_id)
-                    {
-                        var result = _context.ClassSignups.FirstOrDefault(x => x.TrainingId == model.Id && x.MemberId == id);
-                        if(result != null) remove.Add(result);
-                    }
+            training t = await _context.training.FindAsync(id);
+            foreach (string memberid in organization_id) {
+                var result = _context.ClassSignups.FirstOrDefault(x => x.TrainingId == t.Id && x.MemberId == memberid);
+                if (result == null) {
+                    ClassSignup classSignup = new ClassSignup();
+                    classSignup.TrainingId = t.Id;
+                    classSignup.MemberId = memberid;
+                    classSignup.Date = date;
+                    add.Add(classSignup);
                 }
             }
             _context.ClassSignups.AddRange(add);
-            _context.ClassSignups.RemoveRange(remove);
             _context.SaveChanges();
+
             return RedirectToAction(nameof(OrganizationSignUp));
         }
 

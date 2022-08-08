@@ -6,42 +6,44 @@
 
 <h1>@ViewData["Title"] - @ViewData["Organization"]</h1>
 
-<form asp-action="OrganizationSignUp" >
-    <table class="table table-hover table-responsive">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Class.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndTime)
-                </th>
-                <th>
-                    <a asp-action="OrganizationSignUp" asp-route-sortOrder="@ViewData["SignUpParm"]">@Html.DisplayNameFor(model => model.isSignedUp)</a>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Class.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                選擇
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
         @for (int i = 0; i < Model.Count(); i++) {
+            <form asp-action="OrganizationSignUp">
             <tr>
-                <input type="text" value=@Model.ElementAt(i).Id name="models[@i.ToString()].Id" hidden />
+                <input type="text" value=@Model.ElementAt(i).Id name="id" hidden />
                 <td>
                     @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).ClassId)
+                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Class.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => Model.ElementAt(i).StartDate)
@@ -49,9 +51,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => Model.ElementAt(i).EndDate)
                 </td>
-                @*<td width="10%">
-            @Html.DisplayFor(modelItem => Model.ElementAt(i).Image, "ToImage", new{ @belong = "Class"})
-        </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => Model.ElementAt(i).StartTime)
                 </td>
@@ -59,14 +58,46 @@
                     @Html.DisplayFor(modelItem => Model.ElementAt(i).EndTime)
                 </td>
                 <td>
-                    <input type="checkbox" name="models[@i.ToString()].isSignedUp" @(Model.ElementAt(i).isSignedUp ? "checked=checked" : "") />
+                    <input type="date" name="date" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.ElementAt(i).EndDate.Value.ToString("yyyy-MM-dd")" class="form-control" />
+                </td>
+                <td>
+                    <input type="submit" value="@(Localizer["Save"])" class="btn btn-primary" />
                 </td>
             </tr>
+
+            </form>
         }
-        </tbody>
-    </table>
-    <input type="submit" value="@(Localizer["Save"])" class="btn btn-primary" />
-</form>
+    </tbody>
+</table>
+
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Trainings.ElementAt(0).Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassSignups.ElementAt(0).Date)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count(); i++) {
+            @foreach (var item in Model.ElementAt(i).ClassSignups) {
+                @if (item.Date > DateTime.Now) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
 
 @section Scripts{
     <script>
