@@ -69,10 +69,14 @@
     <script src="https://cdn.jsdelivr.net/gh/djibe/clockpicker@6d385d49ed6cc7f58a0b23db3477f236e4c1cd3e/dist/bootstrap4-clockpicker.min.js"></script>
     <script type="text/javascript">
         $('.clockpicker').clockpicker({
-            placement: 'down',
-            align: 'top',
+            placement: 'right',
+            align: 'bottom',
             autoclose: 'true',
             donetext: 'Done'
+        });
+        $('.clockpicker').on('change', function() {
+            let receivedVal = $(this).val();
+            $(this).val(receivedVal + ":00");
         });
     </script>
 }
