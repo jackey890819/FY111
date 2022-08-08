@@ -120,6 +120,9 @@
   <data name="使用情況分析" xml:space="preserve">
     <value>使用情况分析</value>
   </data>
+  <data name="個人課程管理" xml:space="preserve">
+    <value>个人课程管理</value>
+  </data>
   <data name="帳戶管理" xml:space="preserve">
     <value>帐户管理</value>
   </data>
@@ -155,6 +158,9 @@
   </data>
   <data name="課程單元檢查點管理" xml:space="preserve">
     <value>课程单元检查点管理</value>
+  </data>
+  <data name="課程軟體下載" xml:space="preserve">
+    <value>课程软体下载</value>
   </data>
   <data name="軟體上傳" xml:space="preserve">
     <value>软体上传</value>

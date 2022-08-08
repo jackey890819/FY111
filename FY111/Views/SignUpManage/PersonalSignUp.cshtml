@@ -28,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.EndTime)
             </th>
             <th>
-                選擇
+                @Localizer["選擇"]
             </th>
             <th>
             </th>
@@ -41,22 +41,22 @@
             <tr>
                 <input type="text" value=@Model.ElementAt(i).Id name="id" hidden />
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Class.Name)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).Class.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).StartDate)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).StartDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).EndDate)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).EndDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).StartTime)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).StartTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).EndTime)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).EndTime)
                 </td>
                 <td>
                     <input type="date" name="date" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.ElementAt(i).EndDate.Value.ToString("yyyy-MM-dd")" class="form-control" />
@@ -65,12 +65,12 @@
                     <input type="submit" value="@(Localizer["Save"])" class="btn btn-primary" />
                 </td>
             </tr>
-
             </form>
         }
     </tbody>
 </table>
 
+<h2>@Localizer["已報名課程"]</h2>
 <table class="table table-hover table-responsive">
     <thead>
         <tr>
@@ -80,6 +80,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.ClassSignups.ElementAt(0).Date)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -89,14 +90,21 @@
             {
                 @if (item.Date > DateTime.Now)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Date)
-                    </td>
-                </tr>
+                    <form asp-action="DeletePersonalSignUp">
+                    <tr>
+                        <input type="hidden" name="id" value="@Model.ElementAt(i).Id" />
+                        <input type="hidden" name="date" value="@item.Date"/>
+                        <td>
+                                @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
+                        </td>
+                        <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td class="float-right">
+                            <input type="submit" value="@(Localizer["刪除"])" class="btn btn-danger" />
+                        </td>
+                    </tr>
+                    </form>
                 }
             }
         }

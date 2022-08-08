@@ -160,6 +160,15 @@ namespace FY111.Resources {
         }
         
         /// <summary>
+        ///   查詢類似 日期 的當地語系化字串。
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 裝置名稱 的當地語系化字串。
         /// </summary>
         public static string DeviceName {
