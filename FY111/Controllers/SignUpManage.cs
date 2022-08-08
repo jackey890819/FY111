@@ -103,13 +103,9 @@ namespace FY111.Controllers
 
         public async Task<IActionResult> PersonalSignUp(string sortOrder)
         {
-            FY111User user = await _userManager.GetUserAsync(User);
+            string user_id = _userManager.GetUserId(User);
             var trainings = await _context.training.Where(t => DateTime.Compare((DateTime)t.StartDate, DateTime.Now) < 0 && DateTime.Compare((DateTime)t.EndDate, DateTime.Now) > 0)
-                .Include(t => t.ClassSignups).Include(t => t.Class).ToListAsync();
-            //foreach (var training in trainings)
-            //{
-            //    training.ClassSignups = await _context.ClassSignups.Where(x => x.TrainingId == training.Id && x.MemberId == user.Id).ToListAsync();
-            //}
+                .Include(t => t.ClassSignups.Where(c => c.MemberId == user_id)).Include(t => t.Class).ToListAsync();
             return View(trainings);
         }
 
