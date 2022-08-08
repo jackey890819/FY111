@@ -84,6 +84,22 @@ namespace FY111.Controllers
 
             return RedirectToAction(nameof(OrganizationSignUp));
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteOrganizationSignUp(int id, DateTime date)
+        {
+            List<ClassSignup> remove = new List<ClassSignup>();
+            FY111User organization_admin = await _userManager.GetUserAsync(User);
+            List<string> organization_id = await _userManager.Users.Where(x => x.Organization == organization_admin.Organization).Select(x => x.Id).ToListAsync();
+            training t = await _context.training.FindAsync(id);
+            foreach (string memberid in organization_id) {
+                var result = _context.ClassSignups.FirstOrDefault(x => x.TrainingId == t.Id && x.MemberId == memberid);
+                if (result != null) remove.Add(result);
+            }
+            _context.ClassSignups.RemoveRange(remove);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(PersonalSignUp));
+        }
 
         public async Task<IActionResult> PersonalSignUp(string sortOrder)
         {
