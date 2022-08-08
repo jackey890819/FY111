@@ -2,17 +2,8 @@
 @{
     string dirPath = ViewData["belong"] + "/";
 }
-<div class="mb-3">
-    @if (@Model != null && !@Model.EndsWith(".exe"))
-    {
-        <img src="~/@(dirPath + Model)" class="img-thumbnail image" style="display:block" />
-    }
-    else
-    {
-        <img src="" class="img-fluid image" style="display:none" />
-    }
-</div>
-<div class=custom-file>
+
+<div class="custom-file mb-3">
     <label asp-for="@Model" class="custom-file-label">
         @if (@Model != null)
         {
@@ -25,6 +16,16 @@
     </label>
     <input asp-for="@Model" onchange="fileChange();" value="@Model"  class="custom-file-input" type="file" />
     <span class="text-danger"></span>
+</div>
+<div>
+    @if (@Model != null && !@Model.EndsWith(".exe"))
+    {
+        <img src="~/@(dirPath + Model)" class="img-thumbnail image" style="display:block" />
+    }
+    else
+    {
+        <img src="" class="img-fluid image" style="display:none" />
+    }
 </div>
 
 <script type="text/javascript">
