@@ -114,12 +114,27 @@ namespace FY111.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> PersonalSignUp(int id, DateTime date)
         {
-            training t = await _context.training.FindAsync(id);
+            string user_id = _userManager.GetUserId(User);
+            if (_context.ClassSignups.Any(x => x.MemberId == user_id && x.TrainingId == id && x.Date == date))
+            {
+                return RedirectToAction(nameof(PersonalSignUp));
+            }
             ClassSignup signup = new ClassSignup();
             signup.TrainingId = id;
-            signup.MemberId = _userManager.GetUserId(User);
+            signup.MemberId = user_id;
             signup.Date = date;
             _context.Add(signup);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(PersonalSignUp));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeletePersonalSignUp(int id, DateTime date)
+        {
+            string user_id = _userManager.GetUserId(User);
+            ClassSignup s = await _context.ClassSignups.FirstOrDefaultAsync(x => x.MemberId == user_id && x.TrainingId == id && x.Date == date);
+            _context.Remove(s);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(PersonalSignUp));
         }
