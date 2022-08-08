@@ -26,38 +26,12 @@ namespace FY111.Controllers
         [Authorize(Roles = "GroupUser")]
         public async Task<IActionResult> OrganizationSignUp(string sortOrder)
         {
-            ViewData["SignUpParm"] = String.IsNullOrEmpty(sortOrder) ? "signup_desc" : "";
-            //var classes = await _context.Classes.Where(x => x.SignupEnabled == 1).ToListAsync();
-            var timecompare = await _context.training.Where(t => DateTime.Compare((DateTime)t.StartDate, DateTime.Now) < 0 && DateTime.Compare((DateTime)t.EndDate, DateTime.Now) > 0)
-                .Include(t => t.ClassSignups).Include(t => t.Class).ToListAsync();
+            string user_id = _userManager.GetUserId(User);
+            var trainings = await _context.training.Where(t => DateTime.Compare((DateTime)t.StartDate, DateTime.Now) < 0 && DateTime.Compare((DateTime)t.EndDate, DateTime.Now) > 0)
+                .Include(t => t.ClassSignups.Where(c => c.MemberId == user_id)).Include(t => t.Class).ToListAsync();
             FY111User user = await _userManager.GetUserAsync(User);
-            List<SignUpManageModel> manageModel = new List<SignUpManageModel>();
-            foreach (var c in timecompare)
-            {
-                SignUpManageModel model = new SignUpManageModel();
-                model.Id = c.Id;
-                model.Name = c.Name;
-                model.ClassId = c.Class.Name;
-                model.StartDate = c.StartDate;
-                model.EndDate = c.EndDate;
-                //model.date = c.ClassSignups.;
-                model.StartTime = c.StartTime;
-                model.EndTime = c.EndTime;
-                bool result = _context.ClassSignups.Where(x => x.TrainingId == c.Id).Select(x => x.MemberId).Contains(user.Id);
-                model.isSignedUp = result;
-                manageModel.Add(model);
-            }
-            //switch (sortOrder) {
-            //    case "signup_desc":
-            //        manageModel = manageModel.OrderByDescending(x => x.isSignedUp).ToList();
-            //        break;
-            //    default:
-            //        manageModel = manageModel.OrderBy(x => x.isSignedUp).ToList();
-            //        break;
-            //}
-
-            //ViewData["Organization"] = user.Organization;
-            return View(manageModel);
+            ViewData["Organization"] = user.Organization;
+            return View(trainings);
         }
 
         [Authorize(Roles = "GroupUser")]
@@ -70,6 +44,9 @@ namespace FY111.Controllers
             List<string> organization_id = await _userManager.Users.Where(x => x.Organization == organization_admin.Organization).Select(x => x.Id).ToListAsync();
             training t = await _context.training.FindAsync(id);
             foreach (string memberid in organization_id) {
+                if (_context.ClassSignups.Any(x => x.MemberId == memberid && x.TrainingId == t.Id && x.Date == date)) {
+                    return RedirectToAction(nameof(PersonalSignUp));
+                }
                 var result = _context.ClassSignups.FirstOrDefault(x => x.TrainingId == t.Id && x.MemberId == memberid);
                 if (result == null) {
                     ClassSignup classSignup = new ClassSignup();
@@ -93,12 +70,12 @@ namespace FY111.Controllers
             List<string> organization_id = await _userManager.Users.Where(x => x.Organization == organization_admin.Organization).Select(x => x.Id).ToListAsync();
             training t = await _context.training.FindAsync(id);
             foreach (string memberid in organization_id) {
-                var result = _context.ClassSignups.FirstOrDefault(x => x.TrainingId == t.Id && x.MemberId == memberid);
+                var result = _context.ClassSignups.FirstOrDefault(x => x.TrainingId == id && x.MemberId == memberid && x.Date == date);
                 if (result != null) remove.Add(result);
             }
             _context.ClassSignups.RemoveRange(remove);
             _context.SaveChanges();
-            return RedirectToAction(nameof(PersonalSignUp));
+            return RedirectToAction(nameof(OrganizationSignUp));
         }
 
         public async Task<IActionResult> PersonalSignUp(string sortOrder)

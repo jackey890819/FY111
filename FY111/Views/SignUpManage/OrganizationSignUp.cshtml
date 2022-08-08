@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FY111.Models.FY111.SignUpManageModel>
+﻿@model IEnumerable<FY111.Models.FY111.training>
 
 @{
     ViewData["Title"] = @Localizer["組織課程管理"];
@@ -28,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.EndTime)
             </th>
             <th>
-                選擇
+                @Localizer["選擇"]
             </th>
             <th>
             </th>
@@ -70,33 +70,42 @@
     </tbody>
 </table>
 
+<h2>@Localizer["已報名課程"]</h2>
 <table class="table table-hover table-responsive">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Trainings.ElementAt(0).Name)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ClassSignups.ElementAt(0).Date)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @for (int i = 0; i < Model.Count(); i++) {
             @foreach (var item in Model.ElementAt(i).ClassSignups) {
                 @if (item.Date > DateTime.Now) {
+                    <form asp-action="DeleteOrganizationSignUp">
                     <tr>
+                        <input type="hidden" name="id" value="@Model.ElementAt(i).Id" />
+                        <input type="hidden" name="date" value="@item.Date" />
                         <td>
                             @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Date)
                         </td>
+                        <td class="float-right">
+                            <input type="submit" value="@(Localizer["刪除"])" class="btn btn-danger" />
+                        </td>
                     </tr>
-                }
-            }
-        }
-    </tbody>
+                    </form>
+                    }
+                    }
+                    }
+                </tbody>
 </table>
 
 @section Scripts{
