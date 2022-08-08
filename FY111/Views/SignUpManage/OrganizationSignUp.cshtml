@@ -6,7 +6,7 @@
 
 <h1>@ViewData["Title"] - @ViewData["Organization"]</h1>
 
-<table class="table table-hover table-responsive">
+<table class="table table-hover table-responsive-sm">
     <thead>
         <tr>
             <th>
@@ -35,32 +35,33 @@
         </tr>
     </thead>
     <tbody>
-        @for (int i = 0; i < Model.Count(); i++) {
+        @for (int i = 0; i < Model.Count(); i++)
+        {
             <form asp-action="OrganizationSignUp">
             <tr>
                 <input type="text" value=@Model.ElementAt(i).Id name="id" hidden />
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).Class.Name)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).Class.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).StartDate)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).StartDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).EndDate)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).EndDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).StartTime)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).StartTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => Model.ElementAt(i).EndTime)
+                        @Html.DisplayFor(modelItem => Model.ElementAt(i).EndTime)
                 </td>
                 <td>
                     <input type="date" name="date" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.ElementAt(i).EndDate.Value.ToString("yyyy-MM-dd")" class="form-control" />
                 </td>
-                <td>
+                <td class="float-right">
                     <input type="submit" value="@(Localizer["Save"])" class="btn btn-primary" />
                 </td>
             </tr>
@@ -71,7 +72,7 @@
 </table>
 
 <h2>@Localizer["已報名課程"]</h2>
-<table class="table table-hover table-responsive">
+<table class="table table-hover table-responsive-sm">
     <thead>
         <tr>
             <th>
@@ -84,37 +85,40 @@
         </tr>
     </thead>
     <tbody>
-        @for (int i = 0; i < Model.Count(); i++) {
-            @foreach (var item in Model.ElementAt(i).ClassSignups) {
-                @if (item.Date > DateTime.Now) {
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            @foreach (var item in Model.ElementAt(i).ClassSignups)
+            {
+                @if (item.Date > DateTime.Now)
+                {
                     <form asp-action="DeleteOrganizationSignUp">
                     <tr>
                         <input type="hidden" name="id" value="@Model.ElementAt(i).Id" />
                         <input type="hidden" name="date" value="@item.Date" />
                         <td>
-                            @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
+                                @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Date)
+                                @Html.DisplayFor(modelItem => item.Date)
                         </td>
                         <td class="float-right">
                             <input type="submit" value="@(Localizer["刪除"])" class="btn btn-danger" />
                         </td>
                     </tr>
                     </form>
-                    }
-                    }
-                    }
-                </tbody>
+                }
+            }
+        }
+    </tbody>
 </table>
 
 @section Scripts{
-    <script>
+<script>
     $('input[type="submit"]').click(function(){
         $('input[type="checkbox"]').each(function(){
             $(this).val(this.checked);
         });
     });
-    </script>
+</script>
 
 }
