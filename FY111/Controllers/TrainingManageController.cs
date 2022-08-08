@@ -52,7 +52,7 @@ namespace FY111.Controllers
             //        classes = classes.OrderBy(x => x.SignupEnabled);
             //        break;
             //}
-            int pageSize = 3;
+            int pageSize = 5;
             
             //var fY111Context = _context.training.Where(t => DateTime.Compare((DateTime)t.Date, DateTime.Now) > 0).Include(t => t.Class);
             return View(await PaginatedList<training>.CreateAsync(trainings.AsNoTracking(), pageNumber ?? 1, pageSize));

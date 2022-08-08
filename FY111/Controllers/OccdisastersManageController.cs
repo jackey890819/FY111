@@ -53,7 +53,7 @@ namespace FY111.Controllers
             //        occdisasters = occdisasters.OrderBy(x => x.SignupEnabled);
             //        break;
             //}
-            int pageSize = 3;
+            int pageSize = 5;
             return View(await PaginatedList<Occdisaster>.CreateAsync(occdisasters.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
