@@ -9,7 +9,7 @@
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <form id="profile-form" method="post">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Username"></label>
@@ -21,7 +21,7 @@
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 mr-auto ">
+        <div class="col-md-3 col-sm-6 ">
             <div class="form-group">
                 <label asp-for="Input.Avatar"></label>
                 @Html.EditorFor(model => model.Input.Avatar, "FileUploader", new { belong="User/" + Model.UserId })

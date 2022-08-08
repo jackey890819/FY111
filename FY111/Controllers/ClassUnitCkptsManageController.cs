@@ -51,7 +51,7 @@ namespace FY111.Controllers
             //        classes = classes.OrderBy(x => x.SignupEnabled);
             //        break;
             //}
-            int pageSize = 3;
+            int pageSize = 5;
             var fY111Context = _context.ClassUnitCkpts.Include(c => c.ClassUnit);
             return View(await PaginatedList<ClassUnitCkpt>.CreateAsync(classunitckpts.AsNoTracking(), pageNumber ?? 1, pageSize));
         }

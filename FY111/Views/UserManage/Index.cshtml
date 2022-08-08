@@ -14,7 +14,7 @@
     </form>
 </div>
 
-<table class="table table-hover table-responsive">
+<table class="table table-hover table-responsive-sm">
     <thead>
         <tr>
             <th>
@@ -26,9 +26,9 @@
             <th>
                 @Html.DisplayNameFor(model => model[0].Avatar)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model[0].Email)
-            </th>
+            </th>*@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["OrganizationParm"]">@Html.DisplayNameFor(model => model[0].Organization)</a>
             </th>
@@ -50,9 +50,9 @@
             <td width="10%">
                 @Html.DisplayFor(modelItem => item.Avatar, "ToImage", new{ @belong = "User/" + item.Id })
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Email)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Organization)
             </td>
