@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FY111.Models.FY111.training>
+﻿@model FY111.Dtos.SignupManageDto
 
 @{
     ViewData["Title"] = @Localizer["組織課程管理"];
@@ -10,56 +10,65 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Trainings.ElementAt(0).Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                @Html.DisplayNameFor(model => model.Trainings.ElementAt(0).StartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                @Html.DisplayNameFor(model => model.Trainings.ElementAt(0).EndDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartTime)
+                @Html.DisplayNameFor(model => model.Trainings.ElementAt(0).StartTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndTime)
+                @Html.DisplayNameFor(model => model.Trainings.ElementAt(0).EndTime)
             </th>
             <th>
                 @Localizer["選擇"]
             </th>
             <th>
             </th>
+            <th>
+            </th>
         </tr>
     </thead>
     <tbody>
-        @for (int i = 0; i < Model.Count(); i++)
+        @for (int i = 0; i < Model.Trainings.Count(); i++)
         {
             <form asp-action="OrganizationSignUp">
             <tr>
-                <input type="text" value=@Model.ElementAt(i).Id name="id" hidden />
+                <input type="text" value=@Model.Trainings.ElementAt(i).Id name="id" hidden />
                 <td>
-                        @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
+                        @Html.DisplayFor(modelItem => Model.Trainings.ElementAt(i).Name)
                 </td>
                 <td>
-                        @Html.DisplayFor(modelItem => Model.ElementAt(i).StartDate)
+                        @Html.DisplayFor(modelItem => Model.Trainings.ElementAt(i).StartDate)
                 </td>
                 <td>
-                        @Html.DisplayFor(modelItem => Model.ElementAt(i).EndDate)
+                        @Html.DisplayFor(modelItem => Model.Trainings.ElementAt(i).EndDate)
                 </td>
                 <td>
-                        @Html.DisplayFor(modelItem => Model.ElementAt(i).StartTime)
+                        @Html.DisplayFor(modelItem => Model.Trainings.ElementAt(i).StartTime)
                 </td>
                 <td>
-                        @Html.DisplayFor(modelItem => Model.ElementAt(i).EndTime)
+                        @Html.DisplayFor(modelItem => Model.Trainings.ElementAt(i).EndTime)
                 </td>
                 <td>
-                    <input type="date" name="date" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.ElementAt(i).EndDate.Value.ToString("yyyy-MM-dd")" class="form-control" />
+                    <input type="date" name="date" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" max="@Model.Trainings.ElementAt(i).EndDate.Value.ToString("yyyy-MM-dd")" class="form-control" />
+                </td>
+                <td>
+                    <select class="form-control" name="classes" multiple size="3">
+                        @foreach(var Class in Model.Classes)
+                        {
+                           <option value="@Class.Id">@Class.Name</option>     
+                        }
+                    </select>
                 </td>
                 <td class="float-right">
                     <input type="submit" value="@(Localizer["Save"])" class="btn btn-primary" />
                 </td>
             </tr>
-
             </form>
         }
     </tbody>
@@ -70,30 +79,39 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Trainings.ElementAt(0).Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TrainingSignups.ElementAt(0).Date)
+                @Html.DisplayNameFor(model => model.Trainings.ElementAt(0).TrainingSignups.ElementAt(0).Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trainings.ElementAt(0).TrainingSignups.ElementAt(0).ClassSignups.ElementAt(0).Class.Name)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @for (int i = 0; i < Model.Count(); i++)
+        @for (int i = 0; i < Model.Trainings.Count(); i++)
         {
-            @foreach (var item in Model.ElementAt(i).TrainingSignups)
+            @foreach (var item in Model.Trainings.ElementAt(i).TrainingSignups)
             {
                 @if (item.Date > DateTime.Now)
                 {
                     <form asp-action="DeleteOrganizationSignUp">
                     <tr>
-                        <input type="hidden" name="id" value="@Model.ElementAt(i).Id" />
-                        <input type="hidden" name="date" value="@item.Date" />
+                        <input type="hidden" name="id" value="@Model.Trainings.ElementAt(i).Id" />
+                        <input type="hidden" name="date" value="@item.Date"/>
                         <td>
-                                @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
+                                @Html.DisplayFor(modelItem => Model.Trainings.ElementAt(i).Name)
                         </td>
                         <td>
                                 @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td>
+                            @foreach(var c in item.ClassSignups)
+                            {
+                                <span>@c.Class.Name</span>
+                            }
                         </td>
                         <td class="float-right">
                             <input type="submit" value="@(Localizer["刪除"])" class="btn btn-danger" />

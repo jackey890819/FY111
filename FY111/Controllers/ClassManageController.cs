@@ -536,10 +536,32 @@ namespace FY111.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @class = await _context.Classes.FindAsync(id);
-            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\Class\\");
+            var @class = await _context.Classes.Where(x => x.Id == id)
+                .Include(x => x.ClassUnits).ThenInclude(u => u.ClassLittleunits).FirstOrDefaultAsync();
             var imageName = @class.Image;
-            System.IO.File.Delete(dirPath + imageName);
+            var imgdir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\");
+            if (imageName != null)
+            {
+                System.IO.File.Delete(imgdir + "Class\\" + imageName);
+            }
+            foreach (var unit in @class.ClassUnits)
+            {
+                imageName = unit.Image;
+                if (imageName != null)
+                {
+                    System.IO.File.Delete(imgdir + "ClassUnit\\" + imageName);
+                }
+                foreach(var littleunit in unit.ClassLittleunits)
+                {
+                    imageName = unit.Image;
+                    if (imageName != null)
+                    {
+                        System.IO.File.Delete(imgdir + "ClassLittleUnit\\" + imageName);
+                    }
+                }
+                _context.ClassLittleunits.RemoveRange(unit.ClassLittleunits);
+            }
+            _context.ClassUnits.RemoveRange(@class.ClassUnits);
             _context.Classes.Remove(@class);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -550,10 +572,22 @@ namespace FY111.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUnitConfirmed(int id)
         {
-            var unit = await _context.ClassUnits.FirstOrDefaultAsync(m => m.Id == id);
-            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\ClassUnit\\");
+            var unit = await _context.ClassUnits.Where(m => m.Id == id).Include(u => u.ClassLittleunits).FirstOrDefaultAsync();
             var imageName = unit.Image;
-            System.IO.File.Delete(dirPath + imageName);
+            var imgdir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\");
+            if(imageName != null)
+            {
+                System.IO.File.Delete(imgdir + "ClassUnit\\" + imageName);
+            }
+            foreach (var littleunit in unit.ClassLittleunits)
+            {
+                imageName = unit.Image;
+                if (imageName != null)
+                {
+                    System.IO.File.Delete(imgdir + "ClassLittleUnit\\" + imageName);
+                }
+            }
+            _context.ClassLittleunits.RemoveRange(unit.ClassLittleunits);
             _context.ClassUnits.Remove(unit);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Details), new { id = unit.ClassId });
@@ -565,9 +599,12 @@ namespace FY111.Controllers
         public async Task<IActionResult> DeleteLittleUnitConfirmed(int id)
         {
             var little = await _context.ClassLittleunits.FirstOrDefaultAsync(m => m.Id == id);
-            var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\ClassLittleUnit\\");
             var imageName = little.Image;
-            System.IO.File.Delete(dirPath + imageName);
+            var imgdir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\");
+            if (imageName != null)
+            {
+                System.IO.File.Delete(imgdir + "ClassLittleUnit\\" + imageName);
+            }
             _context.ClassLittleunits.Remove(little);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(DetailsUnit), new { id = little.ClassUnitId });
