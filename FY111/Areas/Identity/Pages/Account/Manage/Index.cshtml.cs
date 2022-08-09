@@ -104,8 +104,11 @@ namespace FY111.Areas.Identity.Pages.Account.Manage
             if(Input.Avatar != null)
             {
                 var prevAvater = user.Avatar;
-                var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image\\User\\" + user.Id + "\\");
-                System.IO.File.Delete(dirPath + prevAvater);
+                if(prevAvater != null)
+                {
+                    var dirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\User\\" + user.Id + "\\");
+                    System.IO.File.Delete(dirPath + prevAvater);
+                }
                 user.Avatar = Input.Avatar;
                 var setAvaterResult = await _userManager.UpdateAsync(user);
                 if (!setAvaterResult.Succeeded)

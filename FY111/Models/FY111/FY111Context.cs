@@ -18,7 +18,6 @@ namespace FY111.Models.FY111
         }
 
         public virtual DbSet<Class> Classes { get; set; }
-        public virtual DbSet<ClassCheckin> ClassCheckins { get; set; }
         public virtual DbSet<ClassLittleunit> ClassLittleunits { get; set; }
         public virtual DbSet<ClassLog> ClassLogs { get; set; }
         public virtual DbSet<ClassSignup> ClassSignups { get; set; }
@@ -34,6 +33,8 @@ namespace FY111.Models.FY111
         public virtual DbSet<OperationOccdisaster> OperationOccdisasters { get; set; }
         public virtual DbSet<OperationUnitLog> OperationUnitLogs { get; set; }
         public virtual DbSet<Timer> Timers { get; set; }
+        public virtual DbSet<TrainingCheckin> TrainingCheckins { get; set; }
+        public virtual DbSet<TrainingSignup> TrainingSignups { get; set; }
         public virtual DbSet<training> training { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -52,6 +53,11 @@ namespace FY111.Models.FY111
                 entity.ToTable("class");
 
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CheckinEnabled)
+                    .HasColumnType("tinyint")
+                    .HasColumnName("checkin_enabled")
+                    .HasDefaultValueSql("'1'");
 
                 entity.Property(e => e.Code)
                     .HasMaxLength(45)
@@ -74,32 +80,11 @@ namespace FY111.Models.FY111
                     .IsRequired()
                     .HasMaxLength(45)
                     .HasColumnName("name");
-            });
 
-            modelBuilder.Entity<ClassCheckin>(entity =>
-            {
-                entity.HasKey(e => new { e.MemberId, e.TrainingId })
-                    .HasName("PRIMARY");
-
-                entity.ToTable("class_checkin");
-
-                entity.HasIndex(e => e.TrainingId, "fk_class_checkin_training1_idx");
-
-                entity.Property(e => e.MemberId)
-                    .HasMaxLength(256)
-                    .HasColumnName("Member_id");
-
-                entity.Property(e => e.TrainingId).HasColumnName("training_id");
-
-                entity.Property(e => e.Time)
-                    .HasColumnName("time")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.HasOne(d => d.Training)
-                    .WithMany(p => p.ClassCheckins)
-                    .HasForeignKey(d => d.TrainingId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_class_checkin_training1");
+                entity.Property(e => e.SignupEnabled)
+                    .HasColumnType("tinyint")
+                    .HasColumnName("signup_enabled")
+                    .HasDefaultValueSql("'1'");
             });
 
             modelBuilder.Entity<ClassLittleunit>(entity =>
@@ -159,28 +144,28 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<ClassSignup>(entity =>
             {
-                entity.HasKey(e => new { e.MemberId, e.TrainingId, e.Date })
+                entity.HasKey(e => new { e.TrainingSignupId, e.ClassId })
                     .HasName("PRIMARY");
 
                 entity.ToTable("class_signup");
 
-                entity.HasIndex(e => e.TrainingId, "fk_class_signup_training1_idx");
+                entity.HasIndex(e => e.ClassId, "fk_class_signup_Class1_idx");
 
-                entity.Property(e => e.MemberId)
-                    .HasMaxLength(256)
-                    .HasColumnName("Member_id");
+                entity.Property(e => e.TrainingSignupId).HasColumnName("training_signup_id");
 
-                entity.Property(e => e.TrainingId).HasColumnName("training_id");
+                entity.Property(e => e.ClassId).HasColumnName("Class_id");
 
-                entity.Property(e => e.Date)
-                    .HasColumnType("date")
-                    .HasColumnName("date");
-
-                entity.HasOne(d => d.Training)
+                entity.HasOne(d => d.Class)
                     .WithMany(p => p.ClassSignups)
-                    .HasForeignKey(d => d.TrainingId)
+                    .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_class_signup_training1");
+                    .HasConstraintName("fk_class_signup_Class1");
+
+                entity.HasOne(d => d.TrainingSignup)
+                    .WithMany(p => p.ClassSignups)
+                    .HasForeignKey(d => d.TrainingSignupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_class_signup_training_signup1");
             });
 
             modelBuilder.Entity<ClassUnit>(entity =>
@@ -448,18 +433,61 @@ namespace FY111.Models.FY111
                 entity.Property(e => e.EndTime).HasColumnName("end_time");
             });
 
-            modelBuilder.Entity<training>(entity =>
+            modelBuilder.Entity<TrainingCheckin>(entity =>
             {
-                entity.HasIndex(e => e.ClassId, "fk_training_Class1_idx");
+                entity.HasKey(e => new { e.MemberId, e.TrainingId })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("training_checkin");
+
+                entity.HasIndex(e => e.TrainingId, "fk_class_checkin_training1_idx");
+
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(256)
+                    .HasColumnName("Member_id");
+
+                entity.Property(e => e.TrainingId).HasColumnName("training_id");
+
+                entity.Property(e => e.Time)
+                    .HasColumnName("time")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.HasOne(d => d.Training)
+                    .WithMany(p => p.TrainingCheckins)
+                    .HasForeignKey(d => d.TrainingId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_class_checkin_training1");
+            });
+
+            modelBuilder.Entity<TrainingSignup>(entity =>
+            {
+                entity.ToTable("training_signup");
+
+                entity.HasIndex(e => e.TrainingId, "fk_class_signup_training1_idx");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CheckinEnabled)
-                    .HasColumnType("tinyint")
-                    .HasColumnName("checkin_enabled")
-                    .HasDefaultValueSql("'1'");
+                entity.Property(e => e.Date)
+                    .HasColumnType("date")
+                    .HasColumnName("date");
 
-                entity.Property(e => e.ClassId).HasColumnName("Class_id");
+                entity.Property(e => e.MemberId)
+                    .IsRequired()
+                    .HasMaxLength(256)
+                    .HasColumnName("Member_id");
+
+                entity.Property(e => e.TrainingId).HasColumnName("training_id");
+
+                entity.HasOne(d => d.Training)
+                    .WithMany(p => p.TrainingSignups)
+                    .HasForeignKey(d => d.TrainingId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_class_signup_training1");
+            });
+
+            modelBuilder.Entity<training>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.EndDate)
                     .HasColumnType("date")
@@ -471,22 +499,11 @@ namespace FY111.Models.FY111
                     .HasMaxLength(45)
                     .HasColumnName("name");
 
-                entity.Property(e => e.SignupEnabled)
-                    .HasColumnType("tinyint")
-                    .HasColumnName("signup_enabled")
-                    .HasDefaultValueSql("'1'");
-
                 entity.Property(e => e.StartDate)
                     .HasColumnType("date")
                     .HasColumnName("start_date");
 
                 entity.Property(e => e.StartTime).HasColumnName("start_time");
-
-                entity.HasOne(d => d.Class)
-                    .WithMany(p => p.training)
-                    .HasForeignKey(d => d.ClassId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_training_Class1");
             });
 
             OnModelCreatingPartial(modelBuilder);
