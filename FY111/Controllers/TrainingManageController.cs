@@ -32,10 +32,9 @@ namespace FY111.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
-            var trainings = _context.training.Include(t => t.Class).Select(x => x);
+            var trainings = _context.training.Select(x => x);
             if (!String.IsNullOrEmpty(searchString)) {
-                trainings = trainings.Where(s => s.Name.Contains(searchString)
-                                       || s.Class.Name.Contains(searchString));
+                trainings = trainings.Where(s => s.Name.Contains(searchString));
             }
             
             //switch (sortOrder) {
@@ -67,7 +66,6 @@ namespace FY111.Controllers
             }
 
             var training = await _context.training
-                .Include(t => t.Class)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (training == null)
             {
@@ -97,7 +95,7 @@ namespace FY111.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Name", training.ClassId);
+            //ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Name", training.ClassId);
             return View(training);
         }
 
@@ -114,7 +112,7 @@ namespace FY111.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Name", training.ClassId);
+            //ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Name", training.ClassId);
             return View(training);
         }
 
@@ -150,7 +148,7 @@ namespace FY111.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Name", training.ClassId);
+            //ViewData["ClassId"] = new SelectList(_context.Classes, "Id", "Name", training.ClassId);
             return View(training);
         }
 
@@ -163,7 +161,6 @@ namespace FY111.Controllers
             }
 
             var training = await _context.training
-                .Include(t => t.Class)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (training == null)
             {

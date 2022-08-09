@@ -13,9 +13,6 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Class.Name)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.StartDate)
             </th>
             <th>
@@ -42,9 +39,6 @@
                 <input type="text" value=@Model.ElementAt(i).Id name="id" hidden />
                 <td>
                         @Html.DisplayFor(modelItem => Model.ElementAt(i).Name)
-                </td>
-                <td>
-                        @Html.DisplayFor(modelItem => Model.ElementAt(i).Class.Name)
                 </td>
                 <td>
                         @Html.DisplayFor(modelItem => Model.ElementAt(i).StartDate)
@@ -79,7 +73,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ClassSignups.ElementAt(0).Date)
+                @Html.DisplayNameFor(model => model.TrainingSignups.ElementAt(0).Date)
             </th>
             <th></th>
         </tr>
@@ -87,7 +81,7 @@
     <tbody>
         @for (int i = 0; i < Model.Count(); i++)
         {
-            @foreach (var item in Model.ElementAt(i).ClassSignups)
+            @foreach (var item in Model.ElementAt(i).TrainingSignups)
             {
                 @if (item.Date > DateTime.Now)
                 {

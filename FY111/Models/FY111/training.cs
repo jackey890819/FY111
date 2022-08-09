@@ -11,19 +11,13 @@ namespace FY111.Models.FY111
     {
         public training()
         {
-            ClassCheckins = new HashSet<ClassCheckin>();
-            ClassSignups = new HashSet<ClassSignup>();
+            TrainingCheckins = new HashSet<TrainingCheckin>();
+            TrainingSignups = new HashSet<TrainingSignup>();
         }
 
         public int Id { get; set; }
-        [Display(Name = "ClassName", ResourceType = typeof(DisplayAttributeResources))]
-        public int ClassId { get; set; }
         [Display(Name = "SessionName", ResourceType = typeof(DisplayAttributeResources))]
         public string Name { get; set; }
-        [Display(Name = "SignupEnabled", ResourceType = typeof(DisplayAttributeResources))]
-        public byte SignupEnabled { get; set; }
-        [Display(Name = "CheckinEnabled", ResourceType = typeof(DisplayAttributeResources))]
-        public byte CheckinEnabled { get; set; }
         [Display(Name = "StartDate", ResourceType = typeof(DisplayAttributeResources))]
         [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
@@ -35,8 +29,7 @@ namespace FY111.Models.FY111
         [Display(Name = "EndTime", ResourceType = typeof(DisplayAttributeResources))]
         public TimeSpan? EndTime { get; set; }
 
-        public virtual Class Class { get; set; }
-        public virtual ICollection<ClassCheckin> ClassCheckins { get; set; }
-        public virtual ICollection<ClassSignup> ClassSignups { get; set; }
+        public virtual ICollection<TrainingCheckin> TrainingCheckins { get; set; }
+        public virtual ICollection<TrainingSignup> TrainingSignups { get; set; }
     }
 }
