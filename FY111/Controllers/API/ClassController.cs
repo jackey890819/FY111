@@ -148,7 +148,7 @@ namespace FY111.Controllers
         //        if (targetClass == null)
         //            throw new Exception("找不到classCode");
         //        int classId = targetClass.Id;
-        //        var signUpList = await _context.ClassSignups.Where(x => x.TrainingId == classId).Select(x => x.MemberId).ToListAsync();
+        //        var signUpList = await _context.TrainingSignups.Where(x => x.TrainingId == classId).Select(x => x.MemberId).ToListAsync();
         //        var attendees = await _context.ClassLogs.Where(x => x.ClassId == classId && DateTime.Compare(x.StartTime, date) >= 0).Select(x => x.MemberId).ToListAsync();
         //        var logs = new List<AttendeeLogDto>();
         //        for (int i = 0; i < signUpList.Count; i++)
@@ -200,7 +200,7 @@ namespace FY111.Controllers
                 {
                     List<Object> applyUsers = new List<Object>();
                     // 報名該training的成員清單
-                    var signupedMembers = await _context.ClassSignups
+                    var signupedMembers = await _context.TrainingSignups
                         .Where(e => e.TrainingId == training.Id)
                         .Select(e => e.MemberId)
                         .ToListAsync();
@@ -217,7 +217,7 @@ namespace FY111.Controllers
                         {
                             id = memberId,
                             name = (await _userManager.FindByIdAsync(memberId)).UserName,
-                            check_in = await _context.ClassCheckins
+                            check_in = await _context.TrainingCheckins
                                 .Where(e => e.MemberId == memberId && e.TrainingId == training.Id)
                                 .AnyAsync(),
                             class_code = await _context.Classes

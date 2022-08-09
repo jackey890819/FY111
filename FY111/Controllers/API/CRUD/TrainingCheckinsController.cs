@@ -11,42 +11,42 @@ namespace FY111.Controllers.API.CRUD
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClassCheckinsController : ControllerBase
+    public class TrainingCheckinsController : ControllerBase
     {
         private readonly FY111Context _context;
 
-        public ClassCheckinsController(FY111Context context)
+        public TrainingCheckinsController(FY111Context context)
         {
             _context = context;
         }
 
-        // GET: api/ClassCheckins
+        // GET: api/TrainingCheckins
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClassCheckin>>> GetClassCheckins(
+        public async Task<ActionResult<IEnumerable<TrainingCheckin>>> GetTrainingCheckins(
             [FromQuery] string memberId = "", [FromQuery] int trainingId = -1)
         {
-            List<ClassCheckin> result;
+            List<TrainingCheckin> result;
             if (memberId != "" && trainingId != -1)
             {
-                result = await _context.ClassCheckins
+                result = await _context.TrainingCheckins
                     .Where(e => e.MemberId == memberId && e.TrainingId == trainingId)
                     .ToListAsync();
             }
             else if (memberId != "")
             {
-                result = await _context.ClassCheckins
+                result = await _context.TrainingCheckins
                     .Where(e => e.MemberId == memberId)
                     .ToListAsync();
             }
             else if (trainingId != 1)
             {
-                result = await _context.ClassCheckins
+                result = await _context.TrainingCheckins
                     .Where(e => e.TrainingId == trainingId)
                     .ToListAsync();
             }
             else
             {
-                result = await _context.ClassCheckins
+                result = await _context.TrainingCheckins
                     .Take(10)
                     .ToListAsync();
             }
@@ -54,35 +54,35 @@ namespace FY111.Controllers.API.CRUD
             {
                 return NotFound();
             }
-            return await _context.ClassCheckins.ToListAsync();
+            return await _context.TrainingCheckins.ToListAsync();
         }
 
 
 
-        // POST: api/ClassCheckins
+        // POST: api/TrainingCheckins
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<ClassCheckin>> PostClassCheckin(ClassCheckin classCheckin)
+        public async Task<ActionResult<TrainingCheckin>> PostTrainingCheckin(TrainingCheckin trainingCheckin)
         {
             // 檢查重複報到
-            var exist = await _context.ClassCheckins
-                .Where(e => e.MemberId == classCheckin.MemberId && e.TrainingId == classCheckin.TrainingId)
+            var exist = await _context.TrainingCheckins
+                .Where(e => e.MemberId == trainingCheckin.MemberId && e.TrainingId == trainingCheckin.TrainingId)
                 .AnyAsync();
             if (exist)
                 return BadRequest("已報到。");
 
             // 賦予報到時間
-            classCheckin.Time = DateTime.Now;
+            trainingCheckin.Time = DateTime.Now;
             // 新增資料
-            _context.ClassCheckins.Add(classCheckin);
+            _context.TrainingCheckins.Add(trainingCheckin);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (ClassCheckinExists(classCheckin.MemberId))
+                if (TrainingCheckinExists(trainingCheckin.MemberId))
                 {
                     return Conflict();
                 }
@@ -92,28 +92,28 @@ namespace FY111.Controllers.API.CRUD
                 }
             }
 
-            return CreatedAtAction("GetClassCheckin", new { id = classCheckin.MemberId }, classCheckin);
+            return CreatedAtAction("GetTrainingCheckin", new { id = trainingCheckin.MemberId }, trainingCheckin);
         }
 
-        // DELETE: api/ClassCheckins/5
+        // DELETE: api/TrainingCheckins/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ClassCheckin>> DeleteClassCheckin(string id)
+        public async Task<ActionResult<TrainingCheckin>> DeleteTrainingCheckin(string id)
         {
-            var classCheckin = await _context.ClassCheckins.FindAsync(id);
-            if (classCheckin == null)
+            var trainingCheckin = await _context.TrainingCheckins.FindAsync(id);
+            if (trainingCheckin == null)
             {
                 return NotFound();
             }
 
-            _context.ClassCheckins.Remove(classCheckin);
+            _context.TrainingCheckins.Remove(trainingCheckin);
             await _context.SaveChangesAsync();
 
-            return classCheckin;
+            return trainingCheckin;
         }
 
-        private bool ClassCheckinExists(string id)
+        private bool TrainingCheckinExists(string id)
         {
-            return _context.ClassCheckins.Any(e => e.MemberId == id);
+            return _context.TrainingCheckins.Any(e => e.MemberId == id);
         }
     }
 }

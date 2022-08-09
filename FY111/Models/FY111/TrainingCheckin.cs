@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace FY111.Models.FY111
 {
-    public partial class ClassCheckin
+    public partial class TrainingCheckin
     {
         public string MemberId { get; set; }
         public int TrainingId { get; set; }
