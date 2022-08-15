@@ -40,6 +40,12 @@ namespace FY111.Controllers
         [HttpGet("class")]
         public async Task<IActionResult> GetClass()
         {
+            if (!_signInManager.IsSignedIn(User))
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = "You are not logged in yet."
+                });
             try
             {
                 var @class = await _context.Classes.Select(x => new ClassDto(x)).ToListAsync();
@@ -57,7 +63,8 @@ namespace FY111.Controllers
                 {
                     data = @class
                 });
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return BadRequest(new { errors = "Get class information failed" });
@@ -89,7 +96,8 @@ namespace FY111.Controllers
                     success = true,
                     message = "Create Log Successfully"
                 });
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return BadRequest(new { errors = "Enter failed" });
@@ -126,12 +134,13 @@ namespace FY111.Controllers
                     success = true,
                     message = "Modify Log Successfully"
                 });
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return BadRequest(new { errors = "Leave failed" });
             }
-            
+
         }
 
 
@@ -173,15 +182,22 @@ namespace FY111.Controllers
         // 取得報名人員 v2
         // GET: /api/attendedList/{受訓日期}
         [HttpGet("attendedList/{dateStr}")]
-        public async Task<IActionResult> GetAttendedList(string dateStr="")
+        public async Task<IActionResult> GetAttendedList(string dateStr = "")
         {
-            Debug.WriteLine($"GET:\t/api/attendedList/{dateStr}");
+            if (!_signInManager.IsSignedIn(User))
+            {
+                return Unauthorized(new
+                {
+                    success = false,
+                    message = "You are not logged in yet."
+                });
+            }
             try
             {
                 DateTime date;
                 if (dateStr == "")
                 {
-                    date = date = DateTime.Today;
+                    date = DateTime.Today;
                 }
                 else
                 {
@@ -189,7 +205,10 @@ namespace FY111.Controllers
                 }
                 // 查詢符合條件的training
                 var targets = await _context.training
-                    .Where(e => e.StartDate >= date.Date && e.StartTime >= date.TimeOfDay)
+                    .Where(e => e.StartDate <= date.Date && e.EndDate >= date.Date)
+                    .Include(e => e.TrainingCheckins)
+                    .Include(e => e.TrainingSignups.Where(t => t.Date == date.Date))
+                    .ThenInclude(u => u.ClassSignups).ThenInclude(c => c.Class)
                     .ToListAsync();
                 // 查無符合項目
                 if (targets.Count == 0)
@@ -200,30 +219,29 @@ namespace FY111.Controllers
                 {
                     List<Object> applyUsers = new List<Object>();
                     // 報名該training的成員清單
-                    var signupedMembers = await _context.TrainingSignups
-                        .Where(e => e.TrainingId == training.Id)
-                        .Select(e => e.MemberId)
-                        .ToListAsync();
+                    
                     // 沒有人報名該training時
-                    if (signupedMembers.Count == 0)
+                    if (training.TrainingSignups.Count == 0)
                     {
                         listOfApplyUsers.Add(applyUsers);
                         continue;
                     }
                     // 處理每一個User的check in 
-                    foreach (var memberId in signupedMembers)
+                    foreach (var t_sigunup in training.TrainingSignups)
                     {
+                        string class_codes = "";
+                        foreach(var c_sigunup in t_sigunup.ClassSignups)
+                        {
+                            class_codes += (c_sigunup.Class.Code + "-");
+                        }
+
                         Object o = new
                         {
-                            id = memberId,
-                            name = (await _userManager.FindByIdAsync(memberId)).UserName,
-                            check_in = await _context.TrainingCheckins
-                                .Where(e => e.MemberId == memberId && e.TrainingId == training.Id)
-                                .AnyAsync(),
-                            class_code = await _context.Classes
-                                .Where(e => e.Id == training.Id)
-                                .Select(e => e.Code)
-                                .SingleOrDefaultAsync()
+                            id = t_sigunup.MemberId,
+                            name = (await _userManager.FindByIdAsync(t_sigunup.MemberId)).UserName,
+                            check_in = training.TrainingCheckins
+                                .Any(e => e.MemberId == t_sigunup.MemberId && e.TrainingId == training.Id && e.Time.Value.Date == date.Date),
+                            class_code = class_codes.TrimEnd('-')
                         };
                         applyUsers.Add(o);
                     }
@@ -231,9 +249,9 @@ namespace FY111.Controllers
                 }
                 // 處理結果的List，照格式化處理
                 List<Object> result = new List<Object>();
-                for (int i=0; i<targets.Count(); i++)
+                for (int i = 0; i < targets.Count(); i++)
                 {
-                    result.Add( new
+                    result.Add(new
                     {
                         training_id = targets[i].Id,
                         training_name = targets[i].Name,
@@ -257,7 +275,8 @@ namespace FY111.Controllers
             catch (Exception e)         // 其他未預期之例外
             {
                 Debug.WriteLine(e.Message);
-                return BadRequest(new { errors = "Get attended list failed" });
+                //return BadRequest(new { errors = "Get attended list failed" });
+                return BadRequest(new { e.Message });
             }
         }
 
@@ -549,5 +568,5 @@ namespace FY111.Controllers
         {
             return _context.Classes.Any(e => e.Id == id);
         }
-}
+    }
 }

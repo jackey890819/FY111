@@ -124,7 +124,7 @@
     <value>頭像</value>
   </data>
   <data name="CheckinEnabled" xml:space="preserve">
-    <value>是否開啟報到</value>
+    <value>開啟報到</value>
   </data>
   <data name="CkptId" xml:space="preserve">
     <value>檢查點Id</value>
@@ -217,7 +217,7 @@
     <value>場次名稱</value>
   </data>
   <data name="SignupEnabled" xml:space="preserve">
-    <value>是否開啟報名</value>
+    <value>開啟報名</value>
   </data>
   <data name="StartDate" xml:space="preserve">
     <value>起始日期</value>
