@@ -79,7 +79,7 @@ namespace FY111.Resources {
         }
         
         /// <summary>
-        ///   查詢類似 是否開啟報到 的當地語系化字串。
+        ///   查詢類似 開啟報到 的當地語系化字串。
         /// </summary>
         public static string CheckinEnabled {
             get {
@@ -358,7 +358,7 @@ namespace FY111.Resources {
         }
         
         /// <summary>
-        ///   查詢類似 是否開啟報名 的當地語系化字串。
+        ///   查詢類似 開啟報名 的當地語系化字串。
         /// </summary>
         public static string SignupEnabled {
             get {
