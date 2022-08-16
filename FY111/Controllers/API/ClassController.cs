@@ -41,11 +41,7 @@ namespace FY111.Controllers
         public async Task<IActionResult> GetClass()
         {
             if (!_signInManager.IsSignedIn(User))
-                return Unauthorized(new
-                {
-                    success = false,
-                    message = "You are not logged in yet."
-                });
+                return Unauthorized(new { errors = "Unauthorized" });
             try
             {
                 var @class = await _context.Classes.Select(x => new ClassDto(x)).ToListAsync();
@@ -76,11 +72,7 @@ namespace FY111.Controllers
         public async Task<ActionResult<ClassLog>> EnterClass(ClassLog classLog)
         {
             if (!_signInManager.IsSignedIn(User))
-                return Unauthorized(new
-                {
-                    success = false,
-                    message = "You are not logged in yet."
-                });
+                return Unauthorized(new { errors = "Unauthorized" });
             try
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -109,11 +101,7 @@ namespace FY111.Controllers
         public async Task<ActionResult<ClassLog>> LeaveClass()
         {
             if (!_signInManager.IsSignedIn(User))
-                return Unauthorized(new
-                {
-                    success = false,
-                    message = "You are not logged in yet."
-                });
+                return Unauthorized(new { errors = "Unauthorized" });
             try
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -186,11 +174,7 @@ namespace FY111.Controllers
         {
             if (!_signInManager.IsSignedIn(User))
             {
-                return Unauthorized(new
-                {
-                    success = false,
-                    message = "You are not logged in yet."
-                });
+                return Unauthorized(new { errors = "Unauthorized" });
             }
             try
             {
