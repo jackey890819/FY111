@@ -47,17 +47,19 @@
 
 ## 
 ## 部屬 ASP .NET Core 至 IIS (區網測試用)
-1. 安裝 Windows Hosting Bundle
 
-    https://dotnet.microsoft.com/zh-cn/download/dotnet/3.1
     
-    下載對應版本的hosting bundle
-    
-2. 開啟IIS
+1. 開啟IIS
 
     控制台>程式集>開啟或關閉Windows功能
 
 	勾選Internet Information Services 中的 web管理工具 及 world wide web服務
+	
+2. 安裝 Windows Hosting Bundle
+
+    https://dotnet.microsoft.com/zh-cn/download/dotnet/3.1
+    
+    下載對應版本的hosting bundle
 
 3. 新增站台
 
