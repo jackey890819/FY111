@@ -13,7 +13,6 @@ namespace FY111.Models.FY111
         {
             ClassLittleunits = new HashSet<ClassLittleunit>();
             ClassUnitApps = new HashSet<ClassUnitApp>();
-            ClassUnitCkpts = new HashSet<ClassUnitCkpt>();
         }
 
         public int Id { get; set; }
@@ -28,6 +27,5 @@ namespace FY111.Models.FY111
         public virtual Class Class { get; set; }
         public virtual ICollection<ClassLittleunit> ClassLittleunits { get; set; }
         public virtual ICollection<ClassUnitApp> ClassUnitApps { get; set; }
-        public virtual ICollection<ClassUnitCkpt> ClassUnitCkpts { get; set; }
     }
 }

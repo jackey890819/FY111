@@ -23,6 +23,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model[0].ClassLittleunit.Name)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model[0].Code)
             </th>
             <th>
@@ -34,6 +37,9 @@
     <tbody>
         @foreach (var item in Model) {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClassLittleunit.Name)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Code)
                 </td>

@@ -34,10 +34,11 @@ namespace FY111.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
-            var occdisasters = _context.Occdisasters.Select(x => x);
+            var occdisasters = _context.Occdisasters.Include(x => x.ClassLittleunit).Select(x => x);
             if (!String.IsNullOrEmpty(searchString)) 
             {
-                occdisasters = occdisasters.Where(s => s.Content.Contains(searchString));
+                occdisasters = occdisasters.Where(s => s.ClassLittleunit.Name.Contains(searchString) || s.Code.Contains(searchString)
+                                       || s.Content.Contains(searchString));
             }
             //switch (sortOrder) {
             //    case "signup_desc":
@@ -65,7 +66,7 @@ namespace FY111.Controllers
                 return NotFound();
             }
 
-            var occdisaster = await _context.Occdisasters
+            var occdisaster = await _context.Occdisasters.Include(x => x.ClassLittleunit)
                 .FirstOrDefaultAsync(m => m.Code == id);
             if (occdisaster == null)
             {
@@ -78,6 +79,7 @@ namespace FY111.Controllers
         // GET: OccdisastersManage/Create
         public IActionResult Create()
         {
+            ViewData["ClassLittleUnitId"] = new SelectList(_context.ClassLittleunits, "Id", "Id");
             return View();
         }
 
@@ -86,7 +88,7 @@ namespace FY111.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Code,Content")] Occdisaster occdisaster)
+        public async Task<IActionResult> Create([Bind("ClassLittleunitId,Code,Content")] Occdisaster occdisaster)
         {
             if (ModelState.IsValid)
             {
@@ -94,6 +96,7 @@ namespace FY111.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ClassLittleUnitId"] = new SelectList(_context.ClassLittleunits, "Id", "Id", occdisaster.ClassLittleunitId);
             return View(occdisaster);
         }
 
@@ -109,6 +112,7 @@ namespace FY111.Controllers
             if (occdisaster == null) {
                 return NotFound();
             }
+            ViewData["ClassLittleUnitId"] = new SelectList(_context.ClassLittleunits, "Id", "Id", occdisaster.ClassLittleunitId);
             return View(occdisaster);
         }
 
@@ -117,7 +121,7 @@ namespace FY111.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Code,Content")] Occdisaster occdisaster)
+        public async Task<IActionResult> Edit(string id, [Bind("ClassLittleunitId,Code,Content")] Occdisaster occdisaster)
         {
             if (id != occdisaster.Code) {
                 var originOccdisaster = await _context.Occdisasters.FindAsync(id);
@@ -157,7 +161,7 @@ namespace FY111.Controllers
                 return NotFound();
             }
 
-            var occdisaster = await _context.Occdisasters
+            var occdisaster = await _context.Occdisasters.Include(x => x.ClassLittleunit)
                 .FirstOrDefaultAsync(m => m.Code == id);
             if (occdisaster == null)
             {
@@ -170,9 +174,10 @@ namespace FY111.Controllers
         // POST: OccdisastersManage/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int ClassLittleunitId, string Code)
         {
-            var @occdisaster = await _context.Occdisasters.FindAsync(id);
+            var @occdisaster = await _context.Occdisasters
+                .FirstOrDefaultAsync(x => x.ClassLittleunitId == ClassLittleunitId && x.Code == Code);
             _context.Occdisasters.Remove(@occdisaster);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
