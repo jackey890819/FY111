@@ -104,7 +104,7 @@ namespace FY111.Controllers
         {
             return View();
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult SetLanguage(string culture, string returnUrl)
         {

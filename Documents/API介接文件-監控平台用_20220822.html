@@ -1,0 +1,1274 @@
+<div id="doc" class="markdown-body container-fluid comment-inner comment-enabled" data-hard-breaks="true"><h1 id="API介接文件-監控平台用" data-id="API介接文件-監控平台用"><span>API介接文件-監控平台用</span></h1><div class="alert alert-info">
+<p><strong><span>XR平台網址：</span><a href="http://localhost:44830" target="_blank" rel="noopener"><span>http://localhost:44830</span></a></strong></p>
+<p><strong><span>登入帳密(測試用)</span></strong></p>
+<ul>
+<li><strong><span>SuperAdmin</span></strong>
+<ul>
+<li><strong><span>帳號 : User01</span></strong></li>
+<li><strong><span>密碼 : User01@</span></strong></li>
+</ul>
+</li>
+<li><strong><span>ClassAdmin</span></strong>
+<ul>
+<li><strong><span>帳號 : User02</span></strong></li>
+<li><strong><span>密碼 : User02@</span></strong></li>
+</ul>
+</li>
+<li><strong><span>GroupUser</span></strong>
+<ul>
+<li><strong><span>帳號 : User03</span></strong></li>
+<li><strong><span>密碼 : User03@</span></strong></li>
+</ul>
+</li>
+<li><strong><span>NormalUser</span></strong>
+<ul>
+<li><strong><span>帳號 : User04</span></strong></li>
+<li><strong><span>密碼 : User04@</span></strong></li>
+</ul>
+</li>
+</ul>
+</div><h2 id="監控平台登入驗證" data-id="監控平台登入驗證"><span>監控平台登入驗證</span></h2><h3 id="POST-apimonitorPlatformLogin" data-id="POST-apimonitorPlatformLogin"><span>[POST] </span><code>/api/monitorPlatformLogin</code></h3><h3 id="Request" data-id="Request"><span>Request</span></h3><h4 id="body" data-id="body"><span>body</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"account"</span><span class="token operator">:</span> <span class="token string">"User01"</span><span class="token punctuation">,</span>
+    <span class="token property">"password"</span><span class="token operator">:</span> <span class="token string">"User01@"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-200-成功" data-id="Response-200-成功"><span>Response 200 成功</span></h3><p><span>後續都需要將</span><span style="color:red"><strong><span>.AspNetCore.Identity.Application的Cookie</span></strong></span><span>一起放入</span><span style="color:red"><strong><span>Request Header</span></strong></span></p><h4 id="body1" data-id="body"><span>body</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"token"</span><span class="token operator">:</span> <span class="token string">"todo..."</span>
+<span class="token punctuation">}</span>    
+</code></pre><h4 id="Cookies" data-id="Cookies"><span>Cookies</span></h4><table>
+<thead>
+<tr>
+<th><span>Name</span></th>
+<th><span>Value</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>.AspNetCore.Identity.Application</span></td>
+<td><span>CfDJ8Ds15dwFzn1BihX0DmnjuMs7rLbTsldzt4fJAytTkj-nQ8tNG-8lp_CqIanrB-brSCkELwP7jlvWTXIgbQmtq9cxm8By95HN5mRPmxvrSowqXv2VS3FYYbIIXPbeEYfgRQc1xRiBBiK87anUcB4m4GnCJ5EXDyvKfIk27_Efni7fclSHF1NGYLKOPCr3JWyQQecdIrec7ChJpeW3eK4yTuMMfaB_tGx7sv_tOGMjtiDsIxLjk_SDAoBoTdp5iEWtf-9c-_LCaglBFzkQjtVqkD064z92lr9YqxymIOhLOYAVT-RiCHRbmJbZ9U7wR9zfBV3HpUKsoxhyh4OGWK5s7p-QjBBsmPhIIntoZ-kHnL_11IaAuCOallboeLQUyByiQcRdtaz2dP8w_AxJMh0iaKcy3uyXdX7ac-3nSx5e5vdKP7TiHwoB-YHvBPQh5tiV9FT3m2cs39LgaW5biXyz12DoHOSeKTsCiQggwhzF2ndlEZfHCqvu8GBqxj1NY-_01_BHcNL3lRJyca5FcSJQ01rN1UCMdNSj1CBPwwUPhoIqSe6g0X8qbvRDWdaXi4KZooiGbGjm0J-Bd9OqowyED3WfpkNC279dTPGBv4etJiv8wltetdkfE5GIZKkOr_aGhzh36J7KBkb9OX-9UmLA5AzWvy2lMwQxnSjhodyFEM51e04-zdt9qiLnMJKwcXhcbH4qkOJhMiq3JgPbDQ8CwW8</span></td>
+</tr>
+</tbody>
+</table><h3 id="Response-400-Bad-Request-登入失敗" data-id="Response-400-Bad-Request-登入失敗"><span>Response 400 Bad Request 登入失敗</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Login failed"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="取得所有課程資訊" data-id="取得所有課程資訊"><span>取得所有課程資訊</span></h2><h3 id="GET-apiclass" data-id="GET-apiclass"><span>[GET] </span><code>/api/class</code></h3><h3 id="Response-200-成功1" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"class"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"高空工作車作業"</span><span class="token punctuation">,</span>
+                <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"模擬高空作業車相關課程"</span><span class="token punctuation">,</span>
+                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"HA.jpeg"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"units"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"unit"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+                        <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_S"</span><span class="token punctuation">,</span>
+                        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"高空工作車作業-剪刀式工作車作業情境單元"</span><span class="token punctuation">,</span>
+                        <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"HA_S.jpeg"</span><span class="token punctuation">,</span>
+                        <span class="token property">"littleUnits"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_S_00"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"高空-剪刀-安全裝備穿戴"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_S_01"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"高空-剪刀-作業前檢點"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_S_02"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"高空-剪刀-修剪路樹作業"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"HA_S_02.jpeg"</span>
+                            <span class="token punctuation">}</span>
+                        <span class="token punctuation">]</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"unit"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+                        <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_C"</span><span class="token punctuation">,</span>
+                        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"高空工作車作業-車載式工作車作業情境單元"</span><span class="token punctuation">,</span>
+                        <span class="token property">"image"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                        <span class="token property">"littleUnits"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_C_00"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"高空-車載-安全裝備穿戴"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_C_01"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"高空-車載-作業前檢點"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_C_02"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"高空-車載-更換燈泡作業"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                            <span class="token punctuation">}</span>
+                        <span class="token punctuation">]</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"class"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"SF"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"施工架作業"</span><span class="token punctuation">,</span>
+                <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"模擬施工架作業相關課程"</span><span class="token punctuation">,</span>
+                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"SF.jpeg"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"units"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"unit"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+                        <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"SF_U"</span><span class="token punctuation">,</span>
+                        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"施工架作業單元"</span><span class="token punctuation">,</span>
+                        <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"SF_U.jpeg"</span><span class="token punctuation">,</span>
+                        <span class="token property">"littleUnits"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"SF_U_00"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"施工架作業-安全裝備穿戴"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"SF_U_01"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"施工架作業-磁磚拼貼及牆壁粉刷"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"SF_U_01.jpeg"</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"SF_U_02"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"施工架作業-磚牆拆除作業"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"SF_U_03"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"施工架作業-壁連座阻力與拆除"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                            <span class="token punctuation">}</span>
+                        <span class="token punctuation">]</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"class"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"SW"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"下水道工程模擬訓練"</span><span class="token punctuation">,</span>
+                <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"下水道工程模擬訓練相關課程"</span><span class="token punctuation">,</span>
+                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"SW.png"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"units"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"unit"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+                        <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"SW_U"</span><span class="token punctuation">,</span>
+                        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"下水道工程單元"</span><span class="token punctuation">,</span>
+                        <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"SW_U.png"</span><span class="token punctuation">,</span>
+                        <span class="token property">"littleUnits"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"SW_U_00"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"下水道-下人孔前的準備工作與安全裝備穿戴"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"SW_U_01"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"下水道-下水道清淤作業"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"SW_U_01.jpeg"</span>
+                            <span class="token punctuation">}</span>
+                        <span class="token punctuation">]</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"class"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"GC"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"矽甲烷更換鋼瓶"</span><span class="token punctuation">,</span>
+                <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"模擬矽甲烷更換鋼瓶相關課程"</span><span class="token punctuation">,</span>
+                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"GC.jpeg"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"units"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"unit"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+                        <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"GC_U"</span><span class="token punctuation">,</span>
+                        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"矽甲烷更換鋼瓶單元"</span><span class="token punctuation">,</span>
+                        <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"GC_U.jpeg"</span><span class="token punctuation">,</span>
+                        <span class="token property">"littleUnits"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"GC_U_00"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"矽甲烷-鋼瓶置換"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"GC_U_00.png"</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"GC_U_01"</span><span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"矽甲烷-鋼瓶操作"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"GC_U_01.png"</span>
+                            <span class="token punctuation">}</span>
+                        <span class="token punctuation">]</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"class"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> (教室編號)<span class="token punctuation">,</span>
+                <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"(教室代號)"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"(教室名稱)"</span><span class="token punctuation">,</span>
+                <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"(教室簡介)"</span><span class="token punctuation">,</span>
+                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"(教室圖片)"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"units"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"unit"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"id"</span><span class="token operator">:</span> (課程編號)<span class="token punctuation">,</span>
+                        <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"(課程代號)"</span><span class="token punctuation">,</span>
+                        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"(課程名稱)"</span><span class="token punctuation">,</span>
+                        <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"(課程圖片)"</span><span class="token punctuation">,</span>
+                        <span class="token property">"littleUnits"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"code"</span><span class="token operator">:</span> (單元編號)<span class="token punctuation">,</span>
+                                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"(單元名稱)"</span><span class="token punctuation">,</span>
+                                <span class="token property">"image"</span><span class="token operator">:</span> <span class="token string">"(單元圖片)"</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            ...
+                        <span class="token punctuation">]</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                ...
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="取得職災資訊" data-id="取得職災資訊"><span>取得職災資訊</span></h2><h3 id="GET-apidisaster" data-id="GET-apidisaster"><span>[GET] </span><code>/api/disaster</code></h3><h3 id="Request1" data-id="Request"><span>Request</span></h3><h3 id="Response-200-成功2" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_02"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_000"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"作業中無任何疏失"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_001"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"作業時未確實扣上尾門，造成職災"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_002"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"上車後未確實關尾門"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_003"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"未將工作平台下降即開車，發生人員墜落事件"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_004"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"結束後未確實關閉工作台尾門"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_005"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"因未展開附屬工作平台，放置時動作過大，導致失足摔落"</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_C_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_C_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_C_02"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SF_U_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SF_U_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_000"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"作業中無任何疏失"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_001"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"未替換腐朽構件，很可能會導致施工架倒塌工作環境安全性不足的危險"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_002"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"未在全程勾掛安全帶上的掛鉤，在作業中容易墜落死亡"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_003"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"未完整檢查施工架架體有無異常，容易在作業中造成職災"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_004"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"未完成拼貼磁磚的任務"</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SF_U_02"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SF_U_03"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SW_U_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SW_U_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"GC_U_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"GC_U_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_000"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"作業中無任何疏失"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_001"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"未確認舊鋼瓶位置"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_002"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"未確認purge動作完成"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"DD_003"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"當鋼瓶出口壓力上升時，未及時鎖緊瓶閥手輪並關閉視窗"</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments1" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"(單元代碼)"</span><span class="token punctuation">,</span>
+            <span class="token property">"disasters"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"(職災代碼)"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"(職災資訊)"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                ...
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="取得關卡資訊" data-id="取得關卡資訊"><span>取得關卡資訊</span></h2><h3 id="GET-apicheckpoint" data-id="GET-apicheckpoint"><span>[GET] </span><code>/api/checkpoint</code></h3><h3 id="Request2" data-id="Request"><span>Request</span></h3><h3 id="Response-200-成功3" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_02"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_00"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"作業時扣上尾門"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_01"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"上車後確實關尾門"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_02"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"將工作平台下降才能開車"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_03"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"作業結束後確實關閉工作台尾門"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_04"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"確實展開附屬工作平台，以利作業"</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_C_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_C_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_C_02"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SF_U_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SF_U_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_00"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"施工架作業-磁磚拼貼及牆壁粉刷-嚴重腐蝕變形者須汰換"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_01"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"施工架作業-磁磚拼貼及牆壁粉刷-有無全程勾掛安全帶"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_02"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"施工架作業-磁磚拼貼及牆壁粉刷-確認施工架上有無錯誤"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_03"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"施工架作業-磁磚拼貼及牆壁粉刷-拼貼磁磚"</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SF_U_02"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SF_U_03"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SW_U_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"SW_U_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"GC_U_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"GC_U_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_00"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"查核PLC面板,確認舊鋼瓶位置"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_01"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"查核PLC面板,確認purge動作完成"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_02"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"透過氣櫃小視窗以扭力板手將鋼瓶接頭處,扳手向上,並觀察鋼瓶出口壓力"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_03"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"將接頭鎖緊,退出扳手"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_04"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"關閉視窗"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_05"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"查核舊鋼瓶閥口與管線接縫處有無粉末殘留,氣體偵測器警報有無響起"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_06"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"打開氣瓶櫃"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_07"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"將舊鋼瓶接頭完全分離"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_08"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"將舊鋼瓶瓶閥口堵頭確實上緊並蓋上瓶閥保護罩旋緊"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_09"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"關上氣瓶櫃"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_10"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"打開氣瓶櫃"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_11"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"將Pigtail接口銜接至新鋼瓶出口處,並以扭力板手旋緊"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_12"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"檢查Pigtail是否有過度變形造成有潛應力存在"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_13"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"關閉氣櫃門"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_14"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"確認飽壓與Purge程序已經完成"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_15"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"關閉氣櫃門"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_16"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"打開氣櫃小視窗"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"CKPT_17"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"緩慢打開瓶閥，等待30秒確認有無警報發生"</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments2" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"(單元代碼)"</span><span class="token punctuation">,</span>
+            <span class="token property">"checkpoints"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"(關卡代碼)"</span><span class="token punctuation">,</span>
+                    <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"(關卡資訊)"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                ...
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="取得出席人員列表" data-id="取得出席人員列表"><span>取得出席人員列表</span></h2><h3 id="GET-apiattendedList受訓日期" data-id="GET-apiattendedList受訓日期"><span>[GET] </span><code>/api/attendedList/{受訓日期}</code></h3><h3 id="Request3" data-id="Request"><span>Request</span></h3><h3 id="Response-200-成功4" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"training_id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token property">"training_name"</span><span class="token operator">:</span> <span class="token string">"202207上午場"</span><span class="token punctuation">,</span>
+            <span class="token property">"training_date"</span><span class="token operator">:</span> <span class="token string">"2022-07-01"</span><span class="token punctuation">,</span>
+            <span class="token property">"start_time"</span><span class="token operator">:</span> <span class="token string">"09:00:00"</span><span class="token punctuation">,</span>
+            <span class="token property">"end_time"</span><span class="token operator">:</span> <span class="token string">"12:00:00"</span><span class="token punctuation">,</span>
+            <span class="token property">"applyUsers"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"547e8f7f-2aae-4194-9214-cfda4313740b"</span><span class="token punctuation">,</span>
+                    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"User06"</span><span class="token punctuation">,</span>
+                    <span class="token property">"check_in"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                    <span class="token property">"class_code"</span><span class="token operator">:</span> <span class="token string">"HA-SF-SW"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"8334bf96-4fa1-40f3-9099-7257c168311f"</span><span class="token punctuation">,</span>
+                    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"User04"</span><span class="token punctuation">,</span>
+                    <span class="token property">"check_in"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                    <span class="token property">"class_code"</span><span class="token operator">:</span> <span class="token string">"HA-SF"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"ec9b7196-725e-458b-a612-faf238d165cf"</span><span class="token punctuation">,</span>
+                    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"User05"</span><span class="token punctuation">,</span>
+                    <span class="token property">"check_in"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                    <span class="token property">"class_code"</span><span class="token operator">:</span> <span class="token string">"HA-SW"</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"training_id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+            <span class="token property">"training_name"</span><span class="token operator">:</span> <span class="token string">"202207下午場"</span><span class="token punctuation">,</span>
+            <span class="token property">"training_date"</span><span class="token operator">:</span> <span class="token string">"2022-07-01"</span><span class="token punctuation">,</span>
+            <span class="token property">"start_time"</span><span class="token operator">:</span> <span class="token string">"13:30:00"</span><span class="token punctuation">,</span>
+            <span class="token property">"end_time"</span><span class="token operator">:</span> <span class="token string">"16:30:00"</span><span class="token punctuation">,</span>
+            <span class="token property">"applyUsers"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"547e8f7f-2aae-4194-9214-cfda4313740b"</span><span class="token punctuation">,</span>
+                    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"User06"</span><span class="token punctuation">,</span>
+                    <span class="token property">"check_in"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                    <span class="token property">"class_code"</span><span class="token operator">:</span> <span class="token string">"GC"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"8334bf96-4fa1-40f3-9099-7257c168311f"</span><span class="token punctuation">,</span>
+                    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"User04"</span><span class="token punctuation">,</span>
+                    <span class="token property">"check_in"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                    <span class="token property">"class_code"</span><span class="token operator">:</span> <span class="token string">"HA-SF"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"ec9b7196-725e-458b-a612-faf238d165cf"</span><span class="token punctuation">,</span>
+                    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"User05"</span><span class="token punctuation">,</span>
+                    <span class="token property">"check_in"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                    <span class="token property">"class_code"</span><span class="token operator">:</span> <span class="token string">"HA"</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments3" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"training_id"</span><span class="token operator">:</span> (受訓代號)<span class="token punctuation">,</span>
+            <span class="token property">"training_name"</span><span class="token operator">:</span> <span class="token string">"(受訓名稱)"</span><span class="token punctuation">,</span>
+            <span class="token property">"training_date"</span><span class="token operator">:</span> <span class="token string">"(受訓日期)"</span><span class="token punctuation">,</span>
+            <span class="token property">"start_time"</span><span class="token operator">:</span> <span class="token string">"(開始時間)"</span><span class="token punctuation">,</span>
+            <span class="token property">"end_time"</span><span class="token operator">:</span> <span class="token string">"(結束時間)"</span><span class="token punctuation">,</span>
+            <span class="token property">"applyUsers"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"(工號)"</span><span class="token punctuation">,</span>
+                    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"(姓名)"</span><span class="token punctuation">,</span>
+                    <span class="token property">"check_in"</span><span class="token operator">:</span> (是否報到)
+                    <span class="token property">"class_code"</span><span class="token operator">:</span> <span class="token string">"(可操作的模擬課程)"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                ...
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="上傳流程" data-id="上傳流程"><span>上傳流程</span></h2><p><span>開始操作時，請先</span><span style="color:red"><strong><span>更新操作紀錄</span></strong></span><span>，再</span><span style="color:red"><strong><span>上傳成績&amp;職災&amp;關卡</span></strong></span><span>，有更新操作紀錄後，就可以進行成績&amp;職災&amp;關卡的單一測試及更新了!!</span></p><p><span>再次更新操作紀錄，則為新的操作紀錄，即之後上傳的成績&amp;職災&amp;關卡皆屬於該操作紀錄!!</span></p><h2 id="更新操作紀錄" data-id="更新操作紀錄"><span>更新操作紀錄</span></h2><h3 id="POST-apioperationRecord" data-id="POST-apioperationRecord"><span>[POST] </span><code>/api/operationRecord</code></h3><h3 id="Request4" data-id="Request"><span>Request</span></h3><h4 id="body2" data-id="body"><span>body</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+   <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S"</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments4" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+   <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"(課程代碼)"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-201-建立成功" data-id="Response-201-建立成功"><span>Response 201 建立成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"success"</span><span class="token operator">:</span> <span class="token string">"Create successfully"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-400-Bad-Request" data-id="Response-400-Bad-Request"><span>Response 400 Bad Request</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Record failed"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="上傳學習成績" data-id="上傳學習成績"><span>上傳學習成績</span></h2><h3 id="POST-apioperationResult" data-id="POST-apioperationResult"><span>[POST] </span><code>/api/operationResult</code></h3><h3 id="Request5" data-id="Request"><span>Request</span></h3><h4 id="body3" data-id="body"><span>body</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S"</span><span class="token punctuation">,</span>
+    <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_S_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"ScoreData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">80</span><span class="token punctuation">,</span>
+                <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token string">"true"</span><span class="token punctuation">,</span>
+                <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05 14:00:00"</span><span class="token punctuation">,</span>
+                <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05 15:30:00"</span><span class="token punctuation">,</span>
+                <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"01:30:00"</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_S_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"ScoreData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
+                <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token string">"false"</span><span class="token punctuation">,</span>
+                <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05 16:00:00"</span><span class="token punctuation">,</span>
+                <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05 17:30:00"</span><span class="token punctuation">,</span>
+                <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"01:30:00"</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments5" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"(課程代碼)"</span><span class="token punctuation">,</span>
+    <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"(單元代碼)"</span><span class="token punctuation">,</span>
+            <span class="token property">"ScoreData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"score"</span><span class="token operator">:</span> (分數)<span class="token punctuation">,</span>
+                <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token string">"(是否通過"</span>)<span class="token punctuation">,</span>
+                <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"(開始操作時間)"</span><span class="token punctuation">,</span>
+                <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"(結束操作時間)"</span><span class="token punctuation">,</span>
+                <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"(操作花費時間)"</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-201-建立成功1" data-id="Response-201-建立成功"><span>Response 201 建立成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"success"</span><span class="token operator">:</span> <span class="token string">"Update successfully"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-400-Bad-Request1" data-id="Response-400-Bad-Request"><span>Response 400 Bad Request</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Record failed"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized1" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="上傳職災資訊" data-id="上傳職災資訊"><span>上傳職災資訊</span></h2><h3 id="POST-apioperationDisaster" data-id="POST-apioperationDisaster"><span>[POST] </span><code>/api/operationDisaster</code></h3><h3 id="Request6" data-id="Request"><span>Request</span></h3><h4 id="body4" data-id="body"><span>body</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S"</span><span class="token punctuation">,</span>
+    <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_S_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"OccDisaster"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"DD_002"</span><span class="token punctuation">,</span> <span class="token string">"DD_001"</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_S_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"OccDisaster"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"DD_003"</span><span class="token punctuation">,</span> <span class="token string">"DD_004"</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments6" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"(課程代碼)"</span><span class="token punctuation">,</span>
+    <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"(單元代碼)"</span><span class="token punctuation">,</span>
+            <span class="token property">"OccDisaster"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"(職災代碼)"</span><span class="token punctuation">,</span> ...<span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-201-建立成功2" data-id="Response-201-建立成功"><span>Response 201 建立成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"success"</span><span class="token operator">:</span> <span class="token string">"Update successfully"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-400-Bad-Request2" data-id="Response-400-Bad-Request"><span>Response 400 Bad Request</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Record failed"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized2" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="紀錄使用者操作階段" data-id="紀錄使用者操作階段"><span>紀錄使用者操作階段</span></h2><h3 id="POST-apioperationCheckpoint" data-id="POST-apioperationCheckpoint"><span>[POST] </span><code>/api/operationCheckpoint</code></h3><h3 id="Request7" data-id="Request"><span>Request</span></h3><h4 id="body5" data-id="body"><span>body</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S"</span><span class="token punctuation">,</span>
+    <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_S_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"CheckPoint"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_01"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">1</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_02"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">0</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_03"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">0</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_04"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">1</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_05"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">1</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"HA_S_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"CheckPoint"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_11"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">0</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_12"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">1</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_13"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">0</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_14"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">-1</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_15"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">1</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments7" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"(課程代碼)"</span><span class="token punctuation">,</span>
+    <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"code"</span><span class="token operator">:</span> <span class="token string">"(單元代碼)"</span><span class="token punctuation">,</span>
+            <span class="token property">"CheckPoint"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"(檢查點代碼)"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> (用戶關卡狀態<span class="token punctuation">{</span><span class="token number">1</span><span class="token operator">:</span> Pass<span class="token punctuation">,</span> <span class="token number">0</span><span class="token operator">:</span> Fail<span class="token punctuation">,</span> <span class="token number">-1</span><span class="token operator">:</span> Not available<span class="token punctuation">}</span>)
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                ...
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-201-建立成功3" data-id="Response-201-建立成功"><span>Response 201 建立成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"success"</span><span class="token operator">:</span> <span class="token string">"Update successfully"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-400-Bad-Request3" data-id="Response-400-Bad-Request"><span>Response 400 Bad Request</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Record failed"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized3" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="取得使用者操作階段" data-id="取得使用者操作階段"><span>取得使用者操作階段</span></h2><h3 id="GET-apioperationCheckpoint課程代碼" data-id="GET-apioperationCheckpoint課程代碼"><span>[GET] </span><code>/api/operationCheckpoint/{課程代碼}</code></h3><h3 id="Response-200-成功5" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_00"</span><span class="token punctuation">,</span>
+            <span class="token property">"CheckPoint"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_01"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">1</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_02"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">0</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_03"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">0</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_04"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">1</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_05"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">1</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_01"</span><span class="token punctuation">,</span>
+            <span class="token property">"CheckPoint"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_11"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">0</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_12"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">1</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_13"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">0</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_14"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">-1</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"CKPT_15"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> <span class="token number">1</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_02"</span><span class="token punctuation">,</span>
+            <span class="token property">"CheckPoint"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments8" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"(課程代碼)"</span><span class="token punctuation">,</span>
+            <span class="token property">"Checkpoint"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"CKPT_id"</span><span class="token operator">:</span> <span class="token string">"(檢查點代碼)"</span><span class="token punctuation">,</span>
+                    <span class="token property">"PointType"</span><span class="token operator">:</span> (用戶關卡狀態<span class="token punctuation">{</span><span class="token number">1</span><span class="token operator">:</span> Pass<span class="token punctuation">,</span> <span class="token number">0</span><span class="token operator">:</span> Fail<span class="token punctuation">,</span> <span class="token number">-1</span><span class="token operator">:</span> Not available<span class="token punctuation">}</span>)
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                ...
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized4" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="取得當下受測成績" data-id="取得當下受測成績"><span>取得當下受測成績</span></h2><h3 id="GET-apioperationResult課程代碼" data-id="GET-apioperationResult課程代碼"><span>[GET] /api/operationResult/{課程代碼}</span></h3><h3 id="Response-200-成功6" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S"</span><span class="token punctuation">,</span>
+        <span class="token property">"unit_pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        <span class="token property">"ScoreState"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+                <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_00"</span><span class="token punctuation">,</span>
+                <span class="token property">"ScoreData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">80</span><span class="token punctuation">,</span>
+                    <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                    <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05T14:00:00"</span><span class="token punctuation">,</span>
+                    <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05T15:30:00"</span><span class="token punctuation">,</span>
+                    <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"01:30:00"</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+                <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_01"</span><span class="token punctuation">,</span>
+                <span class="token property">"ScoreData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
+                    <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                    <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05T16:00:00"</span><span class="token punctuation">,</span>
+                    <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05T17:30:00"</span><span class="token punctuation">,</span>
+                    <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"01:30:00"</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+                <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_02"</span><span class="token punctuation">,</span>
+                <span class="token property">"ScoreData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                    <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                    <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                    <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                    <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments9" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"(課程代碼)"</span><span class="token punctuation">,</span>
+            <span class="token property">"unit_pass"</span><span class="token operator">:</span> (是否通過該課程)<span class="token punctuation">,</span>
+            <span class="token property">"ScoreState"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"(單元代碼)"</span><span class="token punctuation">,</span>
+                    <span class="token property">"ScoreData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"score"</span><span class="token operator">:</span> (分數)<span class="token punctuation">,</span>
+                        <span class="token property">"pass"</span><span class="token operator">:</span> (是否通過該單元)<span class="token punctuation">,</span>
+                        <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"(開始操作時間)"</span><span class="token punctuation">,</span>
+                        <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"(結束操作時間)"</span><span class="token punctuation">,</span>
+                        <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"(操作花費時間)"</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                ...
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized5" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="取得上次受測成績" data-id="取得上次受測成績"><span>取得上次受測成績</span></h2><h3 id="GET-apilastScore課程代碼" data-id="GET-apilastScore課程代碼"><span>[GET] </span><code>/api/lastScore/{課程代碼}</code></h3><h3 id="Response-200-成功7" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S"</span><span class="token punctuation">,</span>
+            <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_00"</span><span class="token punctuation">,</span>
+                    <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">80</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05T14:00:00"</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05T15:30:00"</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"01:30:00"</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">90</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-02T14:00:00"</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-02T15:30:00"</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"01:30:00"</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_01"</span><span class="token punctuation">,</span>
+                    <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05T16:00:00"</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05T17:30:00"</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"01:30:00"</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05T16:00:00"</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-07-05T17:30:00"</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"01:30:00"</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_02"</span><span class="token punctuation">,</span>
+                    <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_C"</span><span class="token punctuation">,</span>
+            <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_C_00"</span><span class="token punctuation">,</span>
+                    <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_C_01"</span><span class="token punctuation">,</span>
+                    <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_C_02"</span><span class="token punctuation">,</span>
+                    <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token null keyword">null</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments10" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"(課程代碼)"</span><span class="token punctuation">,</span>
+            <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"(單元代碼)"</span><span class="token punctuation">,</span>
+                    <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> (最新紀錄-成績)<span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> (最新紀錄-是否通過)<span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"(最新紀錄-開始操作時間)"</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"(最新紀錄-結束操作時間)"</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"(最新紀錄-操作花費時間)"</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                            <span class="token property">"score"</span><span class="token operator">:</span> (最高分紀錄-成績)<span class="token punctuation">,</span>
+                            <span class="token property">"pass"</span><span class="token operator">:</span> (最高分紀錄-是否通過)<span class="token punctuation">,</span>
+                            <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"(最高分紀錄-開始操作時間)"</span><span class="token punctuation">,</span>
+                            <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"(最高分紀錄-結束操作時間)"</span><span class="token punctuation">,</span>
+                            <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"(最高分紀錄-操作花費時間)"</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                ...
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized6" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="取得職災資訊1" data-id="取得職災資訊"><span>取得職災資訊</span></h2><h3 id="GET-apioperationDisaster課程代碼" data-id="GET-apioperationDisaster課程代碼"><span>[GET] </span><code>/api/operationDisaster/{課程代碼}</code></h3><h3 id="Response-200-成功8" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S"</span><span class="token punctuation">,</span>
+        <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+                <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_00"</span><span class="token punctuation">,</span>
+                <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token property">"dd_code"</span><span class="token operator">:</span> <span class="token string">"DD_001"</span><span class="token punctuation">,</span>
+                            <span class="token property">"dd_content"</span><span class="token operator">:</span> <span class="token string">"職災1"</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token property">"dd_code"</span><span class="token operator">:</span> <span class="token string">"DD_002"</span><span class="token punctuation">,</span>
+                            <span class="token property">"dd_content"</span><span class="token operator">:</span> <span class="token string">"職災2"</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+                    <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token property">"dd_code"</span><span class="token operator">:</span> <span class="token string">"DD_001"</span><span class="token punctuation">,</span>
+                            <span class="token property">"dd_content"</span><span class="token operator">:</span> <span class="token string">"職災1"</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token property">"dd_code"</span><span class="token operator">:</span> <span class="token string">"DD_002"</span><span class="token punctuation">,</span>
+                            <span class="token property">"dd_content"</span><span class="token operator">:</span> <span class="token string">"職災2"</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">]</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+                <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_01"</span><span class="token punctuation">,</span>
+                <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token property">"dd_code"</span><span class="token operator">:</span> <span class="token string">"DD_003"</span><span class="token punctuation">,</span>
+                            <span class="token property">"dd_content"</span><span class="token operator">:</span> <span class="token string">"職災3"</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token property">"dd_code"</span><span class="token operator">:</span> <span class="token string">"DD_004"</span><span class="token punctuation">,</span>
+                            <span class="token property">"dd_content"</span><span class="token operator">:</span> <span class="token string">"職災4"</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+                    <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token property">"dd_code"</span><span class="token operator">:</span> <span class="token string">"DD_003"</span><span class="token punctuation">,</span>
+                            <span class="token property">"dd_content"</span><span class="token operator">:</span> <span class="token string">"職災3"</span>
+                        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token property">"dd_code"</span><span class="token operator">:</span> <span class="token string">"DD_004"</span><span class="token punctuation">,</span>
+                            <span class="token property">"dd_content"</span><span class="token operator">:</span> <span class="token string">"職災4"</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">]</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+                <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"HA_S_02"</span><span class="token punctuation">,</span>
+                <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                    <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments11" data-id="comments"><span>comments</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"unit_code"</span><span class="token operator">:</span> <span class="token string">"(課程代碼)"</span><span class="token punctuation">,</span>
+            <span class="token property">"little_unit"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    <span class="token property">"little_unit_code"</span><span class="token operator">:</span> <span class="token string">"(單元代碼)"</span><span class="token punctuation">,</span>
+                    <span class="token property">"ScoreListData"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                        <span class="token property">"NewestData"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"dd_code"</span><span class="token operator">:</span> <span class="token string">"(最新紀錄-職災代碼)"</span><span class="token punctuation">,</span>
+                                <span class="token property">"dd_content"</span><span class="token operator">:</span> <span class="token string">"(最新紀錄-職災內容)"</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            ...
+                        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+                        <span class="token property">"HighestData"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                            <span class="token punctuation">{</span>
+                                <span class="token property">"dd_code"</span><span class="token operator">:</span> <span class="token string">"(最高分紀錄-職災代碼)"</span><span class="token punctuation">,</span>
+                                <span class="token property">"dd_content"</span><span class="token operator">:</span> <span class="token string">"(最高分紀錄-職災內容)"</span>
+                            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                            ...
+                        <span class="token punctuation">]</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                ...
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        ...
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized7" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="開始計時" data-id="開始計時"><span>開始計時</span></h2><h3 id="POST-apistartTimer" data-id="POST-apistartTimer"><span>[POST] </span><code>/api/startTimer</code></h3><h3 id="Response-200-成功9" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-08-16 12:39:00"</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized8" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="停止計時" data-id="停止計時"><span>停止計時</span></h2><h3 id="POST-apiendTimer" data-id="POST-apiendTimer"><span>[POST] </span><code>/api/endTimer</code></h3><h3 id="Response-200-成功10" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"StartDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-08-16 12:39:01"</span><span class="token punctuation">,</span>
+        <span class="token property">"EndDateTime"</span><span class="token operator">:</span> <span class="token string">"2022-08-16 12:40:29"</span><span class="token punctuation">,</span>
+        <span class="token property">"TestTimeLast"</span><span class="token operator">:</span> <span class="token string">"00:01:28"</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized9" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="進入教室" data-id="進入教室"><span>進入教室</span></h2><h3 id="POST-apienter" data-id="POST-apienter"><span>[POST] </span><code>/api/enter</code></h3><h3 id="Request8" data-id="Request"><span>Request</span></h3><h4 id="body6" data-id="body"><span>body</span></h4><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"classId"</span><span class="token operator">:</span> <span class="token number">3</span>
+<span class="token punctuation">}</span>
+</code></pre><h4 id="comments12" data-id="comments"><span>comments</span></h4><pre><code class="json hljs">    <span class="token property">"classId"</span><span class="token operator">:</span> (教室編號)
+</code></pre><h3 id="Response-200-成功11" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"success"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"Create Log Successfully"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-400-Bad-Request4" data-id="Response-400-Bad-Request"><span>Response 400 Bad Request</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Enter failed"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized10" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="離開教室" data-id="離開教室"><span>離開教室</span></h2><h3 id="PATCH-apileave" data-id="PATCH-apileave"><span>[PATCH] </span><code>/api/leave</code></h3><h3 id="Response-200-成功12" data-id="Response-200-成功"><span>Response 200 成功</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"success"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"Modify Log Successfully"</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-400-Bad-Request5" data-id="Response-400-Bad-Request"><span>Response 400 Bad Request</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"success"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"You haven't entered."</span>
+<span class="token punctuation">}</span>
+</code></pre><h3 id="Response-401-Unauthorized11" data-id="Response-401-Unauthorized"><span>Response 401 Unauthorized</span></h3><pre><code class="json hljs"><span class="token punctuation">{</span>
+    <span class="token property">"errors"</span><span class="token operator">:</span> <span class="token string">"Unauthorized"</span>
+<span class="token punctuation">}</span>
+</code></pre></div>

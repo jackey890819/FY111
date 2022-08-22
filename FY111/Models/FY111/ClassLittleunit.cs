@@ -9,6 +9,12 @@ namespace FY111.Models.FY111
 {
     public partial class ClassLittleunit
     {
+        public ClassLittleunit()
+        {
+            ClassUnitCkpts = new HashSet<ClassUnitCkpt>();
+            Occdisasters = new HashSet<Occdisaster>();
+        }
+
         public int Id { get; set; }
         public int ClassUnitId { get; set; }
         [Display(Name = "Code", ResourceType = typeof(DisplayAttributeResources))]
@@ -19,5 +25,7 @@ namespace FY111.Models.FY111
         public string Image { get; set; }
 
         public virtual ClassUnit ClassUnit { get; set; }
+        public virtual ICollection<ClassUnitCkpt> ClassUnitCkpts { get; set; }
+        public virtual ICollection<Occdisaster> Occdisasters { get; set; }
     }
 }

@@ -32,9 +32,9 @@ namespace FY111.Controllers
             }
             ViewData["CurrentFilter"] = searchString;
 
-            var classunitckpts = _context.ClassUnitCkpts.Select(x => x);
+            var classunitckpts = _context.ClassUnitCkpts.Include(c => c.ClassLittleunit).Select(x => x);
             if (!String.IsNullOrEmpty(searchString)) {
-                classunitckpts = classunitckpts.Where(s => s.CkptId.Contains(searchString)
+                classunitckpts = classunitckpts.Where(s => s.ClassLittleunit.Name.Contains(searchString) || s.CkptId.Contains(searchString)
                                        || s.Content.Contains(searchString));
             }
             //switch (sortOrder) {
@@ -52,7 +52,7 @@ namespace FY111.Controllers
             //        break;
             //}
             int pageSize = 5;
-            var fY111Context = _context.ClassUnitCkpts.Include(c => c.ClassUnit);
+            //var fY111Context = _context.ClassUnitCkpts.Include(c => c.ClassLittleunit);
             return View(await PaginatedList<ClassUnitCkpt>.CreateAsync(classunitckpts.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
@@ -63,7 +63,7 @@ namespace FY111.Controllers
                 return NotFound();
             }
 
-            var classunitckpts = await _context.ClassUnitCkpts
+            var classunitckpts = await _context.ClassUnitCkpts.Include(x => x.ClassLittleunit)
                 .FirstOrDefaultAsync(m => m.CkptId == id);
             if (classunitckpts == null) {
                 return NotFound();
@@ -75,7 +75,7 @@ namespace FY111.Controllers
         // GET: ClassUnitCkptsManage/Create
         public IActionResult Create()
         {
-            ViewData["ClassUnitId"] = new SelectList(_context.ClassUnits, "Id", "Id");
+            ViewData["ClassLittleUnitId"] = new SelectList(_context.ClassLittleunits, "Id", "Id");
             return View();
         }
 
@@ -84,14 +84,14 @@ namespace FY111.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClassUnitId,CkptId,Content")] ClassUnitCkpt classunitckpts)
+        public async Task<IActionResult> Create([Bind("ClassLittleunitId,CkptId,Content")] ClassUnitCkpt classunitckpts)
         {
             if (ModelState.IsValid) {
                 _context.Add(classunitckpts);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClassUnitId"] = new SelectList(_context.ClassUnits, "Id", "Id", classunitckpts.ClassUnitId);
+            ViewData["ClassLittleUnitId"] = new SelectList(_context.ClassLittleunits, "Id", "Id", classunitckpts.ClassLittleunitId);
             return View(classunitckpts);
         }
 
@@ -107,7 +107,7 @@ namespace FY111.Controllers
             if (classunitckpts == null) {
                 return NotFound();
             }
-            ViewData["ClassUnitId"] = new SelectList(_context.ClassUnits, "Id", "Id", classunitckpts.ClassUnitId);
+            ViewData["ClassLittleUnitId"] = new SelectList(_context.ClassLittleunits, "Id", "Id", classunitckpts.ClassLittleunitId);
             return View(classunitckpts);
         }
 
@@ -116,7 +116,7 @@ namespace FY111.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ClassUnitId,CkptId,Content")] ClassUnitCkpt classunitckpts)
+        public async Task<IActionResult> Edit(string id, [Bind("ClassLittleunitId,CkptId,Content")] ClassUnitCkpt classunitckpts)
         {
             if (id != classunitckpts.CkptId) {
                 var originckpt = await _context.ClassUnitCkpts.FirstOrDefaultAsync(m => m.CkptId == id);
@@ -153,7 +153,7 @@ namespace FY111.Controllers
                 return NotFound();
             }
 
-            var classunitckpts = await _context.ClassUnitCkpts
+            var classunitckpts = await _context.ClassUnitCkpts.Include(x => x.ClassLittleunit)
                 .FirstOrDefaultAsync(m => m.CkptId == id);
             if (classunitckpts == null) {
                 return NotFound();
@@ -165,9 +165,10 @@ namespace FY111.Controllers
         // POST: ClassUnitCkptsManage/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int ClassLittleunitId, string CkptId)
         {
-            var @classunitckpts = await _context.ClassUnitCkpts.FirstOrDefaultAsync(m => m.CkptId == id);
+            var @classunitckpts = await _context.ClassUnitCkpts
+                .FirstOrDefaultAsync(x => x.ClassLittleunitId == ClassLittleunitId && x.CkptId == CkptId);
             _context.ClassUnitCkpts.Remove(@classunitckpts);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -10,12 +10,12 @@ namespace FY111.Models.FY111
     public partial class ClassUnitCkpt
     {
         [Display(Name = "ClassUnitId", ResourceType = typeof(DisplayAttributeResources))]
-        public int ClassUnitId { get; set; }
+        public int ClassLittleunitId { get; set; }
         [Display(Name = "CkptId", ResourceType = typeof(DisplayAttributeResources))]
         public string CkptId { get; set; }
         [Display(Name = "Content", ResourceType = typeof(DisplayAttributeResources))]
         public string Content { get; set; }
 
-        public virtual ClassUnit ClassUnit { get; set; }
+        public virtual ClassLittleunit ClassLittleunit { get; set; }
     }
 }

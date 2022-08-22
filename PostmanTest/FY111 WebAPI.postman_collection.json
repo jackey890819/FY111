@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "da2836f7-812b-438f-85e4-5e3f0b5b9e6a",
+		"_postman_id": "dc62b9d3-afcb-4fd4-b016-06c1d0fb5c58",
 		"name": "FY111 WebAPI",
 		"description": "FY111 A-2 Web API Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "20450170"
+		"_exporter_id": "20452813"
 	},
 	"item": [
 		{
@@ -569,6 +569,51 @@
 								"api",
 								"lastScore",
 								"HA"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ckpt and Disaster Controller",
+			"item": [
+				{
+					"name": "取得職災資訊",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/disaster",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"disaster"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得關卡資訊",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44380/api/checkpoint",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44380",
+							"path": [
+								"api",
+								"checkpoint"
 							]
 						}
 					},

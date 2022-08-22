@@ -228,14 +228,14 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<ClassUnitCkpt>(entity =>
             {
-                entity.HasKey(e => new { e.ClassUnitId, e.CkptId })
+                entity.HasKey(e => new { e.ClassLittleunitId, e.CkptId })
                     .HasName("PRIMARY");
 
                 entity.ToTable("class_unit_ckpt");
 
-                entity.HasIndex(e => e.ClassUnitId, "fk_Class_unit_ckpt_Class_unit1_idx");
+                entity.HasIndex(e => e.ClassLittleunitId, "fk_Class_unit_ckpt_class_littleunit1_idx");
 
-                entity.Property(e => e.ClassUnitId).HasColumnName("Class_unit_id");
+                entity.Property(e => e.ClassLittleunitId).HasColumnName("class_littleunit_id");
 
                 entity.Property(e => e.CkptId)
                     .HasMaxLength(45)
@@ -243,11 +243,11 @@ namespace FY111.Models.FY111
 
                 entity.Property(e => e.Content).HasColumnName("content");
 
-                entity.HasOne(d => d.ClassUnit)
+                entity.HasOne(d => d.ClassLittleunit)
                     .WithMany(p => p.ClassUnitCkpts)
-                    .HasForeignKey(d => d.ClassUnitId)
+                    .HasForeignKey(d => d.ClassLittleunitId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Class_unit_ckpt_Class_unit1");
+                    .HasConstraintName("fk_Class_unit_ckpt_class_littleunit1");
             });
 
             modelBuilder.Entity<Device>(entity =>
@@ -315,14 +315,24 @@ namespace FY111.Models.FY111
 
             modelBuilder.Entity<Occdisaster>(entity =>
             {
-                entity.HasKey(e => e.Code)
+                entity.HasKey(e => new { e.Code, e.ClassLittleunitId })
                     .HasName("PRIMARY");
 
                 entity.ToTable("occdisaster");
 
+                entity.HasIndex(e => e.ClassLittleunitId, "fk_Occdisaster_class_littleunit1_idx");
+
                 entity.Property(e => e.Code).HasMaxLength(45);
 
+                entity.Property(e => e.ClassLittleunitId).HasColumnName("class_littleunit_id");
+
                 entity.Property(e => e.Content).HasColumnName("content");
+
+                entity.HasOne(d => d.ClassLittleunit)
+                    .WithMany(p => p.Occdisasters)
+                    .HasForeignKey(d => d.ClassLittleunitId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Occdisaster_class_littleunit1");
             });
 
             modelBuilder.Entity<OperationCheckpoint>(entity =>
